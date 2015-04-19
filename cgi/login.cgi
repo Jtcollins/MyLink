@@ -231,8 +231,8 @@ def main():
         elif (action == "signup"):
             if "signup-username" in form and "signup-password" in form:
                 #Test password
-                username=form["username"].value
-                password=form["password"].value
+                username=form["signup-username"].value
+                password=form["signup-password"].value
                 if new_user(username, password)=="passed":
                    session=create_new_session(username)
                    display_admin_options(username, session)
