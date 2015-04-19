@@ -85,17 +85,17 @@ def new_user(user, passwd):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    t = (user,)
+    #t = (user,)
     newuser = (user, passwd)
-    c.execute('SELECT * FROM users WHERE email=?', t)
-    row = stored_password=c.fetchone()
-    if row == None:
-        c.execute('INSERT INTO users VALUES (?,?)', newuser)
-        conn.close();
-        return "passed"
-
+    #c.execute('SELECT * FROM users WHERE email=?', t)
+    #row = stored_password=c.fetchone()
+    
+    c.execute('INSERT INTO users VALUES (?,?)', newuser)
     conn.close();
-    return "failed"
+    return "passed"
+
+    #conn.close();
+    #return "failed"
 
 ##########################################################
 # Diplay the options of admin
