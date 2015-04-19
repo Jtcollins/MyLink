@@ -56,8 +56,9 @@ def login_form():
     print(content)
 
 def display_user():
-
+    print("hello")
 def display_album():
+    print("hello1")
 
 ###################################################################
 # Define function to test the password.
