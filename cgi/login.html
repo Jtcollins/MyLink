@@ -44,6 +44,35 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
+
+<!--
+<INPUT TYPE=hidden NAME="action" VALUE="login">
+      <FORM METHOD=post ACTION="login.cgi">
+<TR><TH>Username:</TH><TD><INPUT TYPE=text NAME="username"></TD><TR>
+<TR><TH>Password:</TH><TD><INPUT TYPE=password NAME="password"></TD></TR>
+</TABLE>
+
+<INPUT TYPE=hidden NAME="action" VALUE="login">
+<INPUT TYPE=submit VALUE="Log In">
+</FORM>
+-->
+
+    </div> <!-- /container -->
+
+      <div class="container">
+
+      <form METHOD=post ACTION="login.cgi" class="form-signin">
+
+        <h2 class="form-signin-heading">Not a member? <br>Sign up here</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" id="signup-username" NAME="signup-username" class="form-control" placeholder="User Name" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="signup-password" NAME="signup-password" class="form-control" placeholder="Password" required>
+        <INPUT TYPE=hidden NAME="action" VALUE="signup">
+        <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+      </form>
+
+
 <!--
 <INPUT TYPE=hidden NAME="action" VALUE="login">
       <FORM METHOD=post ACTION="login.cgi">
