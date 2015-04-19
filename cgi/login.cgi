@@ -100,6 +100,8 @@ def new_user(user, passwd):
 ##########################################################
 # Diplay the options of admin
 def display_admin_options(user, session):
+    with open("settings.html") as content_file:
+        content = content_file.read()
     html="""
         <H1> Picture Share Admin Options</H1>
         <ul>
@@ -115,7 +117,7 @@ def display_admin_options(user, session):
         #cgi can check that the user has been authenticated
 
     print_html_content_type()
-    print(html.format(user=user,session=session))
+    print(content.format(user=user,session=session))
 
 #################################################################
 def create_new_session(user):
@@ -235,7 +237,8 @@ def main():
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
                    session=create_new_session(username)
-                   display_admin_options(username, session)
+                   display_user_profile(username)
+                   #display_admin_options(username, session)
                 else:
                    login_form()
                    print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
