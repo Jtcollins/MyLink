@@ -27,7 +27,7 @@
 
 4. To run PeteTwitt app type this in a browser.
 
-http://data.cs.purdue.edu:<port>/MyLink/login.cgi
+http://data.cs.purdue.edu:64210/MyLink/login.cgi
 
 Users:
 
