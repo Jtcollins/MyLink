@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>Info Form</TITLE>
+</HEAD>
+
+<BODY BGCOLOR = white>
+
+<center><H2>MyLink User Login</H2></center>
+
+<H3>Log in:</H3>
+
+<TABLE BORDER = 0>
+<FORM METHOD=post ACTION="login.cgi">
+<TR><TH>Username:</TH><TD><INPUT TYPE=text NAME="username"></TD><TR>
+<TR><TH>Password:</TH><TD><INPUT TYPE=password NAME="password"></TD></TR>
+</TABLE>
+
+<INPUT TYPE=hidden NAME="action" VALUE="login">
+<INPUT TYPE=submit VALUE="Log In">
+</FORM>
+
+<H3>Not a user? Sign up here:</H3>
+
+<TABLE BORDER = 0>
+<FORM METHOD=post ACTION="signup.cgi">
+<TR><TH>Username:</TH><TD><INPUT TYPE=text NAME="username"></TD><TR>
+<TR><TH>Password:</TH><TD><INPUT TYPE=password NAME="password"></TD></TR>
+</TABLE>
+
+<INPUT TYPE=hidden NAME="sign" VALUE="signup">
+<INPUT TYPE=submit VALUE="Sign Up">
+</FORM>
+</BODY>
+</HTML>

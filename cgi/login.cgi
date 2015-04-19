@@ -14,6 +14,7 @@ IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 ##############################################################
 # Define function to generate login HTML form.
 def login_form():
+    index = open('index.html')
     html="""
 <HTML>
 <HEAD>
@@ -33,7 +34,7 @@ def login_form():
 </TABLE>
 
 <INPUT TYPE=hidden NAME="action" VALUE="login">
-<INPUT TYPE=submit VALUE="Enter">
+<INPUT TYPE=submit VALUE="Log In">
 </FORM>
 
 <H3>Not a user? Sign up here:</H3>
@@ -45,14 +46,17 @@ def login_form():
 </TABLE>
 
 <INPUT TYPE=hidden NAME="sign" VALUE="signup">
-<INPUT TYPE=submit VALUE="Enter">
+<INPUT TYPE=submit VALUE="Sign Up">
 </FORM>
 </BODY>
 </HTML>
 """
     print_html_content_type()
-    print(html)
+    print(index.read())
 
+def display_user():
+
+def display_album():
 
 ###################################################################
 # Define function to test the password.
