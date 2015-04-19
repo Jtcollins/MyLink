@@ -91,7 +91,7 @@ def new_user(user, passwd):
     #row = stored_password=c.fetchone()
     
     c.execute('INSERT INTO users VALUES (?,?)', newuser)
-    conn.close();
+    conn.commit()
     return "passed"
 
     #conn.close();
