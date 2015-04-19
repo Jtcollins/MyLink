@@ -22,9 +22,9 @@ def login_form():
 
 <BODY BGCOLOR = white>
 
-<center><H2>PictureShare User Administration</H2></center>
+<center><H2>MyLink User Login</H2></center>
 
-<H3>Type User and Password:</H3>
+<H3>Log in:</H3>
 
 <TABLE BORDER = 0>
 <FORM METHOD=post ACTION="login.cgi">
@@ -33,6 +33,18 @@ def login_form():
 </TABLE>
 
 <INPUT TYPE=hidden NAME="action" VALUE="login">
+<INPUT TYPE=submit VALUE="Enter">
+</FORM>
+
+<H3>Not a user? Sign up here:</H3>
+
+<TABLE BORDER = 0>
+<FORM METHOD=post ACTION="signup.cgi">
+<TR><TH>Username:</TH><TD><INPUT TYPE=text NAME="username"></TD><TR>
+<TR><TH>Password:</TH><TD><INPUT TYPE=password NAME="password"></TD></TR>
+</TABLE>
+
+<INPUT TYPE=hidden NAME="sign" VALUE="signup">
 <INPUT TYPE=submit VALUE="Enter">
 </FORM>
 </BODY>
