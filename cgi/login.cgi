@@ -85,17 +85,17 @@ def new_user(user, passwd):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    #t = (user,)
+    t = (user,)
     newuser = (user, passwd)
-    #c.execute('SELECT * FROM users WHERE email=?', t)
-    #row = stored_password=c.fetchone()
-    
-    c.execute('INSERT INTO users VALUES (?,?)', newuser)
-    conn.commit()
-    return "passed"
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    row = stored_password=c.fetchone()
+    if row == None:
+        c.execute('INSERT INTO users VALUES (?,?)', newuser)
+        conn.commit()
+        return "passed"
 
-    #conn.close();
-    #return "failed"
+    conn.close();
+    return "failed"
 
 ##########################################################
 # Diplay the options of admin
@@ -238,7 +238,7 @@ def main():
                    display_admin_options(username, session)
                 else:
                    login_form()
-                   print("<H3><font color=\"red\">Please enter a username and password</font></H3>")
+                   print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
         elif (action == "new-album"):
 	  new_album(form)
         elif (action == "upload"):
