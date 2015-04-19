@@ -14,7 +14,8 @@ IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 ##############################################################
 # Define function to generate login HTML form.
 def login_form():
-    index = open("index.html")
+    with open("index.html") as content_file:
+        content = content_file.read()
     html="""
 <HTML>
 <HEAD>
@@ -52,7 +53,6 @@ def login_form():
 </HTML>
 """
     print_html_content_type()
-    content = index.read()
     print(content)
 
 def display_user():
