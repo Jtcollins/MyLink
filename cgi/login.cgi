@@ -216,7 +216,7 @@ def main():
     form = cgi.FieldStorage()
     if "action" in form:
         action=form["action"].value
-        print("action=",action)
+        #print("action=",action)
         if action == "login":
             if "username" in form and "password" in form:
                 #Test password
