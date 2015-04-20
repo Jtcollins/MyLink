@@ -6,6 +6,10 @@ import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 #Get Databasedir
 MYLOGIN="colli180"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
@@ -122,6 +126,25 @@ def display_admin_options(user, session):
 #################################################################
 def create_new_session(user):
     return session.create_session(user)
+
+#################################################################
+
+def verify_email(useremail, session):
+    sender = 'obama@purdue.edu'
+    receiver='jtc@purdue.edu'
+    body = """
+    We just need to verify your email, please click this link:
+        
+    Or go to your settings page and input this code:
+    """
+    msg = MIMEText(body)
+    msg['Subject'] = 'Please Verify your email'
+    msg['From'] ="NoReply@MyLink.cs.purdue.edu"
+    msg['To'] =receiver
+
+    smtpObj = smtplib.SMTP('localhost')
+
+    smtpObj.sendmail(sender, receiver, msg.as_string())
 
 ##############################################################
 def new_album(form):
