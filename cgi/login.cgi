@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 MYLOGIN="colli180"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
+VERIFY_KEY = None
 
 ##############################################################
 # Define function to generate login HTML form.
@@ -130,13 +131,14 @@ def create_new_session(user):
 #################################################################
 
 def verify_email(useremail, session):
-    sender = 'obama@purdue.edu'
-    receiver='jtc@purdue.edu'
+    sender = 'jtc@purdue.edu'
+    receiver=useremail
+    VERIFY = random.randint(10000,99999)
     body = """
     We just need to verify your email, please click this link:
         
-    Or go to your settings page and input this code:
-    """
+    Or go to your settings page and input this code: %d
+    """ % VERIFY
     msg = MIMEText(body)
     msg['Subject'] = 'Please Verify your email'
     msg['From'] ="NoReply@MyLink.cs.purdue.edu"
