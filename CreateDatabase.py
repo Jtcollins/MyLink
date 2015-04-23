@@ -14,7 +14,8 @@ c.execute('''CREATE TABLE users
 	      firstName TEXT,
 	      lastName TEXT,
 	      password TEXT NOT NULL,
-	      FOREIGN KEY (profilePicture) REFERENCES pictures(path),
+	      picture TEXT NOT NULL,
+	      FOREIGN KEY (picture) REFERENCES pictures(path),
 	      PRIMARY KEY(email))''')
 
 # Create album table
@@ -44,17 +45,16 @@ c.execute('''CREATE TABLE sessions
 
 c.execute('''CREATE TABLE circles
 	     (user TEXT NOT NULL,
-	      name TEXT NOT NULL
-	      circleID int NOT NULL,
+	      name TEXT NOT NULL,
 	      FOREIGN KEY(user) REFERENCES users(email),
-	      PRIMARY KEY(circle))''')
+	      PRIMARY KEY(user, name))''')
 
 # Creates a user friend table
 c.execute('''CREATE TABLE friendlist
 	     (user TEXT NOT NULL,
-	      circle int NOT NULL,
+	      circle TEXT NOT NULL,
 	      FOREIGN KEY(user) REFERENCES users(email),
-	      FOREIGN KEY(circle) REFERENCES circles(circleID),
+	      FOREIGN KEY(circle) REFERENCES circles(user, circle),
 	      FOREIGN KEY(friend) REFERENCES users(email),
 	      PRIMARY KEY(user))''')
 
