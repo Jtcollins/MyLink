@@ -11,9 +11,9 @@ c.execute("PRAGMA foreign_keys = ON")
 # Create users table
 c.execute('''CREATE TABLE users
 	     (email TEXT NOT NULL, 
+	      password TEXT NOT NULL,
 	      firstName TEXT,
 	      lastName TEXT,
-	      password TEXT NOT NULL,
 	      picture TEXT,
 	      FOREIGN KEY (picture) REFERENCES pictures(path),
 	      PRIMARY KEY(email))''')

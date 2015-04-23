@@ -91,11 +91,11 @@ def new_user(user, passwd):
     c = conn.cursor()
 
     t = (user,)
-    newuser = (user, passwd)
+    newuser = (user, passwd, "NULL", "NULL", "NULL")
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
     if row == None:
-        c.execute('INSERT INTO users VALUES (?,?)', newuser)
+        c.execute('INSERT INTO users VALUES (?,?,?,?,?)', newuser)
         conn.commit()
         verify_email(user)
         return "passed"
