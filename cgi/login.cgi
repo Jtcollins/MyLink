@@ -295,10 +295,10 @@ def main():
         if action == "login":
             if "username" in form and "password" in form:
                 #Test password
-                global username=form["username"].value
+                username=form["username"].value
                 password=form["password"].value
                 if check_password(username, password)=="passed":
-                   global session=create_new_session(username)
+                   session=create_new_session(username)
                    display_user_profile(username, session)
                    #display_admin_options(username, session)
                 else:
