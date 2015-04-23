@@ -138,7 +138,7 @@ def display_admin_options(user, session):
 
 #################################################################
 
-def display_user_profile(username, session):
+def display_user_profile(user, session):
     print_html_content_type()
     print_html_nav(user, session)
     return "passed"
@@ -275,6 +275,7 @@ def print_html_nav(user):
         #cgi can check that the user has been authenticated
 
     print(content.format(user=user,session=session))
+
 
 ##############################################################
 # Define main function.
