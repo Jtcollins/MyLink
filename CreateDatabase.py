@@ -13,8 +13,8 @@ c.execute('''CREATE TABLE users
 	     (email TEXT NOT NULL, 
 	      firstName TEXT,
 	      lastName TEXT,
-	      FOREIGN KEY (profilePicture) REFERENCES pictures(path)
 	      password TEXT NOT NULL,
+	      FOREIGN KEY (profilePicture) REFERENCES pictures(path),
 	      PRIMARY KEY(email))''')
 
 # Create album table
