@@ -37,6 +37,8 @@ def create_session(user):
 
     return session
 
+    
+
 def check_session(form):
     if "user" in form and "session" in form:
         username=form["user"].value
