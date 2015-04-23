@@ -61,8 +61,10 @@ def login_form():
     print(content)
 
 def display_user():
+    #TODO
     print("hello")
 def display_album():
+    #TODO
     print("hello1")
 
 ###################################################################
@@ -135,6 +137,7 @@ def display_admin_options(user, session):
     print_html_content_type()
     print_html_nav(user, session)
     print(content.format(user=user,session=session))
+
 
 #################################################################
 
@@ -310,21 +313,15 @@ def print_html_nav(user, session):
     with open("nav.html") as content_file:
         content = content_file.read()
 
-    html="""
-        <H1> Picture Share Admin Options</H1>
-        <ul>
-        <li> <a href="login.cgi?action=new-album&user={user}&session={session}">Create new album</a>
-        <li> <a href="login.cgi?action=upload&user={user}&session={session}">Upload Picture</a>
-        <li> <a href="login.cgi?action=show_image&user={user}&session={session}">Show Image</a>
-        <li> Delete album
-        <li> Make album public
-        <li> Change pasword
-        </ul>
-        """
         #Also set a session number in a hidden field so the
         #cgi can check that the user has been authenticated
 
     print(content.format(user=user,session=session))
+
+def print_settings_footer():
+    with open("setfooter.html") as content_file:
+        content = content_file.read()
+    print(content)
 
 
 ##############################################################
