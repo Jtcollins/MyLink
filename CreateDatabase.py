@@ -54,7 +54,7 @@ c.execute('''CREATE TABLE friendlist
 	     (user TEXT NOT NULL,
 	      circle TEXT NOT NULL,
 	      FOREIGN KEY(user) REFERENCES users(email),
-	      FOREIGN KEY(circle) REFERENCES circles(user, circle),
+	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(friend) REFERENCES users(email),
 	      PRIMARY KEY(user))''')
 
