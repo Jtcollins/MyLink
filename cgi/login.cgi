@@ -143,16 +143,58 @@ def display_user_profile(user, session):
     print_html_nav(user, session)
     return "passed"
 
+def display_friend_profile(user, friend, session):
+    print_html_content_type()
+    print_html_nav(user, session)
+    #TODO
+    return "passed"
+
+#################################################################
+def change_user_info(user, session):
+    #TODO
+    return "failed"
+
+def upload_user_pic(user, session):
+    #TODO
+    return "failed"
+
+#################################################################
+def friend_request(user, session):
+    #TODO
+    return "failed"
+
+def request_response(user, session):
+    #TODO
+    return "failed"
+
+def create_circle(user, session):
+    #TODO
+    return "failed"
+
+def friend_to_circle(user, session):
+    #TODO
+    return "failed"
+
+def remove_friend_from_circle(user, friend, session):
+    #TODO
+    return "failed"
+
+#################################################################
+def create_new_post(user, session):
+    #TODO
+    return "failed"
+
 #################################################################
 def create_new_session(user):
     return session.create_session(user)
 
-
 #################################################################
 def create_cookie(user, session):
+    #TODO
     return "failed"
 
 def check_cookie(user, session):
+    #TODO
     return "failed"
 
 #################################################################
