@@ -45,7 +45,7 @@ c.execute('''CREATE TABLE sessions
 
 c.execute('''CREATE TABLE circles
 	     (user TEXT NOT NULL,
-	      name TEXT NOT NULL,
+	       TEXT NOT NULL,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      PRIMARY KEY(user, name))''')
 
@@ -53,6 +53,7 @@ c.execute('''CREATE TABLE circles
 c.execute('''CREATE TABLE friendlist
 	     (user TEXT NOT NULL,
 	      circle TEXT NOT NULL,
+	      friend TEXT NOT NULL,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(friend) REFERENCES users(email),
