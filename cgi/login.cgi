@@ -286,8 +286,6 @@ def print_html_nav(user, session):
 
 
 ##############################################################
-username=None
-session= None
 # Define main function.
 def main():
     form = cgi.FieldStorage()
@@ -297,10 +295,10 @@ def main():
         if action == "login":
             if "username" in form and "password" in form:
                 #Test password
-                username=form["username"].value
+                global username=form["username"].value
                 password=form["password"].value
                 if check_password(username, password)=="passed":
-                   session=create_new_session(username)
+                   global session=create_new_session(username)
                    display_user_profile(username, session)
                    #display_admin_options(username, session)
                 else:
