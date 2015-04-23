@@ -256,7 +256,7 @@ def print_html_content_type():
 	# Required header that tells the browser how to render the HTML.
 	print("Content-Type: text/html\n\n")
 
-def print_html_nav(user):
+def print_html_nav(user, session):
     with open("nav.html") as content_file:
         content = content_file.read()
 
@@ -291,7 +291,8 @@ def main():
                 password=form["password"].value
                 if check_password(username, password)=="passed":
                    session=create_new_session(username)
-                   display_admin_options(username, session)
+                   display_user_profile(username, session)
+                   #display_admin_options(username, session)
                 else:
                    login_form()
                    print("<H3><font color=\"red\">Incorrect user/password</font></H3>")
