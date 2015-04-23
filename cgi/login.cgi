@@ -147,6 +147,14 @@ def display_user_profile(user, session):
 def create_new_session(user):
     return session.create_session(user)
 
+
+#################################################################
+def create_cookie(user, session):
+    return "failed"
+
+def check_cookie(user, session):
+    return "failed"
+
 #################################################################
 
 def verify_email(useremail):
@@ -278,6 +286,8 @@ def print_html_nav(user, session):
 
 
 ##############################################################
+username=None
+session= None
 # Define main function.
 def main():
     form = cgi.FieldStorage()
