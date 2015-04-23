@@ -11,6 +11,9 @@ c.execute("PRAGMA foreign_keys = ON")
 # Create users table
 c.execute('''CREATE TABLE users
 	     (email TEXT NOT NULL, 
+	      firstName TEXT,
+	      lastName TEXT,
+	      FOREIGN KEY (profilePicture) REFERENCES pictures(path)
 	      password TEXT NOT NULL,
 	      PRIMARY KEY(email))''')
 
@@ -39,6 +42,21 @@ c.execute('''CREATE TABLE sessions
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      PRIMARY KEY(session))''')
 
+c.execute('''CREATE TABLE circles
+	     (user TEXT NOT NULL,
+	      name TEXT NOT NULL
+	      circleID int NOT NULL,
+	      FOREIGN KEY(user) REFERENCES users(email),
+	      PRIMARY KEY(circle))''')
+
+# Creates a user friend table
+c.execute('''CREATE TABLE friendlist
+	     (user TEXT NOT NULL,
+	      circle int NOT NULL,
+	      FOREIGN KEY(user) REFERENCES users(email),
+	      FOREIGN KEY(circle) REFERENCES circles(circleID),
+	      FOREIGN KEY(friend) REFERENCES users(email),
+	      PRIMARY KEY(user))''')
 
 # Save the changes
 conn.commit()
