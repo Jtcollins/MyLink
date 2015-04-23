@@ -138,7 +138,7 @@ def display_admin_options(user, session):
 
 #################################################################
 
-display_user_profile(username, session):
+def display_user_profile(username, session):
     print_html_content_type()
     print_html_nav(user, session)
     return "passed"
