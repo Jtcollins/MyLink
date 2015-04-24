@@ -15,6 +15,7 @@ c.execute('''CREATE TABLE users
 	      firstName TEXT,
 	      lastName TEXT,
 	      picture TEXT,
+	      verifyKey INT,
 	      FOREIGN KEY (picture) REFERENCES pictures(path),
 	      PRIMARY KEY(email))''')
 
