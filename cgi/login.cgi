@@ -14,7 +14,6 @@ from email.mime.multipart import MIMEMultipart
 MYLOGIN="colli180"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
-VERIFY_KEY = None
 
 ##############################################################
 # Define function to generate login HTML form.
@@ -93,13 +92,13 @@ def new_user(user, passwd):
     c = conn.cursor()
 
     t = (user,)
-    newuser = (user, passwd, "NULL", "NULL", "NULL")
+    ver = verify_email(user)
+    newuser = (user, passwd, "NULL", "NULL", "NULL", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
     if row == None:
         c.execute('INSERT INTO users VALUES (?,?,?,?,?)', newuser)
         conn.commit()
-        verify_email(user)
         return "passed"
 
     conn.close();
@@ -219,6 +218,7 @@ def verify_email(useremail):
     smtpObj = smtplib.SMTP('localhost')
 
     smtpObj.sendmail(sender, receiver, msg.as_string())
+    return VERIFY
 
 ##############################################################
 def new_album(form):
