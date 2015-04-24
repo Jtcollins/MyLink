@@ -11,7 +11,7 @@ c = conn.cursor()
 
 # Add one user
 user=('dave@gmail.com', 'dave123', 'NULL', 'NULL', 'NULL')
-c.execute('INSERT INTO users VALUES (?,?)', user)
+c.execute('INSERT INTO users VALUES (?,?,?,?,?)', user)
 
 # Larger example that inserts many records at a time
 users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL'),
