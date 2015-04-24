@@ -18,7 +18,7 @@ users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL', 'NULL'),
              ('mary@gmail.com', 'mary123', 'NULL', 'NULL', 'NULL', 'NULL'),
              ('peter@gmail.com', 'peter123', 'NULL', 'NULL', 'NULL', 'NULL'),
             ]
-c.executemany('INSERT INTO users VALUES (?,?)', users)
+c.executemany('INSERT INTO users VALUES (?,?,?,?,?)', users)
 
 albums = [("album1",'george@gmail.com',"public"),
            ("album2",'george@gmail.com',"public"),
