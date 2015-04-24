@@ -10,13 +10,13 @@ conn = sqlite3.connect('picture_share.db')
 c = conn.cursor()
 
 # Add one user
-user=('dave@gmail.com', 'dave123', 'NULL', 'NULL', 'NULL')
-c.execute('INSERT INTO users VALUES (?,?,?,?,?)', user)
+user=('dave@gmail.com', 'dave123', 'NULL', 'NULL', 'NULL', 'NULL')
+c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', user)
 
 # Larger example that inserts many records at a time
-users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL'),
-             ('mary@gmail.com', 'mary123', 'NULL', 'NULL', 'NULL'),
-             ('peter@gmail.com', 'peter123', 'NULL', 'NULL', 'NULL'),
+users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('mary@gmail.com', 'mary123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('peter@gmail.com', 'peter123', 'NULL', 'NULL', 'NULL', 'NULL'),
             ]
 c.executemany('INSERT INTO users VALUES (?,?)', users)
 
