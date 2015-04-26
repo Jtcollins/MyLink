@@ -205,12 +205,10 @@ def change_name_page(form):
           </form>
     </div>
     """
-        with open(html) as content_file:
-            content = content_file.read()
 
         print_html_content_type()
         print_html_nav(form)
-        print(content.format(user=user,session=ses))
+        print(html.format(user=user,session=ses))
         print_settings_footer()
         return "passed"
     login_form()
@@ -272,12 +270,10 @@ def change_password_page(form):
       </form>
 </div>
 """
-    with open(html) as content_file:
-        content = content_file.read()
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=ses))
+    print(html.format(user=user,session=ses))
     print_settings_footer()
     return "passed"
 
