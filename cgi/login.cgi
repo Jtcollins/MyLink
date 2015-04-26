@@ -376,7 +376,7 @@ def verify_final(form):
 
     ts = (1,user,)
     row = stored_password=c.fetchone()
-    c.execute('UPDATE users SET verif= ? WHERE email=?', ts)
+    c.execute('UPDATE users SET verifyKey= ? WHERE email=?', ts)
     conn.commit()
     conn.close()
     return "Password Changed"
@@ -589,7 +589,7 @@ def main():
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
                    ses=create_new_session(username)
-                   display_user_profile(username, ses)
+                   display_user_profile_init(username, ses)
                    #display_admin_options(username, ses)
                 else:
                    login_form()
