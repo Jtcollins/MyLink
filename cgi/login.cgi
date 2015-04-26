@@ -152,7 +152,7 @@ def display_admin_options(form):
     session=form["session"].value
     with open("settings.html") as content_file:
         content = content_file.read()
-        
+
     print_html_content_type()
     print_html_nav(form)
     print(content.format(user=user,session=session))
@@ -501,7 +501,7 @@ def main():
                 password=form["password"].value
                 if check_password(username, password)=="passed":
                    session=create_new_session(username)
-                   display_user_profile(user, session)
+                   display_user_profile(username, session)
                    #display_admin_options(username, session)
                 else:
                    login_form()
@@ -513,7 +513,7 @@ def main():
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
                    session=create_new_session(username)
-                   display_user_profile(user, session)
+                   display_user_profile(username, session)
                    #display_admin_options(username, session)
                 else:
                    login_form()
