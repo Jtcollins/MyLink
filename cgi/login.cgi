@@ -203,7 +203,8 @@ def change_name_page(form):
             <INPUT TYPE=hidden NAME="action" VALUE="change-name">
             <INPUT TYPE=hidden NAME="user" VALUE="{user}">
             <INPUT TYPE=hidden NAME="session" VALUE="{session}">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+            <br>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Submit Changes</button>
           </form>
     </div>
     """
@@ -256,7 +257,8 @@ def change_password_page(form):
         <INPUT TYPE=hidden NAME="action" VALUE="change-pw">
         <INPUT TYPE=hidden NAME="user" VALUE="{user}">
         <INPUT TYPE=hidden NAME="session" VALUE="{session}">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+        <br>
+        <button class="btn btn-md btn-primary btn-block" type="submit">Submit Changes</button>
       </form>
 </div>
 """
@@ -320,7 +322,8 @@ def verify_page(form):
         <INPUT TYPE=hidden NAME="action" VALUE="verificate">
         <INPUT TYPE=hidden NAME="user" VALUE="{user}">
         <INPUT TYPE=hidden NAME="session" VALUE="{session}">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+        <br>
+        <button class="btn btn-md btn-primary btn-block" type="submit">Submit Changes</button>
       </form>
 </div>
 """
@@ -334,7 +337,8 @@ def verify_page(form):
         <INPUT TYPE=hidden NAME="action" VALUE="view_settings">
         <INPUT TYPE=hidden NAME="user" VALUE="{user}">
         <INPUT TYPE=hidden NAME="session" VALUE="{session}">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Go Back</button>
+        <br>
+        <button class="btn btn-md btn-primary btn-block" type="submit">Go Back</button>
       </form>
 </div>
 """
@@ -359,7 +363,24 @@ def verify_page(form):
     return "failed"
 
 def verify_final(form):
-    return "failed"
+    user=form["user"].value
+    ses=form["session"].value
+    verif = form["verif"].value
+
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    ts = (1,user,)
+    row = stored_password=c.fetchone()
+    c.execute('UPDATE users SET verif= ? WHERE email=?', ts)
+    conn.commit()
+    conn.close()
+    return "Password Changed"
+    
 
 
 #################################################################
