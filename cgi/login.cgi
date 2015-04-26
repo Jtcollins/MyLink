@@ -198,6 +198,8 @@ def change_name_page(form):
             <label for="lastname" class="sr-only">Last Name</label>
             <input type="text" id="lastname" NAME="lastname" class="form-control" placeholder="New Last Name" required>
             <INPUT TYPE=hidden NAME="action" VALUE="change-name">
+            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
           </form>
     </div>
@@ -258,6 +260,8 @@ def change_password_page(form):
         <label for="inputPassword" class="sr-only">New Password Again</label>
         <input type="password" id="npw-ver" NAME="npw-ver" class="form-control" placeholder="New Password Again" required>
         <INPUT TYPE=hidden NAME="action" VALUE="change-pw">
+        <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+        <INPUT TYPE=hidden NAME="session" VALUE="{session}">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
       </form>
 </div>
