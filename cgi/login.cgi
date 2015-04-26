@@ -205,7 +205,7 @@ def change_name_page(form):
         print_html_content_type()
         print_html_nav(form)
         #print(html)
-        print_settings_footer()
+        #print_settings_footer()
         return "passed"
     return "failed"
 
