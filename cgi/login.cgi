@@ -565,15 +565,15 @@ def main():
             change_password(form)
             statement = change_password(form)
             if statement != "failed":
-                display_admin_options(form,statement,green)
+                display_admin_options(form,statement,"green")
             else:
-                display_admin_options(form,statement,red)
+                display_admin_options(form,statement,"red")
         elif action == "change-name":
             statement = change_name(form)
             if statement != "failed":
-                display_admin_options(form,statement,green)
+                display_admin_options(form,statement,"green")
             else:
-                display_admin_options(form,statement,red)
+                display_admin_options(form,statement,"red")
         else:
             login_form()
     else:
