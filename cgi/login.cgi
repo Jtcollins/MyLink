@@ -375,12 +375,15 @@ def verify_final(form):
     c = conn.cursor()
 
     ts = (1,user,)
-    row = stored_password=c.fetchone()
-    c.execute('UPDATE users SET verifyKey= ? WHERE email=?', ts)
-    conn.commit()
+    row = stored_key=c.fetchone()
+    if(int(verif) == row[5]):
+        c.execute('UPDATE users SET verifyKey= ? WHERE email=?', ts)
+        conn.commit()
+        conn.close()
+        return "Account Verified"
+
     conn.close()
-    return "Password Changed"
-    
+    return "Verification Failed"
 
 
 #################################################################
@@ -423,6 +426,19 @@ def check_cookie(user, ses):
     return "failed"
 
 def logout(form):
+    user=form["user"].value
+    ses=form["session"].value
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    ts = (user,ses,)
+    
+    c.execute('DELETE FROM sessions WHERE user=? AND session', ts)
+    conn.commit()
+    conn.close()
+
+
     return "failed"
 
 #################################################################
@@ -622,7 +638,7 @@ def main():
         elif action == "ch-pw":
             change_password_page(form)
         elif action == "logout":
-            #TODO
+            logout(form)
             login_form()
 
         ## SETTINGS COMMIT PAGES
