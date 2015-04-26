@@ -171,6 +171,7 @@ def display_user_profile(form):
 
 def display_user_profile(user, ses):
     if (session.check_session(user, ses) != "passed"):
+        print("error")
         login_form()
         return
 
@@ -469,8 +470,6 @@ def print_html_nav(form):
 
 def print_html_nav(user, ses):
     if (session.check_session(user, ses) != "passed"):
-        user = form["user"].value
-        ses = form["session"].value
         with open("nav.html") as content_file:
             content = content_file.read()
 
