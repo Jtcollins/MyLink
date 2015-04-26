@@ -469,7 +469,7 @@ def print_html_nav(form):
     return "failed"
 
 def print_html_nav(user, ses):
-    if (session.check_session(user, ses) != "passed"):
+    if (session.check_session(user, ses) == "passed"):
         with open("nav.html") as content_file:
             content = content_file.read()
 
