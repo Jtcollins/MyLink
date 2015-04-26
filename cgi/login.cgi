@@ -186,6 +186,7 @@ def display_friend_profile(form):
 def change_name_page(form):
     if "user" in form and "session" in form and session.check_session(form) == "passed":
         user=form["user"].value
+        ses=form["session"].value
         html = """
     <div class="container">
 
@@ -204,9 +205,12 @@ def change_name_page(form):
           </form>
     </div>
     """
+        with open(html) as content_file:
+            content = content_file.read()
+
         print_html_content_type()
         print_html_nav(form)
-        print(html)
+        print(content.format(user=user,session=ses))
         print_settings_footer()
         return "passed"
     login_form()
@@ -246,6 +250,8 @@ def change_email(user, email):
 
 
 def change_password_page(form):
+    user=form["user"].value
+    ses=form["session"].value
     html = """
 <div class="container">
 
@@ -266,9 +272,12 @@ def change_password_page(form):
       </form>
 </div>
 """
+    with open(html) as content_file:
+        content = content_file.read()
+
     print_html_content_type()
     print_html_nav(form)
-    print(html)
+    print(content.format(user=user,session=ses))
     print_settings_footer()
     return "passed"
 
