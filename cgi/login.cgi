@@ -140,7 +140,7 @@ def display_admin_options(user, ses):
     print_html_nav(form)
     print(content.format(user=user,session=ses))
 
-def display_admin_options(form):
+def display_admin_options(form, statement="", color="green"):
     if (session.check_session(form) != "passed"):
         login_form()
         return
@@ -153,6 +153,8 @@ def display_admin_options(form):
     print_html_content_type()
     print_html_nav(form)
     print(content.format(user=user,session=ses))
+    if statement != "":
+        print("<H3><font color=\"color\statement""</font></H3>")
 
 
 #################################################################
@@ -300,7 +302,7 @@ def change_password(form):
         c.execute('UPDATE users SET password = ? WHERE email=?', ts)
 
         conn.close()
-        return "passed"
+        return "Password Changed"
     else:
 
         conn.close()
@@ -317,6 +319,9 @@ def verify_page(form):
     print_html_nav(form)
     
     return "failed"
+
+def ret_settings(pstatement):
+
 
 #################################################################
 def friend_request(form):
@@ -561,7 +566,11 @@ def main():
         elif action == "change-pw":
             change_password(form)
         elif action == "change-name":
-            change_name(form)
+            statement = change_name(form)
+            if statement != "failed":
+                display_admin_options(form,statement,green)
+            else:
+                display_admin_options(form,statement,red)
         else:
             login_form()
     else:
