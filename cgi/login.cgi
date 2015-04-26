@@ -58,9 +58,11 @@ def login_form():
 """
     print_html_content_type()
     print(content)
+
 def display_user():
     #TODO
     print("hello")
+    
 def display_album():
     #TODO
     print("hello1")
@@ -137,15 +139,24 @@ def display_admin_options(user, session):
     print_html_nav(form)
     print(content.format(user=user,session=session))
 
+def display_admin_options(form):
+    user=form["user"].value
+    session=form["session"].value
+    with open("settings.html") as content_file:
+        content = content_file.read()
+    print_html_content_type()
+    print_html_nav(form)
+    print(content.format(user=user,session=session))
+
 
 #################################################################
 
-def display_user_profile(user, session):
+def display_user_profile(form):
     print_html_content_type()
     print_html_nav(form)
     return "passed"
 
-def display_friend_profile(user, friend, session):
+def display_friend_profile(form):
     print_html_content_type()
     print_html_nav(form)
     #TODO
@@ -426,6 +437,20 @@ def print_html_nav(form):
         return "passed"
     return "failed"
 
+def print_html_nav(user, session):
+    if (session.check_session(form) != "passed"):
+        user = form["user"].value
+        session = form["session"].value
+        with open("nav.html") as content_file:
+            content = content_file.read()
+
+            #Also set a session number in a hidden field so the
+            #cgi can check that the user has been authenticated
+
+        print(content.format(user=user,session=session))
+        return "passed"
+    return "failed"
+
 def print_settings_footer():
     with open("setfooter.html") as content_file:
         content = content_file.read()
@@ -446,7 +471,7 @@ def main():
                 password=form["password"].value
                 if check_password(username, password)=="passed":
                    session=create_new_session(username)
-                   display_user_profile(username, session)
+                   display_user_profile(user, session)
                    #display_admin_options(username, session)
                 else:
                    login_form()
@@ -458,7 +483,7 @@ def main():
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
                    session=create_new_session(username)
-                   display_user_profile(username, session)
+                   display_user_profile(user, session)
                    #display_admin_options(username, session)
                 else:
                    login_form()
