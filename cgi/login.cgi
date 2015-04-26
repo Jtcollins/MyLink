@@ -118,8 +118,8 @@ def delete_user(user, passwd):
 
 ##########################################################
 # Diplay the options of admin
-def display_admin_options(user, session):
-    if (session.check_session(user, session) != "passed"):
+def display_admin_options(user, ses):
+    if (session.check_session(user, ses) != "passed"):
         login_form()
         return
 
@@ -141,7 +141,7 @@ def display_admin_options(user, session):
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=session))
+    print(content.format(user=user,session=ses))
 
 def display_admin_options(form):
     if (session.check_session(form) != "passed"):
@@ -149,13 +149,13 @@ def display_admin_options(form):
         return
 
     user=form["user"].value
-    session=form["session"].value
+    ses=form["session"].value
     with open("settings.html") as content_file:
         content = content_file.read()
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=session))
+    print(content.format(user=user,session=ses))
 
 
 #################################################################
@@ -169,13 +169,13 @@ def display_user_profile(form):
     print_html_nav(form)
     return "passed"
 
-def display_user_profile(user, session):
-    if (session.check_session(user, session) != "passed"):
+def display_user_profile(user, ses):
+    if (session.check_session(user, ses) != "passed"):
         login_form()
         return
 
     print_html_content_type()
-    print_html_nav(user, session)
+    print_html_nav(user, ses)
     return "passed"
 
 def display_friend_profile(form):
@@ -273,8 +273,8 @@ def change_password_page(form):
     print_settings_footer()
     return "passed"
 
-def change_password(user, session, oldPW, newPW, newPWVer):
-    if (session.check_session(user, session) != "passed"):
+def change_password(user, ses, oldPW, newPW, newPWVer):
+    if (session.check_session(user, ses) != "passed"):
         login_form()
         return
 
@@ -284,7 +284,7 @@ def change_password(user, session, oldPW, newPW, newPWVer):
     t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
-    if(row[1]== oldPW and newPW == newPWVer and check_session(user, session) == "passed"):
+    if(row[1]== oldPW and newPW == newPWVer and check_session(user, ses) == "passed"):
         c.execute('UPDATE users SET password = newPW WHERE email=?', t)
 
         conn.close()
@@ -337,11 +337,11 @@ def create_new_session(user):
     return session.create_session(user)
 
 #################################################################
-def create_cookie(user, session):
+def create_cookie(user, ses):
     #TODO
     return "failed"
 
-def check_cookie(user, session):
+def check_cookie(user, ses):
     #TODO
     return "failed"
 
@@ -456,28 +456,28 @@ def print_html_content_type():
 def print_html_nav(form):
     if (session.check_session(form) != "passed"):
         user = form["user"].value
-        session = form["session"].value
+        ses = form["session"].value
         with open("nav.html") as content_file:
             content = content_file.read()
 
             #Also set a session number in a hidden field so the
             #cgi can check that the user has been authenticated
 
-        print(content.format(user=user,session=session))
+        print(content.format(user=user,session=ses))
         return "passed"
     return "failed"
 
-def print_html_nav(user, session):
-    if (session.check_session(form) != "passed"):
+def print_html_nav(user, ses):
+    if (session.check_session(user, ses) != "passed"):
         user = form["user"].value
-        session = form["session"].value
+        ses = form["session"].value
         with open("nav.html") as content_file:
             content = content_file.read()
 
             #Also set a session number in a hidden field so the
             #cgi can check that the user has been authenticated
 
-        print(content.format(user=user,session=session))
+        print(content.format(user=user,session=ses))
         return "passed"
     return "failed"
 
@@ -500,9 +500,9 @@ def main():
                 username=form["username"].value
                 password=form["password"].value
                 if check_password(username, password)=="passed":
-                   session=create_new_session(username)
-                   display_user_profile(username, session)
-                   #display_admin_options(username, session)
+                   ses=create_new_session(username)
+                   display_user_profile(username, ses)
+                   #display_admin_options(username, ses)
                 else:
                    login_form()
                    print("<H3><font color=\"red\">Incorrect user/password</font></H3>")
@@ -512,9 +512,9 @@ def main():
                 username=form["signup-username"].value
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
-                   session=create_new_session(username)
-                   display_user_profile(username, session)
-                   #display_admin_options(username, session)
+                   ses=create_new_ses(username)
+                   display_user_profile(username, ses)
+                   #display_admin_options(username, ses)
                 else:
                    login_form()
                    print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
