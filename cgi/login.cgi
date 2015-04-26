@@ -553,7 +553,8 @@ def main():
         ## SETTINGS COMMIT PAGES
         elif action == "change-pw":
             change_password(form)
-        elif action == "change"
+        elif action == "change-name":
+            change_name(form)
         else:
             login_form()
     else:
