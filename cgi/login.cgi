@@ -118,7 +118,7 @@ def delete_user(user, passwd):
 
 ##########################################################
 # Diplay the options of admin
-"""def display_admin_options(user, ses):
+def display_admin_options(user, ses):
 
     with open("settings.html") as content_file:
         content = content_file.read()
@@ -138,7 +138,7 @@ def delete_user(user, passwd):
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=ses))"""
+    print(content.format(user=user,session=ses))
 
 def display_admin_options(form):
     if (session.check_session(form) != "passed"):
