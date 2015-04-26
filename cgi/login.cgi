@@ -434,7 +434,7 @@ def logout(form):
 
     ts = (user,ses,)
     
-    c.execute('DELETE FROM sessions WHERE user=? AND session', ts)
+    c.execute('DELETE FROM sessions WHERE user=? AND session=?', ts)
     conn.commit()
     conn.close()
 
