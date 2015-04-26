@@ -304,8 +304,6 @@ def upload_user_pic_page(form):
     #TODO
     return "failed"
 
-def upload_profile_pic(form):
-
 
 def verify_page(form):
     print_html_content_type()
