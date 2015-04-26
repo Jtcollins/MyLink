@@ -320,8 +320,6 @@ def verify_page(form):
     
     return "failed"
 
-def ret_settings(pstatement):
-
 
 #################################################################
 def friend_request(form):
