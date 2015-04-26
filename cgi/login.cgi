@@ -119,9 +119,6 @@ def delete_user(user, passwd):
 ##########################################################
 # Diplay the options of admin
 def display_admin_options(user, ses):
-    if (session.check_session(user, ses) != "passed"):
-        login_form()
-        return
 
     with open("settings.html") as content_file:
         content = content_file.read()
@@ -170,10 +167,6 @@ def display_user_profile(form):
     return "passed"
 
 def display_user_profile(user, ses):
-    if (session.check_session(user, ses) != "passed"):
-        print("error")
-        login_form()
-        return
 
     print_html_content_type()
     print_html_nav(user, ses)
@@ -274,8 +267,9 @@ def change_password_page(form):
     print_settings_footer()
     return "passed"
 
-def change_password(user, ses, oldPW, newPW, newPWVer):
-    if (session.check_session(user, ses) != "passed"):
+def change_password(form):
+    ##user, ses, oldPW, newPW, newPWVer
+    if (session.check_session(form) != "passed"):
         login_form()
         return
 
@@ -285,7 +279,7 @@ def change_password(user, ses, oldPW, newPW, newPWVer):
     t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
-    if(row[1]== oldPW and newPW == newPWVer and check_session(user, ses) == "passed"):
+    if(row[1]== oldPW and newPW == newPWVer and check_session(form) == "passed"):
         c.execute('UPDATE users SET password = newPW WHERE email=?', t)
 
         conn.close()
@@ -469,16 +463,14 @@ def print_html_nav(form):
     return "failed"
 
 def print_html_nav(user, ses):
-    if (session.check_session(user, ses) == "passed"):
-        with open("nav.html") as content_file:
-            content = content_file.read()
+    with open("nav.html") as content_file:
+        content = content_file.read()
 
-            #Also set a session number in a hidden field so the
-            #cgi can check that the user has been authenticated
+        #Also set a session number in a hidden field so the
+        #cgi can check that the user has been authenticated
 
-        print(content.format(user=user,session=ses))
-        return "passed"
-    return "failed"
+    print(content.format(user=user,session=ses))
+    return "passed"
 
 def print_settings_footer():
     with open("setfooter.html") as content_file:
