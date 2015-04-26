@@ -563,7 +563,7 @@ def main():
         ## SETTINGS COMMIT PAGES
         elif action == "change-pw":
             change_password(form)
-            statement = change_name(form)
+            statement = change_password(form)
             if statement != "failed":
                 display_admin_options(form,statement,green)
             else:
