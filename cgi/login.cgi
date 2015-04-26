@@ -588,7 +588,7 @@ def main():
                 username=form["signup-username"].value
                 password=form["signup-password"].value
                 if new_user(username, password)=="passed":
-                   ses=create_new_ses(username)
+                   ses=create_new_session(username)
                    display_user_profile(username, ses)
                    #display_admin_options(username, ses)
                 else:
