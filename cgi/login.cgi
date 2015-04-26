@@ -449,7 +449,7 @@ def print_html_content_type():
 	print("Content-Type: text/html\n\n")
 
 def print_html_nav(form):
-    if (session.check_session(form) != "passed"):
+    if (session.check_session(form) == "passed"):
         user = form["user"].value
         ses = form["session"].value
         with open("nav.html") as content_file:
