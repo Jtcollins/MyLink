@@ -292,8 +292,9 @@ def change_password(form):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    t = (newPW,user,)
+    t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
+    ts = (newPW,user,)
     row = stored_password=c.fetchone()
     if(row[1]== oldPW and newPW == newPWVer and session.check_session(form) == "passed"):
         c.execute('UPDATE users SET password = ? WHERE email=?', t)
