@@ -152,9 +152,9 @@ def display_admin_options(form, statement="", color="green"):
 
     print_html_content_type()
     print_html_nav(form)
-    if statement != "":
-        print("<H3><font color=\"color\statement""</font></H3>")
     print(content.format(user=user,session=ses))
+    if statement != "":
+        print("<H3><font color=\color\statement</font></H3>")
 
 
 #################################################################
@@ -168,7 +168,7 @@ def display_user_profile(form):
     print_html_nav(form)
     return "passed"
 
-def display_user_profile(user, ses):
+def display_user_profile_init(user, ses):
 
     print_html_content_type()
     print_html_nav_init(user, ses)
@@ -216,9 +216,26 @@ def change_name_page(form):
     login_form()
     return "failed"
 
-def change_name(user, firstname, lastname):
-    #TODO
-    return "failed"
+def change_name(form):
+    user=form["user"].value
+    ses=form["session"].value
+    firstname = form["firstname"].value
+    lastname = form["lastname"].value
+    
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    ts = (firstname,lastname,user,)
+    
+    c.execute('UPDATE users SET firstName = ?, lastName = ? WHERE email=?', ts)
+    conn.commit()
+    conn.close()
+    return "Name Changed"
+
 
 def change_email_page(form):
     html = """
@@ -298,7 +315,7 @@ def change_password(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     ts = (newPW,user,)
     row = stored_password=c.fetchone()
-    if(row[1]== oldPW and newPW == newPWVer and session.check_session(form) == "passed"):
+    if(row[1]== oldPW and newPW == newPWVer):
         c.execute('UPDATE users SET password = ? WHERE email=?', ts)
         conn.commit()
         conn.close()
@@ -512,7 +529,7 @@ def main():
                 password=form["password"].value
                 if check_password(username, password)=="passed":
                    ses=create_new_session(username)
-                   display_user_profile(username, ses)
+                   display_user_profile_init(username, ses)
                    #display_admin_options(username, ses)
                 else:
                    login_form()
