@@ -237,35 +237,6 @@ def change_name(form):
     return "Name Changed"
 
 
-def change_email_page(form):
-    html = """
-<div class="container">
-
-      <form METHOD=post ACTION="login.cgi" class="form-signin">
-        <h1>MyLink</h1>
-
-        <h2 class="form-changeinfo-heading">Change Your Email/Username</h2>
-        <label for="inputEmail" class="sr-only">Email</label>
-        <input type="text" id="username" NAME="username" class="form-control" placeholder="New Email" required autofocus>
-        <INPUT TYPE=hidden NAME="action" VALUE="change-email">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
-      </form>
-</div>
-"""
-    print_html_content_type()
-    print_html_nav(form)
-    #print(html)
-    print_settings_footer()
-    return "passed"
-
-def change_email(user, email):
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-
-    conn.close()
-    return "failed"
-
-
 def change_password_page(form):
     user=form["user"].value
     ses=form["session"].value
@@ -334,7 +305,60 @@ def upload_user_pic_page(form):
 def verify_page(form):
     print_html_content_type()
     print_html_nav(form)
-    
+
+    user=form["user"].value
+    ses=form["session"].value
+    html_unverified = """
+<div class="container">
+
+      <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+        <h1>MyLink</h1>
+
+        <h2 class="form-changeinfo-heading">Verify Account</h2>
+        <label for="inputEmail" class="sr-only">Verification Code</label>
+        <input type="text" id="verif" NAME="verif" class="form-control" placeholder="Verification Code" required autofocus>
+        <INPUT TYPE=hidden NAME="action" VALUE="verificate">
+        <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+        <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+      </form>
+</div>
+"""
+    html_verified = """
+<div class="container">
+
+      <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+        <h1>MyLink</h1>
+
+        <h2 class="form-changeinfo-heading">Your account has been verified!</h2>
+        <INPUT TYPE=hidden NAME="action" VALUE="view_settings">
+        <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+        <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Go Back</button>
+      </form>
+</div>
+"""
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (user,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    row = stored_password=c.fetchone()
+    if row[5] == 1:
+        print(html_verified.format(user=user,session=ses))
+        print_settings_footer()
+        return "passed"
+    else:
+        print(html_unverified.format(user=user,session=ses))
+        print_settings_footer()
+        return "passed"
+    return "failed"
+
+def verify_final(form):
     return "failed"
 
 
@@ -375,6 +399,9 @@ def create_cookie(user, ses):
 
 def check_cookie(user, ses):
     #TODO
+    return "failed"
+
+def logout(form):
     return "failed"
 
 #################################################################
@@ -587,6 +614,12 @@ def main():
                 display_admin_options(form,statement,"red")
         elif action == "change-name":
             statement = change_name(form)
+            if statement != "failed":
+                display_admin_options(form,statement,"green")
+            else:
+                display_admin_options(form,statement,"red")
+        elif action == "verificate":
+            statement = verify_final(form)
             if statement != "failed":
                 display_admin_options(form,statement,"green")
             else:
