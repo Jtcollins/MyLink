@@ -169,7 +169,7 @@ def display_user_profile(form):
 def display_user_profile(user, ses):
 
     print_html_content_type()
-    print_html_nav(user, ses)
+    print_html_nav_init(user, ses)
     return "passed"
 
 def display_friend_profile(form):
@@ -462,7 +462,7 @@ def print_html_nav(form):
         return "passed"
     return "failed"
 
-def print_html_nav(user, ses):
+def print_html_nav_init(user, ses):
     with open("nav.html") as content_file:
         content = content_file.read()
 
