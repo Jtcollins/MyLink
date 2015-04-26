@@ -189,7 +189,7 @@ def change_name_page(form):
         html = """
     <div class="container">
 
-          <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+          <form METHOD=post ACTION="login.cgi" class="form-signin">
             <h1>MyLink</h1>
 
             <h2 class="form-changeinfo-heading">Change Your Personal Info</h2>
@@ -217,7 +217,7 @@ def change_email_page(form):
     html = """
 <div class="container">
 
-      <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+      <form METHOD=post ACTION="login.cgi" class="form-signin">
         <h1>MyLink</h1>
 
         <h2 class="form-changeinfo-heading">Change Your Email/Username</h2>
