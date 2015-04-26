@@ -152,9 +152,9 @@ def display_admin_options(form, statement="", color="green"):
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=ses))
     if statement != "":
         print("<H3><font color=\"color\statement""</font></H3>")
+    print(content.format(user=user,session=ses))
 
 
 #################################################################
