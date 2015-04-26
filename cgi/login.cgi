@@ -279,6 +279,12 @@ def change_password_page(form):
 
 def change_password(form):
     ##user, ses, oldPW, newPW, newPWVer
+    user=form["user"].value
+    ses=form["session"].value
+    oldPW = form["old-pw"].value
+    newPW = form["npw"].value
+    newPWVer = form["npw-ver"].value
+
     if (session.check_session(form) != "passed"):
         login_form()
         return
