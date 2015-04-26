@@ -5,13 +5,13 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
-
+import Cookie, os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #Get Databasedir
-MYLOGIN="colli180"
+MYLOGIN="chanthor"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 VERIFY_KEY = None
@@ -142,7 +142,11 @@ def display_admin_options(user, session):
 #################################################################
 
 def display_user_profile(user, session):
-    print_html_content_type()
+    if check_cookie(user, session) == "passed":
+        print_html_content_type()
+    else:
+        create_cookie(user, session)
+
     print_html_nav(user, session)
     return "passed"
 
@@ -189,16 +193,37 @@ def create_new_post(user, session):
 
 #################################################################
 def create_new_session(user):
-    return session.create_session(user)
+    #return session.create_session(user)
+    # Store random string as session number
+    # Number of characters in session string
+    n = 20
+    char_set = string.ascii_uppercase + string.digits
+    session = ''.join(random.sample(char_set,n))
+    create_cookie(user, session)
+    return session
+
+#################################################################
+def check_session(user, session):
+    return check_cookie(user, session)
 
 #################################################################
 def create_cookie(user, session):
-    #TODO
-    return "failed"
+    cookie = Cookie.SimpleCookie()
+    cookie["session"] = session
+    print "Content-type: text/plain"
+    print cookie.output()
+    print
 
 def check_cookie(user, session):
-    #TODO
-    return "failed"
+    cookieString = os.environ.get("HTTP_COOKIE")
+    if not cookieString:
+        return "failed"
+    cookie = Cookie.SimpleCookie()
+    cookie.load(cookieString)
+    if cookie["session"] == session:
+        return "passed"
+    else:
+        return "failed"
 
 #################################################################
 
@@ -312,8 +337,7 @@ def print_html_content_type():
 def print_html_nav(user, session):
     with open("nav.html") as content_file:
         content = content_file.read()
-
-        #Also set a session number in a hidden field so the
+set a session number in a hidden field so the
         #cgi can check that the user has been authenticated
 
     print(content.format(user=user,session=session))
