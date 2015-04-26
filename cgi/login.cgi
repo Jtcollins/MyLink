@@ -534,7 +534,7 @@ def main():
         elif action == "view_profile":
           display_user_profile(form)
 
-          ##SETTINGS OPTIONS
+          ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
             change_name_page(form)
         elif action == "ch-email":
@@ -549,6 +549,11 @@ def main():
         elif action == "logout":
             #TODO
             login_form()
+
+        ## SETTINGS COMMIT PAGES
+        elif action == "change-pw":
+            change_password(form)
+        elif action == "change"
         else:
             login_form()
     else:
