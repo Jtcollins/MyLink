@@ -58,7 +58,6 @@ def login_form():
 """
     print_html_content_type()
     print(content)
-
 def display_user():
     #TODO
     print("hello")
@@ -101,7 +100,7 @@ def new_user(user, passwd):
         conn.commit()
         return "passed"
 
-    conn.close();
+    conn.close()
     return "failed"
 
 ##########################################################
@@ -112,7 +111,8 @@ def delete_user(user, passwd):
     t = (user,)
     newuser = (user, passwd)
     c.execute('SELECT * FROM users WHERE email=?', t)
-    return "passed"
+    conn.close()
+    return "failed"
 
 ##########################################################
 # Diplay the options of admin
@@ -134,7 +134,7 @@ def display_admin_options(user, session):
         #cgi can check that the user has been authenticated
 
     print_html_content_type()
-    print_html_nav(user, session)
+    print_html_nav(form)
     print(content.format(user=user,session=session))
 
 
@@ -142,47 +142,152 @@ def display_admin_options(user, session):
 
 def display_user_profile(user, session):
     print_html_content_type()
-    print_html_nav(user, session)
+    print_html_nav(form)
     return "passed"
 
 def display_friend_profile(user, friend, session):
     print_html_content_type()
-    print_html_nav(user, session)
+    print_html_nav(form)
     #TODO
     return "passed"
 
 #################################################################
-def change_user_info(user, session):
+def change_name_page(form):
+    if "user" in form and "session" in form and session.check_session(form) == "passed":
+        user=form["user"].value
+        html = """
+    <div class="container">
+
+          <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+            <h1>MyLink</h1>
+
+            <h2 class="form-changeinfo-heading">Change Your Personal Info</h2>
+            <label for="inputEmail" class="sr-only">First Name</label>
+            <input type="text" id="firstname" NAME="firstname" class="form-control" placeholder="New First Name" required autofocus>
+            <label for="lastname" class="sr-only">Last Name</label>
+            <input type="text" id="lastname" NAME="lastname" class="form-control" placeholder="New Last Name" required>
+            <INPUT TYPE=hidden NAME="action" VALUE="change-name">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+          </form>
+    </div>
+    """
+        print_html_content_type()
+        print_html_nav(form)
+        print(html)
+        print_settings_footer()
+        return "passed"
+    return "failed"
+
+def change_name(user, firstname, lastname):
     #TODO
     return "failed"
 
-def upload_user_pic(user, session):
+def change_email_page(form):
+    html = """
+<div class="container">
+
+      <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+        <h1>MyLink</h1>
+
+        <h2 class="form-changeinfo-heading">Change Your Email/Username</h2>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="text" id="username" NAME="username" class="form-control" placeholder="New Email" required autofocus>
+        <INPUT TYPE=hidden NAME="action" VALUE="change-email">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+      </form>
+</div>
+"""
+    print_html_content_type()
+    print_html_nav(form)
+    print(html)
+    print_settings_footer()
+    return "passed"
+
+def change_email(user, email):
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    conn.close()
+    return "failed"
+
+
+def change_password_page(form):
+    html = """
+<div class="container">
+
+      <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+        <h1>MyLink</h1>
+
+        <h2 class="form-changeinfo-heading">Change your password</h2>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="password" id="old-pw" NAME="old-pw" class="form-control" placeholder="Old Password" required autofocus>
+        <label for="inputPassword" class="sr-only">New Password</label>
+        <input type="password" id="npw" NAME="npw" class="form-control" placeholder="New Password" required>
+        <label for="inputPassword" class="sr-only">New Password Again</label>
+        <input type="password" id="npw-ver" NAME="npw-ver" class="form-control" placeholder="New Password Again" required>
+        <INPUT TYPE=hidden NAME="action" VALUE="change-pw">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Changes</button>
+      </form>
+</div>
+"""
+    print_html_content_type()
+    print_html_nav(form)
+    print(html)
+    print_settings_footer()
+    return "passed"
+
+def change_password(user, session, oldPW, newPW, newPWVer):
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (user,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    row = stored_password=c.fetchone()
+    if(row[1]== oldPW and newPW == newPWVer and check_session(user, session) == "passed"):
+        c.execute('UPDATE users SET password = newPW WHERE email=?', t)
+
+        conn.close()
+        return "passed"
+    else:
+
+        conn.close()
+        return "failed"
+
+def upload_user_pic_page(form):
+    print_html_content_type()
+    print_html_nav(form)
+    #TODO
+    return "failed"
+
+def verify_page(form):
+    print_html_content_type()
+    print_html_nav(form)
+    
+    return "failed"
+
+#################################################################
+def friend_request(form):
+    #TODO
+    return "failed"
+
+def request_response(form):
+    #TODO
+    return "failed"
+
+def create_circle(form):
+    #TODO
+    return "failed"
+
+def friend_to_circle(form):
+    #TODO
+    return "failed"
+
+def remove_friend_from_circle(form):
     #TODO
     return "failed"
 
 #################################################################
-def friend_request(user, session):
-    #TODO
-    return "failed"
-
-def request_response(user, session):
-    #TODO
-    return "failed"
-
-def create_circle(user, session):
-    #TODO
-    return "failed"
-
-def friend_to_circle(user, session):
-    #TODO
-    return "failed"
-
-def remove_friend_from_circle(user, friend, session):
-    #TODO
-    return "failed"
-
-#################################################################
-def create_new_post(user, session):
+def create_new_post(form):
     #TODO
     return "failed"
 
@@ -206,9 +311,7 @@ def verify_email(useremail):
     receiver=useremail
     VERIFY = random.randint(10000,99999)
     body = """
-    We just need to verify your email, please click this link:
-        
-    Or go to your settings page and input this code: %d
+    We just need to verify your email, please go to your settings page and input this code: %d
     """ % VERIFY
     msg = MIMEText(body)
     msg['Subject'] = 'Please Verify your email'
@@ -309,14 +412,19 @@ def print_html_content_type():
 	# Required header that tells the browser how to render the HTML.
 	print("Content-Type: text/html\n\n")
 
-def print_html_nav(user, session):
-    with open("nav.html") as content_file:
-        content = content_file.read()
+def print_html_nav(form):
+    if (session.check_session(form) != "passed"):
+        user = form["user"].value
+        session = form["session"].value
+        with open("nav.html") as content_file:
+            content = content_file.read()
 
-        #Also set a session number in a hidden field so the
-        #cgi can check that the user has been authenticated
+            #Also set a session number in a hidden field so the
+            #cgi can check that the user has been authenticated
 
-    print(content.format(user=user,session=session))
+        print(content.format(user=user,session=session))
+        return "passed"
+    return "failed"
 
 def print_settings_footer():
     with open("setfooter.html") as content_file:
@@ -356,7 +464,7 @@ def main():
                    login_form()
                    print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
         elif (action == "new-album"):
-	  new_album(form)
+	       new_album(form)
         elif (action == "upload"):
           upload(form)
         elif (action == "show_image"):
@@ -364,9 +472,9 @@ def main():
         elif action == "upload-pic-data":
           upload_pic_data(form)
         elif action == "view_settings":
-            display_admin_options(username, session)
+            display_admin_options(form)
         elif action == "view_profile":
-            display_user_profile(username, session)
+            display_user_profile(form)
         else:
             login_form()
     else:
