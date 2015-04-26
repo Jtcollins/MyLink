@@ -518,26 +518,27 @@ def main():
         elif action == "upload-pic-data":
           upload_pic_data(form)
 
-        ## PAGE VIEW/NAV BAR OPTIONS
-
+          ## PAGE VIEW/NAV BAR OPTIONS
         elif action == "view_settings":
-            display_admin_options(form)
+          display_admin_options(form)
         elif action == "view_profile":
-            display_user_profile(form)
+          display_user_profile(form)
 
-        ##SETTINGS OPTIONS
+          ##SETTINGS OPTIONS
         elif action == "ch-name":
             change_name_page(form)
         elif action == "ch-email":
             change_email_page(form)
         elif action == "ch-prof-pic":
             #TODO
+            login_form()
         elif action == "verify-acc":
             verify_page(form)
         elif action == "ch-pw":
             change_password_page(form)
         elif action == "logout":
             #TODO
+            login_form()
         else:
             login_form()
     else:
