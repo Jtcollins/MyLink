@@ -203,10 +203,11 @@ def change_name_page(form):
     </div>
     """
         print_html_content_type()
-        #print_html_nav(form)
-        #print(html)
-        #print_settings_footer()
+        print_html_nav(form)
+        print(html)
+        print_settings_footer()
         return "passed"
+    login_form()
     return "failed"
 
 def change_name(user, firstname, lastname):
