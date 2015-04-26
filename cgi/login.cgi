@@ -304,6 +304,9 @@ def upload_user_pic_page(form):
     #TODO
     return "failed"
 
+def upload_profile_pic(form):
+
+
 def verify_page(form):
     print_html_content_type()
     print_html_nav(form)
@@ -416,15 +419,6 @@ def create_new_post(form):
 def create_new_session(user):
     return session.create_session(user)
 
-#################################################################
-def create_cookie(user, ses):
-    #TODO
-    return "failed"
-
-def check_cookie(user, ses):
-    #TODO
-    return "failed"
-
 def logout(form):
     user=form["user"].value
     ses=form["session"].value
@@ -437,8 +431,15 @@ def logout(form):
     c.execute('DELETE FROM sessions WHERE user=? AND session=?', ts)
     conn.commit()
     conn.close()
+    return "logout success"
 
+#################################################################
+def create_cookie(user, ses):
+    #TODO
+    return "failed"
 
+def check_cookie(user, ses):
+    #TODO
     return "failed"
 
 #################################################################
@@ -516,6 +517,7 @@ def upload(form):
     user=form["user"].value
     s=form["session"].value
     print_html_content_type()
+    print_html_nav(form)
     print(html.format(user=user,session=s))
 
 #######################################################
@@ -632,7 +634,7 @@ def main():
             change_email_page(form)
         elif action == "ch-prof-pic":
             #TODO
-            login_form()
+            upload(form)
         elif action == "verify-acc":
             verify_page(form)
         elif action == "ch-pw":
