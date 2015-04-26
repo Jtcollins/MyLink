@@ -49,6 +49,13 @@ def check_session(form):
 
     return "failed"
 
+def check_session(username, session):
+    session_stored=read_session_string(username)
+    if session_stored==session:
+      return "passed"
+
+    return "failed"
+
 def read_session_string(user):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()

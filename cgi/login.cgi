@@ -62,7 +62,7 @@ def login_form():
 def display_user():
     #TODO
     print("hello")
-    
+
 def display_album():
     #TODO
     print("hello1")
@@ -119,6 +119,10 @@ def delete_user(user, passwd):
 ##########################################################
 # Diplay the options of admin
 def display_admin_options(user, session):
+    if (session.check_session(user, session) != "passed"):
+        login_form()
+        return
+
     with open("settings.html") as content_file:
         content = content_file.read()
     html="""
@@ -140,10 +144,15 @@ def display_admin_options(user, session):
     print(content.format(user=user,session=session))
 
 def display_admin_options(form):
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
     user=form["user"].value
     session=form["session"].value
     with open("settings.html") as content_file:
         content = content_file.read()
+        
     print_html_content_type()
     print_html_nav(form)
     print(content.format(user=user,session=session))
@@ -152,11 +161,28 @@ def display_admin_options(form):
 #################################################################
 
 def display_user_profile(form):
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
     print_html_content_type()
     print_html_nav(form)
     return "passed"
 
+def display_user_profile(user, session):
+    if (session.check_session(user, session) != "passed"):
+        login_form()
+        return
+
+    print_html_content_type()
+    print_html_nav(user, session)
+    return "passed"
+
 def display_friend_profile(form):
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
     print_html_content_type()
     print_html_nav(form)
     #TODO
@@ -248,6 +274,10 @@ def change_password_page(form):
     return "passed"
 
 def change_password(user, session, oldPW, newPW, newPWVer):
+    if (session.check_session(user, session) != "passed"):
+        login_form()
+        return
+
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
@@ -491,7 +521,7 @@ def main():
         elif (action == "new-album"):
 	       new_album(form)
         elif (action == "upload"):
-          upload(form)
+           upload(form)
         elif (action == "show_image"):
           show_image(form)
         elif action == "upload-pic-data":
