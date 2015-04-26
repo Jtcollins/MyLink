@@ -300,7 +300,7 @@ def change_password(form):
     row = stored_password=c.fetchone()
     if(row[1]== oldPW and newPW == newPWVer and session.check_session(form) == "passed"):
         c.execute('UPDATE users SET password = ? WHERE email=?', ts)
-
+        conn.commit()
         conn.close()
         return "Password Changed"
     else:
