@@ -457,7 +457,7 @@ def check_cookie(user, session):
         return "failed"
     cookie = Cookie.SimpleCookie()
     cookie.load(cookieString)
-    if cookie["session"].value == session:
+    if cookie["session"] == session:
         return "passed"
     else:
         return "failed"
