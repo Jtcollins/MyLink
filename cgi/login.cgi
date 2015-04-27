@@ -210,7 +210,7 @@ def check_session(user, session):
 def create_cookie(user, session):
     cookie = Cookie.SimpleCookie()
     cookie["session"] = session
-    print "Content-type: text/plain"
+    print "Content-type: text/html"
     print cookie.output()
     print
 
@@ -248,7 +248,7 @@ def verify_email(useremail):
 ##############################################################
 def new_album(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        return
 
     html="""
@@ -260,7 +260,7 @@ def new_album(form):
 ##############################################################
 def show_image(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -280,7 +280,7 @@ def show_image(form):
 ###############################################################################
 
 def upload(form):
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -307,7 +307,7 @@ def upload(form):
 
 def upload_pic_data(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
