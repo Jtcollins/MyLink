@@ -141,7 +141,7 @@ def display_admin_options(user, ses):
     print(content.format(user=user,session=ses))
 
 def display_admin_options(form, statement="", color="green"):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -160,7 +160,7 @@ def display_admin_options(form, statement="", color="green"):
 #################################################################
 
 def display_user_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -175,7 +175,7 @@ def display_user_profile_init(user, ses):
     return "passed"
 
 def display_friend_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -186,7 +186,7 @@ def display_friend_profile(form):
 
 #################################################################
 def change_name_page(form):
-    if "user" in form and "session" in form and session.check_session(form) == "passed":
+    if "user" in form and "session" in form and check_session(form) == "passed":
         user=form["user"].value
         ses=form["session"].value
         html = """
@@ -223,7 +223,7 @@ def change_name(form):
     firstname = form["firstname"].value
     lastname = form["lastname"].value
     
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -277,7 +277,7 @@ def change_password(form):
     newPW = form["npw"].value
     newPWVer = form["npw-ver"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -343,7 +343,7 @@ def verify_page(form):
       </form>
 </div>
 """
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -368,7 +368,7 @@ def verify_final(form):
     ses=form["session"].value
     verif = form["verif"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -423,6 +423,13 @@ def create_new_session(user):
     session = ''.join(random.sample(char_set,n))
     create_cookie(user, session)
     return session
+
+#################################################################
+def check_session(form):
+    if "user" in form and "session" in form:
+        user=form["user"].value
+        session=form["session"].value
+    return check_cookie(user, session)
 
 def logout(form):
     user=form["user"].value
@@ -565,7 +572,7 @@ def print_html_content_type():
 	print("Content-Type: text/html\n\n")
 
 def print_html_nav(form):
-    if (session.check_session(form) == "passed"):
+    if (check_session(form) == "passed"):
         user = form["user"].value
         ses = form["session"].value
         with open("nav.html") as content_file:
