@@ -415,7 +415,6 @@ def create_new_post(form):
 
 #################################################################
 def create_new_session(user):
-    #return session.create_session(user)
     # Store random string as session number
     # Number of characters in session string
     n = 20
