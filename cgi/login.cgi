@@ -5,13 +5,13 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
-
+import Cookie, os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #Get Databasedir
-MYLOGIN="colli180"
+MYLOGIN="chanthor"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 
@@ -415,7 +415,14 @@ def create_new_post(form):
 
 #################################################################
 def create_new_session(user):
-    return session.create_session(user)
+    #return session.create_session(user)
+    # Store random string as session number
+    # Number of characters in session string
+    n = 20
+    char_set = string.ascii_uppercase + string.digits
+    session = ''.join(random.sample(char_set,n))
+    create_cookie(user, session)
+    return session
 
 def logout(form):
     user=form["user"].value
@@ -432,13 +439,21 @@ def logout(form):
     return "logout success"
 
 #################################################################
-def create_cookie(user, ses):
-    #TODO
-    return "failed"
+def create_cookie(user, session):
+    cookie = Cookie.SimpleCookie()
+    cookie["session"] = session
+    print cookie.output()
 
-def check_cookie(user, ses):
-    #TODO
-    return "failed"
+def check_cookie(user, session):
+    cookieString = os.environ.get("HTTP_COOKIE")
+    if not cookieString:
+        return "failed"
+    cookie = Cookie.SimpleCookie()
+    cookie.load(cookieString)
+    if cookie["session"] == session:
+        return "passed"
+    else:
+        return "failed"
 
 #################################################################
 
@@ -462,7 +477,7 @@ def verify_email(useremail):
 ##############################################################
 def new_album(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        return
 
     html="""
@@ -474,7 +489,7 @@ def new_album(form):
 ##############################################################
 def show_image(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -494,7 +509,7 @@ def show_image(form):
 ###############################################################################
 
 def upload(form):
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -522,7 +537,7 @@ def upload(form):
 
 def upload_pic_data(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
