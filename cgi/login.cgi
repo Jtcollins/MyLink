@@ -142,11 +142,7 @@ def display_admin_options(user, session):
 #################################################################
 
 def display_user_profile(user, session):
-    if check_cookie(user, session) == "passed":
-        print_html_content_type()
-    else:
-        create_cookie(user, session)
-
+    print_html_content_type()
     print_html_nav(user, session)
     return "passed"
 
@@ -210,9 +206,7 @@ def check_session(user, session):
 def create_cookie(user, session):
     cookie = Cookie.SimpleCookie()
     cookie["session"] = session
-    print "Content-type: text/html"
     print cookie.output()
-    print
 
 def check_cookie(user, session):
     cookieString = os.environ.get("HTTP_COOKIE")
