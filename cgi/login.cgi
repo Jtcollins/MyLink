@@ -337,7 +337,8 @@ def print_html_content_type():
 def print_html_nav(user, session):
     with open("nav.html") as content_file:
         content = content_file.read()
-set a session number in a hidden field so the
+
+        #Also set a session number in a hidden field so the
         #cgi can check that the user has been authenticated
 
     print(content.format(user=user,session=session))
