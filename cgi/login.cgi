@@ -209,12 +209,12 @@ def display_post(row):
 
     html= """
     <div class="well">
-            <p class="blog-post-meta">{postDate} by {poster}</p>
+            <p class="blog-post-meta">Posted by {poster} at {postDate}</p>
               <p>{message}</p>
           </div><!-- /.blog-post -->
     """
 
-    print(html.format(postDate=postDate,poster=user,message=message))
+    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,message=message))
     return "failed"
 
 def display_user_profile_init(user, ses):
