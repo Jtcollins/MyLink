@@ -190,7 +190,7 @@ def display_user_profile(form):
     for i in posts:
         display_post(posts[i])
 
-    with open("userfoot.html") as content_file:
+    with open("profilefoot.html") as content_file:
         content = content_file.read()
 
     print(content)
