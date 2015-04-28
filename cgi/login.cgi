@@ -769,6 +769,11 @@ def main():
                 display_admin_options(form,statement,"green")
             else:
                 display_admin_options(form,statement,"red")
+
+        ##Other actions
+        elif action == "makepost":
+            create_new_post(form)
+            display_user_profile(form)
         else:
             login_form()
     else:
