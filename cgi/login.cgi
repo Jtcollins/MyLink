@@ -190,6 +190,11 @@ def display_user_profile(form):
     for i in posts:
         display_post(posts[i])
 
+    with open("userfoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+    
     return "passed"
 
 def display_post(row):
@@ -203,9 +208,9 @@ def display_post(row):
 
     html= """
     <div class="well">
-            <p>{message}</p>
             <p class="blog-post-meta">{postDate} by {user}</p>
-    </div><!-- /.blog-post -->
+              <p>{message}</p>
+          </div><!-- /.blog-post -->
     """
     return "failed"
 
