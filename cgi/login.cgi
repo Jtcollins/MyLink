@@ -5,6 +5,7 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
+import datetime
 
 import smtplib
 from email.mime.text import MIMEText
