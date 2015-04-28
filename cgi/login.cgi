@@ -193,6 +193,8 @@ def display_user_profile(form):
 
     print(content)
 
+    conn.close()
+    
     return "passed"
 
 def display_post(row):
@@ -242,6 +244,8 @@ def display_user_profile_init(user, ses):
         content = content_file.read()
 
     print(content)
+
+    conn.close()
 
     return "passed"
 
@@ -430,12 +434,13 @@ def verify_page(form):
     if row[5] == 1:
         print(html_verified.format(user=user,session=ses))
         print_settings_footer()
+        conn.close()
         return "passed"
     else:
         print(html_unverified.format(user=user,session=ses))
         print_settings_footer()
+        conn.close()
         return "passed"
-    return "failed"
 
 def verify_final(form):
     user=form["user"].value
@@ -467,10 +472,15 @@ def check_verified(form):
     ses=form["session"].value
     verif = form["verif"].value
 
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
     t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
 
     row = stored_key=c.fetchone()
+    conn.close()
+
     if(row[5] == 1):
         return True
     return False
