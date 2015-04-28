@@ -521,13 +521,13 @@ def create_new_post(form):
         return
 
     if (check_verified(form) == True):
-        conn = sqlite3.connect(DATABASE)
-        c = conn.cursor()
+        postconn = sqlite3.connect(DATABASE)
+        postc = postconn.cursor()
 
         t = (user,cir,date,mess,pic,)
-        c.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
-        conn.commit()
-        conn.close()
+        postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+        postconn.commit()
+        postconn.close()
         return "post successful"
 
     return "failed"
