@@ -65,6 +65,7 @@ c.execute('''CREATE TABLE posts
 	     (user TEXT NOT NULL,
 	      circle TEXT NOT NULL,
 	      postDate DATETIME NOT NULL,
+	      message TEXT,
 	      picture TEXT,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),

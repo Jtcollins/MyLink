@@ -166,7 +166,48 @@ def display_user_profile(form):
 
     print_html_content_type()
     print_html_nav(form)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    ses=form["session"].value
+    with open("userprofile.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    ver = verify_email(user)
+    c.execute('SELECT * FROM users WHERE user=?', t)
+    userdetails= c.fetchone()
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
+
+    print_html_content_type()
+    print_html_nav(form)
+    print(content.format(user=user,session=ses,firstname=userdetails[3],lastname=userdetails[4],))
+    
+    for i in posts:
+        display_post(posts[i])
+
     return "passed"
+
+def display_post(row):
+    if row is None:
+        return
+    user = row[0]
+    circle = row[1]
+    postDate = row[2]
+    message = row[3]
+    picture = row[4]
+
+    html= """
+    <div class="well">
+            <p>{message}</p>
+            <p class="blog-post-meta">{postDate} by {user}</p>
+    </div><!-- /.blog-post -->
+    """
+    return "failed"
 
 def display_user_profile_init(user, ses):
 
@@ -436,8 +477,14 @@ def create_new_post(form):
         return
 
     if (check_verified(form) == True):
-        return
-        ###TODO
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+
+        t = (user,cir,date,pic,)
+        c.execute('INSERT INTO posts VALUES ', t)
+        conn.commit()
+        conn.close()
+        return "post successful"
 
 
 
