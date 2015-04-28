@@ -5,7 +5,7 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
-import datetime
+from datetime import datetime, date, time
 
 import smtplib
 from email.mime.text import MIMEText
@@ -514,7 +514,7 @@ def create_new_post(form):
     pic=form["picture"].value
     cir=form["circle"].value
     mess=form["newpost"].value
-    postDate=datetime.now()
+    postDate= datetime.now()
 
     if (session.check_session(form) != "passed"):
         login_form()
