@@ -194,7 +194,7 @@ def display_user_profile(form):
     print(content)
 
     conn.close()
-    
+
     return "passed"
 
 def display_post(row):
@@ -513,6 +513,7 @@ def create_new_post(form):
     user=form["user"].value
     pic=form["picture"].value
     cir=form["circle"].value
+    mess=form["newpost"].value
     date = None
 
     if (session.check_session(form) != "passed"):
@@ -523,8 +524,8 @@ def create_new_post(form):
         conn = sqlite3.connect(DATABASE)
         c = conn.cursor()
 
-        t = (user,cir,date,pic,)
-        c.execute('INSERT INTO posts VALUES ', t)
+        t = (user,cir,date,mess,pic,)
+        c.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
         conn.commit()
         conn.close()
         return "post successful"

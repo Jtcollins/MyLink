@@ -22,7 +22,7 @@ for row in c.execute('SELECT * FROM posts'):
 
 
 print 'Print all friendslist'
-for row in c.execute('SELECT * FROM friendslist'):
+for row in c.execute('SELECT * FROM friendlist'):
   print row
 
 print 'Print all circles'
