@@ -185,7 +185,7 @@ def display_user_profile(form):
 
     print_html_content_type()
     print_html_nav(form)
-    print(content.format(user=user,session=ses,firstname=userdetails[3],lastname=userdetails[4],))
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4]))
     
     for i in posts:
         display_post(posts[i])
