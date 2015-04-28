@@ -513,7 +513,7 @@ def create_new_post(form):
     pic=form["picture"].value
     cir=form["circle"].value
     mess=form["newpost"].value
-    date = "NULL"
+    postDate=datetime.now()
 
     if (session.check_session(form) != "passed"):
         login_form()
@@ -523,7 +523,7 @@ def create_new_post(form):
     postconn = sqlite3.connect(DATABASE)
     postc = postconn.cursor()
 
-    t = (user,cir,date,mess,pic,)
+    t = (user,cir,postDate,mess,pic,)
     postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
     postconn.commit()
     postconn.close()
