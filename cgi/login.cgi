@@ -183,8 +183,6 @@ def display_user_profile(form):
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
     posts = stored_posts=c.fetchall()
 
-    print_html_content_type()
-    print_html_nav(form)
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4]))
     
     for i in posts:
@@ -208,10 +206,12 @@ def display_post(row):
 
     html= """
     <div class="well">
-            <p class="blog-post-meta">{postDate} by {user}</p>
+            <p class="blog-post-meta">{postDate} by {poster}</p>
               <p>{message}</p>
           </div><!-- /.blog-post -->
     """
+
+    print(html.format(postDate=postDate,poster=user,message=message))
     return "failed"
 
 def display_user_profile_init(user, ses):
