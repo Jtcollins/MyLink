@@ -514,7 +514,7 @@ def create_new_post(form):
     pic=form["picture"].value
     cir=form["circle"].value
     mess=form["newpost"].value
-    date = None
+    date = "NULL"
 
     if (session.check_session(form) != "passed"):
         login_form()
