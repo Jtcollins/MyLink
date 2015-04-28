@@ -5,6 +5,7 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
+from datetime import datetime, date, time
 
 import smtplib
 from email.mime.text import MIMEText
@@ -166,12 +167,87 @@ def display_user_profile(form):
 
     print_html_content_type()
     print_html_nav(form)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    ses=form["session"].value
+    with open("userprofile.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    ver = verify_email(user)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+    
+    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+        display_post(row)
+
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
     return "passed"
+
+def display_post(row):
+    if row is None:
+        return
+    user = row[0]
+    circle = row[1]
+    postDate = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S.%f" )
+    message = row[3]
+    picture = row[4]
+
+    html= """
+    <div class="well">
+            <p class="blog-post-meta">Posted by {poster} at {postDate}</p>
+              <p>{message}</p>
+          </div><!-- /.blog-post -->
+    """
+
+    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,message=message))
+    return "failed"
 
 def display_user_profile_init(user, ses):
 
     print_html_content_type()
     print_html_nav_init(user, ses)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    with open("userprofile.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    ver = verify_email(user)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+    
+    for i in posts:
+        display_post(posts[i])
+
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
     return "passed"
 
 def display_friend_profile(form):
@@ -183,6 +259,9 @@ def display_friend_profile(form):
     print_html_nav(form)
     #TODO
     return "passed"
+
+def display_feed(form):
+    return "failed"
 
 #################################################################
 def change_name_page(form):
@@ -356,12 +435,13 @@ def verify_page(form):
     if row[5] == 1:
         print(html_verified.format(user=user,session=ses))
         print_settings_footer()
+        conn.close()
         return "passed"
     else:
         print(html_unverified.format(user=user,session=ses))
         print_settings_footer()
+        conn.close()
         return "passed"
-    return "failed"
 
 def verify_final(form):
     user=form["user"].value
@@ -393,10 +473,15 @@ def check_verified(form):
     ses=form["session"].value
     verif = form["verif"].value
 
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
     t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
 
     row = stored_key=c.fetchone()
+    conn.close()
+
     if(row[5] == 1):
         return True
     return False
@@ -425,21 +510,25 @@ def remove_friend_from_circle(form):
 
 #################################################################
 def create_new_post(form):
-    #TODO
     user=form["user"].value
     pic=form["picture"].value
     cir=form["circle"].value
-    date = None
+    mess=form["newpost"].value
+    postDate= datetime.now()
 
     if (session.check_session(form) != "passed"):
         login_form()
         return
 
-    if (check_verified(form) == True):
-        return
-        ###TODO
+    #if (check_verified(form) == True):
+    postconn = sqlite3.connect(DATABASE)
+    postc = postconn.cursor()
 
-
+    t = (user,cir,postDate,mess,pic,)
+    postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+    postconn.commit()
+    postconn.close()
+    return "post successful"
 
     return "failed"
 
@@ -691,6 +780,15 @@ def main():
                 display_admin_options(form,statement,"green")
             else:
                 display_admin_options(form,statement,"red")
+
+        ##Other actions
+        elif action == "makepost":
+            create_new_post(form)
+            if(form["currpage"].value==form["user"].value):
+                display_user_profile(form)
+            elif(form["currpage"].value=="feed"):
+                ##TODO
+                display_user_profile(form)
         else:
             login_form()
     else:
