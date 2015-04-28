@@ -785,7 +785,7 @@ def main():
         elif action == "makepost":
             create_new_post(form)
             if(form["currpage"].value==form["user"].value):
-                display_user_profile(form)
+                display_admin_settings(form)
             elif(form["currpage"].value=="feed"):
                 ##TODO
                 display_user_profile(form)
