@@ -60,7 +60,7 @@ c.execute('''CREATE TABLE friendlist
 	      FOREIGN KEY(friend) REFERENCES users(email),
 	      PRIMARY KEY(user, friend))''')
 
-# Creates a user friend table
+# Creates a user post table
 c.execute('''CREATE TABLE posts
 	     (user TEXT NOT NULL,
 	      circle TEXT NOT NULL,

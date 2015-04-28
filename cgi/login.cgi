@@ -375,7 +375,9 @@ def verify_final(form):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
+    t = (user,)
     ts = (1,user,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_key=c.fetchone()
     if(int(verif) == row[5]):
         c.execute('UPDATE users SET verifyKey= ? WHERE email=?', ts)
@@ -385,6 +387,19 @@ def verify_final(form):
 
     conn.close()
     return "Verification Failed"
+
+def check_verified(form):
+    user=form["user"].value
+    ses=form["session"].value
+    verif = form["verif"].value
+
+    t = (user,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+
+    row = stored_key=c.fetchone()
+    if(row[5] == 1):
+        return True
+    return False
 
 
 #################################################################
@@ -411,6 +426,21 @@ def remove_friend_from_circle(form):
 #################################################################
 def create_new_post(form):
     #TODO
+    user=form["user"].value
+    pic=form["picture"].value
+    cir=form["circle"].value
+    date = None
+
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    if (check_verified(form) == True):
+        return
+        ###TODO
+
+
+
     return "failed"
 
 #################################################################
