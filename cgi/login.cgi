@@ -218,6 +218,31 @@ def display_user_profile_init(user, ses):
 
     print_html_content_type()
     print_html_nav_init(user, ses)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    with open("userprofile.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    ver = verify_email(user)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4]))
+    
+    for i in posts:
+        display_post(posts[i])
+
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
     return "passed"
 
 def display_friend_profile(form):
@@ -229,6 +254,9 @@ def display_friend_profile(form):
     print_html_nav(form)
     #TODO
     return "passed"
+
+def display_feed(form):
+    return "failed"
 
 #################################################################
 def change_name_page(form):
