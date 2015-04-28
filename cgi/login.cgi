@@ -519,8 +519,6 @@ def create_new_post(form):
         conn.close()
         return "post successful"
 
-
-
     return "failed"
 
 #################################################################
