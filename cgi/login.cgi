@@ -509,7 +509,6 @@ def remove_friend_from_circle(form):
 
 #################################################################
 def create_new_post(form):
-    #TODO
     user=form["user"].value
     pic=form["picture"].value
     cir=form["circle"].value
@@ -520,15 +519,15 @@ def create_new_post(form):
         login_form()
         return
 
-    if (check_verified(form) == True):
-        postconn = sqlite3.connect(DATABASE)
-        postc = postconn.cursor()
+    #if (check_verified(form) == True):
+    postconn = sqlite3.connect(DATABASE)
+    postc = postconn.cursor()
 
-        t = (user,cir,date,mess,pic,)
-        postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
-        postconn.commit()
-        postconn.close()
-        return "post successful"
+    t = (user,cir,date,mess,pic,)
+    postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+    postconn.commit()
+    postconn.close()
+    return "post successful"
 
     return "failed"
 
@@ -785,7 +784,7 @@ def main():
         elif action == "makepost":
             create_new_post(form)
             if(form["currpage"].value==form["user"].value):
-                display_admin_settings(form)
+                display_user_profile(form)
             elif(form["currpage"].value=="feed"):
                 ##TODO
                 display_user_profile(form)
