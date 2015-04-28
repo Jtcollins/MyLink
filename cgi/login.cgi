@@ -185,8 +185,8 @@ def display_user_profile(form):
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
-    for i in posts:
-        display_post(posts[i])
+    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+        display_post(row)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
