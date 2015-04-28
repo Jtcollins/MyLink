@@ -203,7 +203,7 @@ def display_post(row):
         return
     user = row[0]
     circle = row[1]
-    postDate = datetime.strptime(row[2], "%Y-%m-%dT %H:%M.%SZ" )
+    postDate = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S.%f" )
     message = row[3]
     picture = row[4]
 
