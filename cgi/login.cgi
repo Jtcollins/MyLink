@@ -177,7 +177,7 @@ def display_user_profile(form):
 
     t = (user,)
     ver = verify_email(user)
-    c.execute('SELECT * FROM users WHERE user=?', t)
+    c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
@@ -194,7 +194,7 @@ def display_user_profile(form):
         content = content_file.read()
 
     print(content)
-    
+
     return "passed"
 
 def display_post(row):
