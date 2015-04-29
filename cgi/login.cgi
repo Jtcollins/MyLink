@@ -514,6 +514,36 @@ def request_response(form):
     #TODO
     return "failed"
 
+def create_circle_page(form):
+    if "user" in form and "session" in form and check_session(form) == "passed":
+        user=form["user"].value
+        ses=form["session"].value
+        html = """
+    <div class="container">
+
+          <form METHOD=post ACTION="login.cgi" class="form-signin">
+            <h1>MyLink</h1>
+
+            <h2 class="form-changeinfo-heading">Change Your Personal Info</h2>
+            <label for="circlename" class="sr-only">Circle Name</label>
+            <input type="text" id="circlename" NAME="circlename" class="form-control" placeholder="New Circle Name" required autofocus>
+            <INPUT TYPE=hidden NAME="action" VALUE="create-circle">
+            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <br>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Submit Changes</button>
+          </form>
+    </div>
+    """
+
+        print_html_content_type()
+        print_html_nav(form)
+        print(html.format(user=user,session=ses))
+        print_settings_footer()
+        return "passed"
+    login_form()
+    return "failed"
+
 def create_circle(form):
     #TODO
     return "failed"
@@ -784,6 +814,9 @@ def main():
           display_user_profile(form)
         elif action == "view_circles":
           display_friend_circles(form)
+
+        elif action == "cr-fr-circle":
+            create_circle_page(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
