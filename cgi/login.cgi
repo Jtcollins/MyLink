@@ -271,6 +271,9 @@ def display_friend_circles(form):
         login_form()
         return
     
+    print_html_content_type()
+    print_html_nav(form)
+
     with open("circles.html") as content_file:
         content = content_file.read()
 
