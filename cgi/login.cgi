@@ -265,6 +265,20 @@ def display_feed(form):
     return "failed"
 
 #################################################################
+
+def display_friend_circles(form):
+    if (check_session(form) != "passed"):
+        login_form()
+        return
+    
+    with open("circles.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    return "passed"
+
+#################################################################
 def change_name_page(form):
     if "user" in form and "session" in form and check_session(form) == "passed":
         user=form["user"].value
@@ -765,6 +779,8 @@ def main():
           display_admin_options(form)
         elif action == "view_profile":
           display_user_profile(form)
+        elif action == "view_circles":
+          display_friend_circles(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
