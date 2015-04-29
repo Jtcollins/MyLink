@@ -524,7 +524,7 @@ def create_circle_page(form):
           <form METHOD=post ACTION="login.cgi" class="form-signin">
             <h1>MyLink</h1>
 
-            <h2 class="form-changeinfo-heading">Change Your Personal Info</h2>
+            <h2 class="form-changeinfo-heading">Create a Circle</h2>
             <label for="circlename" class="sr-only">Circle Name</label>
             <input type="text" id="circlename" NAME="circlename" class="form-control" placeholder="New Circle Name" required autofocus>
             <INPUT TYPE=hidden NAME="action" VALUE="create-circle">
@@ -541,8 +541,7 @@ def create_circle_page(form):
         print(html.format(user=user,session=ses))
         print_settings_footer()
         return "passed"
-    login_form()
-    return "failed"
+    return "passed"
 
 def create_circle(form):
     #TODO
