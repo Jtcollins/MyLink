@@ -277,7 +277,7 @@ def display_friend_circles(form):
     with open("circles.html") as content_file:
         content = content_file.read()
 
-    print(content)
+    print(content.format(user = form["user"].value, session = form["session"].value))
 
     return "passed"
 
