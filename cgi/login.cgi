@@ -5,6 +5,7 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
+import Cookie, os
 from datetime import datetime, date, time
 
 import smtplib
@@ -142,7 +143,7 @@ def display_admin_options(user, ses):
     print(content.format(user=user,session=ses))
 
 def display_admin_options(form, statement="", color="green"):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -161,7 +162,7 @@ def display_admin_options(form, statement="", color="green"):
 #################################################################
 
 def display_user_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -251,7 +252,7 @@ def display_user_profile_init(user, ses):
     return "passed"
 
 def display_friend_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -265,7 +266,7 @@ def display_feed(form):
 
 #################################################################
 def change_name_page(form):
-    if "user" in form and "session" in form and session.check_session(form) == "passed":
+    if "user" in form and "session" in form and check_session(form) == "passed":
         user=form["user"].value
         ses=form["session"].value
         html = """
@@ -302,7 +303,7 @@ def change_name(form):
     firstname = form["firstname"].value
     lastname = form["lastname"].value
     
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -356,7 +357,7 @@ def change_password(form):
     newPW = form["npw"].value
     newPWVer = form["npw-ver"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -422,7 +423,7 @@ def verify_page(form):
       </form>
 </div>
 """
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -448,7 +449,7 @@ def verify_final(form):
     ses=form["session"].value
     verif = form["verif"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -534,7 +535,20 @@ def create_new_post(form):
 
 #################################################################
 def create_new_session(user):
-    return session.create_session(user)
+    # Store random string as session number
+    # Number of characters in session string
+    n = 20
+    char_set = string.ascii_uppercase + string.digits
+    session = ''.join(random.sample(char_set,n))
+    create_cookie(user, session)
+    return session
+
+#################################################################
+def check_session(form):
+    if "user" in form and "session" in form:
+        user=form["user"].value
+        session=form["session"].value
+    return check_cookie(user, session)
 
 def logout(form):
     user=form["user"].value
@@ -551,13 +565,21 @@ def logout(form):
     return "logout success"
 
 #################################################################
-def create_cookie(user, ses):
-    #TODO
-    return "failed"
+def create_cookie(user, session):
+    cookie = Cookie.SimpleCookie()
+    cookie["session"] = session
+    print cookie.output()
 
-def check_cookie(user, ses):
-    #TODO
-    return "failed"
+def check_cookie(user, session):
+    cookieString = os.environ.get("HTTP_COOKIE")
+    if not cookieString:
+        return "failed"
+    cookie = Cookie.SimpleCookie()
+    cookie.load(cookieString)
+    if cookie["session"].value == session:
+        return "passed"
+    else:
+        return "failed"
 
 #################################################################
 
@@ -581,7 +603,7 @@ def verify_email(useremail):
 ##############################################################
 def new_album(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        return
 
     html="""
@@ -593,7 +615,7 @@ def new_album(form):
 ##############################################################
 def show_image(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -613,7 +635,7 @@ def show_image(form):
 ###############################################################################
 
 def upload(form):
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -641,7 +663,7 @@ def upload(form):
 
 def upload_pic_data(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -669,7 +691,7 @@ def print_html_content_type():
 	print("Content-Type: text/html\n\n")
 
 def print_html_nav(form):
-    if (session.check_session(form) == "passed"):
+    if (check_session(form) == "passed"):
         user = form["user"].value
         ses = form["session"].value
         with open("nav.html") as content_file:
