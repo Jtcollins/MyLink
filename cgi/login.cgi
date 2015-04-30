@@ -287,7 +287,7 @@ def display_friend_circles(form):
 
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
-    <a href="login.cgi?action=manage-circle&circlename={circlename}">
+    <a href="login.cgi?action=manage-circle&circlename={circlename}&user={user}&session={session}">
     <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
     <h3>{circlename}
         <small>Number of Friends?</small>
@@ -299,7 +299,7 @@ def display_friend_circles(form):
 
     for row in c.execute('SELECT * FROM circles WHERE user=?', t):
         name = row[1]
-        print(html.format(circlename = name))
+        print(html.format(circlename = name, user = user, session = session))
 
     with open("circlesfoot.html") as content_file:
         content = content_file.read()
