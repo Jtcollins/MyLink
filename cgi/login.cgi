@@ -277,6 +277,8 @@ def display_friend_circles(form):
     with open("circles.html") as content_file:
         content = content_file.read()
 
+    #TODO: Pull circles from db and add each to page
+
     print(content.format(user = form["user"].value, session = form["session"].value))
 
     return "passed"
@@ -544,7 +546,7 @@ def create_circle_page(form):
     return "passed"
 
 def create_circle(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -553,7 +555,7 @@ def create_circle(form):
 
     circonn = sqlite3.connect(DATABASE)
     circ = circonn.cursor()
-
+    #TODO: display error on duplicate names
     t = (user, circlename,)
     circ.execute('INSERT INTO circles VALUES (?,?,?,?,?)', t)
     circonn.commit()
@@ -576,7 +578,7 @@ def create_new_post(form):
     mess=form["newpost"].value
     postDate= datetime.now()
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
