@@ -710,7 +710,7 @@ def upload_pic_data(form):
         open(IMAGEPATH+'/user1/test.jpg', 'wb').write(fileInfo.file.read())
         image_url="login.cgi?action=show_image&user={user}&session={session}".format(user=user,session=s)
         print_html_content_type()
-    print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
+        print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
         print('<image src="'+image_url+'">')
     else:
         message = 'No file was uploaded'
