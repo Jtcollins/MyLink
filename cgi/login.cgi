@@ -95,7 +95,7 @@ def new_user(user, passwd):
 
     t = (user,)
     ver = verify_email(user)
-    newuser = (user, passwd, "NULL", "NULL", "NULL", ver)
+    newuser = (user, passwd, "NULL", "NULL", "default.jpg", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
     if row == None:
@@ -638,7 +638,7 @@ def show_image(form):
     print hdr+content
 
 
-def show_profilepic(form):
+def show_profilepic(user):
     #Check session
     if session.check_session(form) != "passed":
        login_form()
@@ -647,16 +647,16 @@ def show_profilepic(form):
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
 
-    user=form["user"].value
+    #user=form["user"].value
 
     # Read image
     picconn = sqlite3.connect(DATABASE)
     picc = postconn.cursor()
 
-    t = ('profilepic', user,)
-    c.execute('SELECT * FROM pictures WHERE album=? AND owner=?',t)
-    ipath = c.fetchone()[0]
-    with open(IMAGEPATH+'/'+ipath, 'rb') as content_file:
+    t = (user,)
+    c.execute('SELECT * FROM users WHERE email=?',t)
+    ipath = c.fetchone()[4]
+    with open(IMAGEPATH+'/profiles/'+ipath, 'rb') as content_file:
        content = content_file.read()
 
     hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
@@ -736,21 +736,16 @@ def new_profile_pic(form):
         picconn = sqlite3.connect(DATABASE)
         picc = picconn.cursor()
 
-        t = ('profilepic',user,)
-        picc.execute('SELECT COUNT(*) FROM albums WHERE name=? AND owner=?',t)
-        if picc.fetchone()[0] == 0:
-            a = ('profilepic',user,'public',)
-            picc.execute('INSERT INTO albums VALUES (?,?,?)', a)
-
         n = 20
         char_set = string.ascii_uppercase + string.digits
         filen = ''.join(random.sample(char_set,n))
         filen += '.jpg'
 
-        open(IMAGEPATH+'/'+filen, 'wb').write(fileInfo.file.read())
+        open(IMAGEPATH+'/profiles/'+filen, 'wb').write(fileInfo.file.read())
 
-        t = (filen,'profilepic',user,)
-        picc.execute('INSERT INTO pictures VALUES (?,?,?)', t)
+        t = (filen,user,)
+
+        picc.execute('UPDATE users set picture=? WHERE email=?', t)
         picconn.commit()
         picconn.close()
 
