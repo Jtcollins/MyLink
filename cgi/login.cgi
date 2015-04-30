@@ -644,8 +644,8 @@ def show_profilepic(form):
     picc = picconn.cursor()
 
     t = (user,)
-    c.execute('SELECT * FROM users WHERE email=?',t)
-    ipath = c.fetchone()[4]
+    picc.execute('SELECT * FROM users WHERE email=?',t)
+    ipath = picc.fetchone()[4]
     with open(IMAGEPATH+'/profiles/'+ipath, 'rb') as content_file:
        content = content_file.read()
 
