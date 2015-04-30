@@ -641,7 +641,7 @@ def show_profilepic(form):
 
     # Read image
     picconn = sqlite3.connect(DATABASE)
-    picc = postconn.cursor()
+    picc = picconn.cursor()
 
     t = (user,)
     c.execute('SELECT * FROM users WHERE email=?',t)
