@@ -557,7 +557,7 @@ def create_circle(form):
     circ = circonn.cursor()
     #TODO: display error on duplicate names
     t = (user, circlename,)
-    circ.execute('INSERT INTO circles VALUES (?,?,?,?,?)', t)
+    circ.execute('INSERT INTO circles VALUES (?,?)', t)
     circonn.commit()
     circonn.close()
     return "passed"
