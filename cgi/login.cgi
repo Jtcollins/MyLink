@@ -208,10 +208,12 @@ def display_post(row):
     picture = row[4]
 
     html= """
-    <div class="well">
-            <p class="blog-post-meta">Posted by {poster} at {postDate}</p>
-              <p>{message}</p>
-          </div><!-- /.blog-post -->
+    <div class="panel panel-warning">
+        <div class="panel panel-title">{poster} on {postDate}</h3>
+        </div>
+        <div class="panel-body">{message}<br>{picture}
+            </div>
+    </div><!-- /.blog-post -->
     """
 
     print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,message=message))
@@ -229,7 +231,6 @@ def display_user_profile_init(user, ses):
         content = content_file.read()
 
     t = (user,)
-    ver = verify_email(user)
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
