@@ -590,6 +590,13 @@ def create_circle(form):
     return "passed"
 
 def manage_circle(form):
+    if check_session(form) != "passed":
+       login_form()
+       return
+
+    print_html_content_type()
+    print_html_nav(form)
+    
     with open("circlemanager.html") as content_file:
         content = content_file.read()
 
