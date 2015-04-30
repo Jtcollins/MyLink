@@ -741,6 +741,7 @@ def new_profile_pic(form):
             a = ('profilepic',user,'public',)
             picc.execute('INSERT INTO albums VALUES (?,?,?)', a)
 
+        n = 20
         char_set = string.ascii_uppercase + string.digits
         filen = ''.join(random.sample(char_set,n))
         filen += '.jpg'
