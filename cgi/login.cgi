@@ -285,10 +285,6 @@ def display_friend_circles(form):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    t = (user,)
-
-    c.execute('SELECT * FROM circles WHERE user=?', t)
-
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
     <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
@@ -298,7 +294,9 @@ def display_friend_circles(form):
 </div>
     """
 
-    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+    t = (user,)
+
+    for row in c.execute('SELECT * FROM circles WHERE user=?', t):
         name = row[1]
         print(html.format(circlename = name))
 
