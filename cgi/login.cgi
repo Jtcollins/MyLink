@@ -378,12 +378,6 @@ def change_password(form):
         return "failed"
 
 def upload_user_pic_page(form):
-    print_html_content_type()
-    print_html_nav(form)
-    #TODO
-    return "failed"
-
-def upload_user_pic_page(form):
     if session.check_session(form) != "passed":
        login_form()
        return
@@ -638,7 +632,7 @@ def show_image(form):
     print hdr+content
 
 
-def show_profilepic(user):
+def show_profilepic(form):
     #Check session
     if session.check_session(form) != "passed":
        login_form()
@@ -647,7 +641,7 @@ def show_profilepic(user):
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
 
-    #user=form["user"].value
+    user=form["user"].value
 
     # Read image
     picconn = sqlite3.connect(DATABASE)
@@ -749,7 +743,7 @@ def new_profile_pic(form):
         picconn.commit()
         picconn.close()
 
-        image_url="login.cgi?action=show_profilepic&user={user}&session={session}".format(user=user,session=s)
+        image_url="login.cgi?action=show_profilepic&user={user}".format(user=user,session=s)
         print_html_content_type()
         print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
         print('<image src="'+image_url+'">')
@@ -882,6 +876,8 @@ def main():
             elif(form["currpage"].value=="feed"):
                 ##TODO
                 display_user_profile(form)
+        elif action = "show_profilepic":
+            show_profilepic(form)
         else:
             login_form()
     else:
