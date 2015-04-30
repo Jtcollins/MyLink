@@ -876,7 +876,7 @@ def main():
             elif(form["currpage"].value=="feed"):
                 ##TODO
                 display_user_profile(form)
-        elif action = "show_profilepic":
+        elif action == "show_profilepic":
             show_profilepic(form)
         else:
             login_form()
