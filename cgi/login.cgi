@@ -655,7 +655,7 @@ def show_profilepic(form):
 
     c.execute('SELECT * FROM pictures WHERE album=profilepic AND owner=user')
     ipath = c.fetchone()[0]
-    with open(IMAGEPATH+ipath, 'rb') as content_file:
+    with open(IMAGEPATH+'/'+ipath, 'rb') as content_file:
        content = content_file.read()
 
     hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
@@ -746,7 +746,7 @@ def new_profile_pic(form):
         filen = ''.join(random.sample(char_set,n))
         filen += '.jpg'
 
-        open(IMAGEPATH+filen, 'wb').write(fileInfo.file.read())
+        open(IMAGEPATH+'/'+filen, 'wb').write(fileInfo.file.read())
 
         t = (filen,'profilepic',user,)
         picc.execute('INSERT INTO pictures VALUES (?,?,?)', t)
