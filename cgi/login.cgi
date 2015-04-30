@@ -238,8 +238,8 @@ def display_user_profile_init(user, ses):
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
-    for i in posts:
-        display_post(posts[i])
+    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+        display_post(row)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -383,6 +383,30 @@ def upload_user_pic_page(form):
     #TODO
     return "failed"
 
+def upload_user_pic_page(form):
+    if session.check_session(form) != "passed":
+       login_form()
+       return
+
+    html="""
+        <HTML>
+
+        <FORM ACTION="login.cgi" METHOD="POST" enctype="multipart/form-data">
+            <input type="hidden" name="user" value="{user}">
+            <input type="hidden" name="session" value="{session}">
+            <input type="hidden" name="action" value="change-profile-pic">
+            <BR><I>Browse Picture:</I> <INPUT TYPE="FILE" NAME="file">
+            <br>
+            <input type="submit" value="Press"> to upload the picture!
+            </form>
+        </HTML>
+    """
+
+    user=form["user"].value
+    s=form["session"].value
+    print_html_content_type()
+    print_html_nav(form)
+    print(html.format(user=user,session=s))
 
 def verify_page(form):
     print_html_content_type()
@@ -600,13 +624,40 @@ def show_image(form):
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
 
-    #username=form["username"].value
+    username=form["username"].value
 
     # Read image
+    picconn = sqlite3.connect(DATABASE)
+    picc = postconn.cursor()
+
     with open(IMAGEPATH+'/user1/test.jpg', 'rb') as content_file:
        content = content_file.read()
 
     # Send header and image content
+    hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
+    print hdr+content
+
+
+def show_profilepic(form):
+    #Check session
+    if session.check_session(form) != "passed":
+       login_form()
+       return
+
+    # Your code should get the user album and picture and verify that the image belongs to this
+    # user and this album before loading it
+
+    username=form["username"].value
+
+    # Read image
+    picconn = sqlite3.connect(DATABASE)
+    picc = postconn.cursor()
+
+    c.execute('SELECT * FROM pictures WHERE album=profilepic AND owner=user')
+    ipath = c.fetchone()[0]
+    with open(IMAGEPATH+ipath, 'rb') as content_file:
+       content = content_file.read()
+
     hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
     print hdr+content
 
@@ -641,7 +692,7 @@ def upload(form):
 
 def upload_pic_data(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -659,7 +710,51 @@ def upload_pic_data(form):
         open(IMAGEPATH+'/user1/test.jpg', 'wb').write(fileInfo.file.read())
         image_url="login.cgi?action=show_image&user={user}&session={session}".format(user=user,session=s)
         print_html_content_type()
-	print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
+    print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
+        print('<image src="'+image_url+'">')
+    else:
+        message = 'No file was uploaded'
+
+def new_profile_pic(form):
+    #Check session is correct
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    #Get file info
+    fileInfo = form['file']
+
+    #Get user
+    user=form["user"].value
+    s=form["session"].value
+
+    # Check if the file was uploaded
+    if fileInfo.filename:
+        # Remove directory path to extract name only
+        fileName = os.path.basename(fileInfo.filename)
+        picconn = sqlite3.connect(DATABASE)
+        picc = postconn.cursor()
+
+
+        c.execute('SELECT COUNT(*) FROM albums WHERE name=profilepic AND owner=user')
+        if c.fetchone()[0] == 0:
+            a = ('profilepic',user,'public',)
+            picc.execute('INSERT INTO albums VALUES (?,?,?)', a)
+
+        char_set = string.ascii_uppercase + string.digits
+        filen = ''.join(random.sample(char_set,n))
+        filen += '.jpg'
+
+        open(IMAGEPATH+filen, 'wb').write(fileInfo.file.read())
+
+        t = (filen,'profilepic',user,)
+        picc.execute('INSERT INTO pictures VALUES (?,?,?)', t)
+        picconn.commit()
+        picconn.close()
+
+        image_url="login.cgi?action=show_image&user={user}&session={session}".format(user=user,session=s)
+        print_html_content_type()
+    print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
         print('<image src="'+image_url+'">')
     else:
         message = 'No file was uploaded'
@@ -737,6 +832,8 @@ def main():
           show_image(form)
         elif action == "upload-pic-data":
           upload_pic_data(form)
+        elif action == "change-profile-pic":
+          new_profile_pic(form)
 
           ## PAGE VIEW/NAV BAR OPTIONS
         elif action == "view_settings":
@@ -750,8 +847,7 @@ def main():
         elif action == "ch-email":
             change_email_page(form)
         elif action == "ch-prof-pic":
-            #TODO
-            upload(form)
+            upload_user_pic_page(form)
         elif action == "verify-acc":
             verify_page(form)
         elif action == "ch-pw":
