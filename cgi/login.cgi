@@ -216,7 +216,7 @@ def display_post(row):
     </div><!-- /.blog-post -->
     """
 
-    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,message=message))
+    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,picture=picture,message=message))
     return "failed"
 
 def display_user_profile_init(user, ses):
