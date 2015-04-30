@@ -735,8 +735,8 @@ def new_profile_pic(form):
         picconn = sqlite3.connect(DATABASE)
         picc = picconn.cursor()
 
-
-        picc.execute('SELECT COUNT(*) FROM albums WHERE name=profilepic AND owner=user')
+        t = ('profilepic',user,)
+        picc.execute('SELECT COUNT(*) FROM albums WHERE name=? AND owner=?',t)
         if picc.fetchone()[0] == 0:
             a = ('profilepic',user,'public',)
             picc.execute('INSERT INTO albums VALUES (?,?,?)', a)
