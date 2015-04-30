@@ -633,10 +633,6 @@ def show_image(form):
 
 
 def show_profilepic(form):
-    #Check session
-    if session.check_session(form) != "passed":
-       login_form()
-       return
 
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
