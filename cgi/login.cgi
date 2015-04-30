@@ -736,8 +736,8 @@ def new_profile_pic(form):
         picc = picconn.cursor()
 
 
-        c.execute('SELECT COUNT(*) FROM albums WHERE name=profilepic AND owner=user')
-        if c.fetchone()[0] == 0:
+        picc.execute('SELECT COUNT(*) FROM albums WHERE name=profilepic AND owner=user')
+        if picc.fetchone()[0] == 0:
             a = ('profilepic',user,'public',)
             picc.execute('INSERT INTO albums VALUES (?,?,?)', a)
 
