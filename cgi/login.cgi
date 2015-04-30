@@ -544,8 +544,21 @@ def create_circle_page(form):
     return "passed"
 
 def create_circle(form):
-    #TODO
-    return "failed"
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    user=form["user"].value
+    circlename=form["circlename"].value
+
+    circonn = sqlite3.connect(DATABASE)
+    circ = circonn.cursor()
+
+    t = (user, circlename,)
+    circ.execute('INSERT INTO circles VALUES (?,?,?,?,?)', t)
+    circonn.commit()
+    circonn.close()
+    return "passed"
 
 def friend_to_circle(form):
     #TODO
@@ -816,6 +829,8 @@ def main():
 
         elif action == "cr-fr-circle":
             create_circle_page(form)
+        elif action == "create-circle":
+            create_circle(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
