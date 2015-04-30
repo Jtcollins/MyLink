@@ -215,9 +215,18 @@ def display_post(row):
             </div>
     </div><!-- /.blog-post -->
     """
+    if(picture=="Null"):
+        picture=""
+    else:
+        with open(IMAGEPATH+'/posts/'+picture, 'rb') as content_file:
+            content = content_file.read()
 
-    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,picture=picture,message=message))
-    return "failed"
+    # Send header and image content
+    hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
+    hdr += content
+
+    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,picture=hdr,message=message))
+    return "passed"
 
 def display_user_profile_init(user, ses):
 
