@@ -274,12 +274,40 @@ def display_friend_circles(form):
     print_html_content_type()
     print_html_nav(form)
 
-    with open("circles.html") as content_file:
+    with open("circleshead.html") as content_file:
         content = content_file.read()
 
-    #TODO: Pull circles from db and add each to page
+    user=form["user"].value
+    session=form["session"].value
 
-    print(content.format(user = form["user"].value, session = form["session"].value))
+    print(content.format(user = user, session = session))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (user,)
+
+    c.execute('SELECT * FROM circles WHERE user=?', t)
+
+    html = """
+<div class="col-lg-4 col-sm-6 text-center">
+    <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
+    <h3>{circlename}
+        <small>Number of Friends?</small>
+    </h3>
+</div>
+    """
+
+    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+        name = row[1]
+        print(html.format(circlename = name))
+
+    with open("circlesfoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
 
     return "passed"
 
@@ -833,6 +861,7 @@ def main():
             create_circle_page(form)
         elif action == "create-circle":
             create_circle(form)
+            display_friend_circles(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":

@@ -1,0 +1,21 @@
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Introduction Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Your Friend Circles
+                    <small>User Name</small>
+                </h1>
+            </div>
+        </div>
+
+        <!-- Team Members Row -->
+        <div class="row">
+            <form METHOD=post ACTION="login.cgi" class="form-signin">
+              <div class="col-lg-4 col-sm-6 text-center">
+                  <button class="btn btn-lg btn-success btn-block" TYPE=hidden NAME="action" VALUE="cr-fr-circle" type="submit">Create a Friend Circle</button>
+                  <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+                  <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+              </div>
+            </form>
