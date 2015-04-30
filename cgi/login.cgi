@@ -287,6 +287,7 @@ def display_friend_circles(form):
 
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
+    <a href="login.cgi?action=manage-circle&circlename={circlename}">
     <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
     <h3>{circlename}
         <small>Number of Friends?</small>
@@ -588,6 +589,15 @@ def create_circle(form):
     circonn.close()
     return "passed"
 
+def manage_circle(form):
+    with open("circlemanager.html") as content_file:
+        content = content_file.read()
+
+    circlename=form["circlename"].value
+
+    print(content.format(circlename = circlename))
+    return "passed"
+
 def friend_to_circle(form):
     #TODO
     return "failed"
@@ -860,6 +870,8 @@ def main():
         elif action == "create-circle":
             create_circle(form)
             display_friend_circles(form)
+        elif action == "manage-circle":
+            manage_circle(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
