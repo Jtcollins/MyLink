@@ -647,7 +647,7 @@ def show_profilepic(form):
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
 
-    username=form["username"].value
+    user=form["user"].value
 
     # Read image
     picconn = sqlite3.connect(DATABASE)
@@ -733,7 +733,7 @@ def new_profile_pic(form):
         # Remove directory path to extract name only
         fileName = os.path.basename(fileInfo.filename)
         picconn = sqlite3.connect(DATABASE)
-        picc = postconn.cursor()
+        picc = picconn.cursor()
 
 
         c.execute('SELECT COUNT(*) FROM albums WHERE name=profilepic AND owner=user')
@@ -752,7 +752,7 @@ def new_profile_pic(form):
         picconn.commit()
         picconn.close()
 
-        image_url="login.cgi?action=show_image&user={user}&session={session}".format(user=user,session=s)
+        image_url="login.cgi?action=show_profilepic&user={user}&session={session}".format(user=user,session=s)
         print_html_content_type()
         print ('<H2>The picture ' + fileName + ' was uploaded successfully</H2>')
         print('<image src="'+image_url+'">')
