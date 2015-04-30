@@ -605,6 +605,13 @@ def manage_circle(form):
     print(content.format(circlename = circlename))
     return "passed"
 
+def update_circle(form):
+    if check_session(form) != "passed":
+       login_form()
+       return
+
+    return "passed"
+
 def friend_to_circle(form):
     #TODO
     return "failed"
@@ -879,6 +886,8 @@ def main():
             display_friend_circles(form)
         elif action == "manage-circle":
             manage_circle(form)
+        elif action == "update-circle":
+            update_circle(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
