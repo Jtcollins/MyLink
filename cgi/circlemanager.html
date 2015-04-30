@@ -11,28 +11,31 @@
         </div>
 
         <!-- Friends List -->
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="checkbox" aria-label="...">Friend 1</input>
-              </span>
-              <!--input type="text" class="form-control" aria-label="..."-->
-            </div><!-- /input-group -->
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="checkbox" aria-label="...">Friend 2</input>
-              </span>
-            </div><!-- /input-group -->
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="checkbox" aria-label="...">Friend 3</input>
-              </span>
-            </div><!-- /input-group -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- row -->
-
-        <hr>
+        <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 1</input>
+                </span>
+                <!--input type="text" class="form-control" aria-label="..."-->
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 2</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 3</input>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div><!-- row -->
+          <br>
+          <button class="btn btn-md btn-primary btn-block" type="submit">Save Changes</button>
+          <hr>
+        </form>
 
         <!-- Footer -->
         <footer>

@@ -560,7 +560,7 @@ def create_circle_page(form):
             <INPUT TYPE=hidden NAME="user" VALUE="{user}">
             <INPUT TYPE=hidden NAME="session" VALUE="{session}">
             <br>
-            <button class="btn btn-md btn-primary btn-block" type="submit">Submit Changes</button>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Create Circle</button>
           </form>
     </div>
     """
