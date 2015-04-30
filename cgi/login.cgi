@@ -653,7 +653,8 @@ def show_profilepic(form):
     picconn = sqlite3.connect(DATABASE)
     picc = postconn.cursor()
 
-    c.execute('SELECT * FROM pictures WHERE album=profilepic AND owner=user')
+    t = ('profilepic', user,)
+    c.execute('SELECT * FROM pictures WHERE album=? AND owner=?',t)
     ipath = c.fetchone()[0]
     with open(IMAGEPATH+'/'+ipath, 'rb') as content_file:
        content = content_file.read()
