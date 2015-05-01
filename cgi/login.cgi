@@ -182,8 +182,8 @@ def display_user_profile(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
-    posts = stored_posts=c.fetchall()
+    #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    #posts = stored_posts=c.fetchall()
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
@@ -203,7 +203,7 @@ def display_user_profile(form):
 
     print html
 
-    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+    for row in c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
@@ -266,8 +266,8 @@ def display_user_profile_init(user, ses):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
-    posts = stored_posts=c.fetchall()
+    #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    #posts = stored_posts=c.fetchall()
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
