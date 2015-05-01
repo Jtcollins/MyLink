@@ -286,10 +286,14 @@ def display_friend_circles(form):
     c = conn.cursor()
     c2 = conn.cursor()
 
+    # color for circle
+    n = 6
+    char_set = string.hexdigits
+
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
     <a href="login.cgi?action=manage-circle&circlename={circlename}&user={user}&session={session}">
-    <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
+    <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/{color}" alt="">
     <h3>{circlename}
         <small>{count} friends</small>
     </h3>
@@ -304,7 +308,9 @@ def display_friend_circles(form):
         c2.execute('SELECT COUNT (*) FROM friendlist WHERE user=? AND circle=?', t2)
         result = c2.fetchone()
         count = result[0]
-        print(html.format(circlename = name, user = user, session = session, count = count))
+        # random circle color
+        color = ''.join(random.sample(char_set,n))
+        print(html.format(circlename = name, user = user, session = session, count = count, color = color))
 
     with open("circlesfoot.html") as content_file:
         content = content_file.read()
