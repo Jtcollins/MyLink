@@ -293,7 +293,7 @@ def display_friend_circles(form):
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
     <a href="login.cgi?action=manage-circle&circlename={circlename}&user={user}&session={session}">
-    <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/{color}" alt="">
+    <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/ffffff&text={circlename}" alt="">
     <h3>{circlename}
         <small>{count} friends</small>
     </h3>
