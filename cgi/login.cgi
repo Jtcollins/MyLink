@@ -816,9 +816,9 @@ def delete_friend(form):
     c = conn.cursor()
 
     t = (user,friend,)
-    c.execute('DELETE friendlist WHERE user=? AND friend=?', t)
+    c.execute('DELETE FROM friendlist WHERE user=? AND friend=?', t)
     t = (friend,user,)
-    c.execute('DELETE friendlist WHERE user=? AND friend=?', t)
+    c.execute('DELETE FROM friendlist WHERE user=? AND friend=?', t)
 
     conn.commit()
     conn.close()
