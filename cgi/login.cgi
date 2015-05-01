@@ -136,7 +136,7 @@ def display_album(form):
     albumname=form["albumname"].value
     print(content.format(albumname = albumname))
 
-    # Fill in friend list
+    # Fill in picture list
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c2 = conn.cursor()
@@ -155,9 +155,9 @@ def display_album(form):
         t2 = (path, albumname, user,)
         c2.execute('SELECT * FROM pictures WHERE path=? AND album=? AND owner=?', t2)
         if c2.fetchone() is None:
-            print(html.format(checked = "", picname = name))
+            print(html.format(checked = "", picname = path))
         else:
-            print(html.format(checked = " checked", picname = name))
+            print(html.format(checked = " checked", picname = path))
 
     conn.commit()
     conn.close()
