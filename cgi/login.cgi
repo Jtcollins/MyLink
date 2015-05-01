@@ -280,7 +280,7 @@ def display_user_profile_init(user, ses):
 </div><!-- /input-group -->
     """
     t = (user,)
-    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
         if c.fetchone() is None:
             print(html.format(checked = "", circlename = name))
@@ -350,7 +350,7 @@ def display_feed(form):
 </div><!-- /input-group -->
     """
     t = (user,)
-    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
         if c.fetchone() is None:
             print(html.format(checked = "", circlename = name))
