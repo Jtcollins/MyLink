@@ -1,0 +1,24 @@
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <br>
+                <h1 class="page-header">User Albums
+                    <small>{user}</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Albums Row -->
+        <div class="row">
+                <form action="login.cgi?action=new-album&user={user}&session={session}">
+                    <div class="col-sm-3">
+                        <button class="btn btn-md btn-primary btn-block" TYPE=hidden NAME="action" VALUE="new-album" type="submit">Create New Album</button>
+                        <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+                        <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+                        <br>
+                    </div>
+                </form>

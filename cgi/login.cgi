@@ -66,7 +66,7 @@ def display_user():
     print("hello")
 
 ##########################################################
-def display_album(form):
+def display_albums_page(form):
     if (check_session(form) != True):
         login_form()
         return
@@ -77,10 +77,71 @@ def display_album(form):
     user = form["user"].value
     session = form["session"].value
 
-    with open("UserAlbums.html") as content_file:
+    with open("UserAlbumsHead.html") as content_file:
         content = content_file.read()
         
     print(content.format(user = user, session = session))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c2 = conn.cursor()
+
+    # color for circle
+    n = 6
+    char_set = string.hexdigits
+
+    html = """
+<div class="col-lg-4 col-sm-6 text-center">
+    <a href="login.cgi?action=display-album&albumname={albumname}&user={user}&session={session}">
+    <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/ffffff&text={albumname}" alt="">
+    <h3>{circlename}
+        <small>{count} pictures</small>
+    </h3>
+</div>
+    """
+
+    t = (user,)
+
+    for row in c.execute('SELECT * FROM albums WHERE owner=?', t):
+        name = row[1]
+        t2 = (user, name,)
+        c2.execute('SELECT COUNT (*) FROM pictures WHERE owner=? AND album=?', t2)
+        result = c2.fetchone()
+        count = result[0]
+        # random circle color
+        color = ''.join(random.sample(char_set,n))
+        print(html.format(album = name, user = user, session = session, count = count, color = color))
+
+    with open("UserAlbumsFoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
+    return "passed"
+
+def display_album(form):
+    #TODO
+    print("hello1")
+
+
+def new_album(form):
+    if (check_session(form) != True):
+        login_form()
+        return
+
+    user=form["user"].value
+    albumname=form["albumname"].value
+
+    alconn = sqlite3.connect(DATABASE)
+    alc = alconn.cursor()
+    #TODO: display error on duplicate names
+    t = (user, albumname, 'public',)
+    alc.execute('INSERT INTO albums VALUES (?,?,?)', t)
+    alconn.commit()
+    alconn.close()
+    return "passed"
 
 ##########################################################
 # Define function to test the password.
@@ -1320,7 +1381,7 @@ def main():
                    login_form()
                    print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
         elif (action == "new-album"):
-	       new_album(form)
+            new_album(form)
         elif (action == "upload"):
            upload(form)
         elif (action == "show_image"):
@@ -1342,7 +1403,9 @@ def main():
         elif action == "view_circles":
           display_friend_circles(form)
         elif action == "view_albums":
-            display_album(form)
+            display_albums_page(form)
+        elif action == "display-album":
+            display_album(form):
 
         ## CIRCLE PAGES
         elif action == "cr-fr-circle":
