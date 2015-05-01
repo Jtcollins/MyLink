@@ -1,0 +1,101 @@
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Introduction Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Manage Circle
+                    <small>{circlename}</small>
+                </h1>
+            </div>
+        </div>
+
+        <!-- Friends List -->
+        <form METHOD=post ACTION="login.cgi" class="form-changeinfo">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <label><input type="checkbox" name="selected[]" aria-label="...">Friend 1</input></label>
+                </span>
+                <!--input type="text" class="form-control" aria-label="..."-->
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 2</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 3</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 4</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 5</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 6</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 7</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 8</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 9</input>
+                </span>
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="selected[]" aria-label="...">Friend 10</input>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div><!-- row -->
+          <input type="hidden" name="user" value="{user}">
+          <input type="hidden" name="session" value="{session}">
+          <input type="hidden" name="action" value="update-circle">
+          
+          <br>
+          <button class="btn btn-md btn-primary btn-block" type="submit">Save Changes</button>
+          <hr>
+        </form>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; MyLink 2015</p>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

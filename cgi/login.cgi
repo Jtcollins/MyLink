@@ -5,6 +5,7 @@ import cgi, string, sys, os, re, random
 import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 import session
+import Cookie, os
 from datetime import datetime, date, time
 
 import smtplib
@@ -12,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #Get Databasedir
-MYLOGIN="colli180"
+MYLOGIN="chanthor"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 
@@ -143,7 +144,7 @@ def display_admin_options(user, ses):
     print(content.format(user=user,session=ses))
 
 def display_admin_options(form, statement="", color="green"):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -162,7 +163,7 @@ def display_admin_options(form, statement="", color="green"):
 #################################################################
 
 def display_user_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -267,7 +268,7 @@ def display_user_profile_init(user, ses):
     return "passed"
 
 def display_friend_profile(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -428,8 +429,65 @@ def display_requests(form):
     return "passed"
 
 #################################################################
+
+def display_friend_circles(form):
+    if (check_session(form) != "passed"):
+        login_form()
+        return
+    
+    print_html_content_type()
+    print_html_nav(form)
+
+    with open("circleshead.html") as content_file:
+        content = content_file.read()
+
+    user=form["user"].value
+    session=form["session"].value
+
+    print(content.format(user = user, session = session))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c2 = conn.cursor()
+
+    # color for circle
+    n = 6
+    char_set = string.hexdigits
+
+    html = """
+<div class="col-lg-4 col-sm-6 text-center">
+    <a href="login.cgi?action=manage-circle&circlename={circlename}&user={user}&session={session}">
+    <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/ffffff&text={circlename}" alt="">
+    <h3>{circlename}
+        <small>{count} friends</small>
+    </h3>
+</div>
+    """
+
+    t = (user,)
+
+    for row in c.execute('SELECT * FROM circles WHERE user=?', t):
+        name = row[1]
+        t2 = (user, name,)
+        c2.execute('SELECT COUNT (*) FROM friendlist WHERE user=? AND circle=?', t2)
+        result = c2.fetchone()
+        count = result[0]
+        # random circle color
+        color = ''.join(random.sample(char_set,n))
+        print(html.format(circlename = name, user = user, session = session, count = count, color = color))
+
+    with open("circlesfoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
+    return "passed"
+
+#################################################################
 def change_name_page(form):
-    if "user" in form and "session" in form and session.check_session(form) == "passed":
+    if "user" in form and "session" in form and check_session(form) == "passed":
         user=form["user"].value
         ses=form["session"].value
         html = """
@@ -466,7 +524,7 @@ def change_name(form):
     firstname = form["firstname"].value
     lastname = form["lastname"].value
     
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -520,7 +578,7 @@ def change_password(form):
     newPW = form["npw"].value
     newPWVer = form["npw-ver"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -604,7 +662,7 @@ def verify_page(form):
       </form>
 </div>
 """
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -630,7 +688,7 @@ def verify_final(form):
     ses=form["session"].value
     verif = form["verif"].value
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -690,9 +748,124 @@ def request_response(form):
     #TODO
     return "failed"
 
+def create_circle_page(form):
+    if "user" in form and "session" in form and check_session(form) == "passed":
+        user=form["user"].value
+        ses=form["session"].value
+        html = """
+    <div class="container">
+
+          <form METHOD=post ACTION="login.cgi" class="form-signin">
+            <h1>MyLink</h1>
+
+            <h2 class="form-changeinfo-heading">Create a Circle</h2>
+            <label for="circlename" class="sr-only">Circle Name</label>
+            <input type="text" id="circlename" NAME="circlename" class="form-control" placeholder="New Circle Name" required autofocus>
+            <INPUT TYPE=hidden NAME="action" VALUE="create-circle">
+            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <br>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Create Circle</button>
+          </form>
+    </div>
+    """
+
+        print_html_content_type()
+        print_html_nav(form)
+        print(html.format(user=user,session=ses))
+        print_settings_footer()
+        return "passed"
+    return "passed"
+
 def create_circle(form):
-    #TODO
-    return "failed"
+    if (check_session(form) != "passed"):
+        login_form()
+        return
+
+    user=form["user"].value
+    circlename=form["circlename"].value
+
+    circonn = sqlite3.connect(DATABASE)
+    circ = circonn.cursor()
+    #TODO: display error on duplicate names
+    t = (user, circlename,)
+    circ.execute('INSERT INTO circles VALUES (?,?)', t)
+    circonn.commit()
+    circonn.close()
+    return "passed"
+
+def manage_circle(form):
+    if check_session(form) != "passed":
+       login_form()
+       return
+    # Top of html file
+    print_html_content_type()
+    print_html_nav(form)
+    
+    with open("circlemanagerhead.html") as content_file:
+        content = content_file.read()
+
+    circlename=form["circlename"].value
+    print(content.format(circlename = circlename))
+
+    # Fill in friend list
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c2 = conn.cursor()
+
+    user=form["user"].value
+    session=form["session"].value
+
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{friendname}" aria-label="..." value="checkbox"{checked}>{friendname}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT DISTINCT friend FROM friendlist WHERE user=?', t):
+        name = row[0]
+        t2 = (user, name, circlename,)
+        c2.execute('SELECT * FROM friendlist WHERE user=? AND friend=? AND circle=?', t2)
+        if c2.fetchone() is None:
+            print(html.format(checked = "", friendname = name))
+        else:
+            print(html.format(checked = " checked", friendname = name))
+
+    conn.commit()
+    conn.close()
+
+    #Bottom of html file
+    with open("circlemanagerfoot.html") as content_file:
+        content = content_file.read()
+
+    print(content.format(user = user, session = session, circlename = circlename))
+    return "passed"
+
+def update_circle(form):
+    if check_session(form) != "passed":
+       login_form()
+       return
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    circlename=form["circlename"].value
+    variable = ""
+    value = ""
+    for key in form.keys():
+        variable = str(key)
+        value = str(form.getvalue(variable))
+        if value == "checkbox":
+            friend=variable
+            t = (user, friend, circlename,)
+            c.execute('SELECT * FROM friendlist WHERE user=? AND friend=? AND circle=?', t)
+            if c.fetchone() is None:
+                c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
+
+    conn.commit()
+    conn.close()
+    return "passed"
 
 def friend_to_circle(form):
     #TODO
@@ -710,7 +883,7 @@ def create_new_post(form):
     fileInfo = form['file']
     postDate= datetime.now()
 
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
@@ -730,7 +903,20 @@ def create_new_post(form):
 
 #################################################################
 def create_new_session(user):
-    return session.create_session(user)
+    # Store random string as session number
+    # Number of characters in session string
+    n = 20
+    char_set = string.ascii_uppercase + string.digits
+    session = ''.join(random.sample(char_set,n))
+    create_cookie(user, session)
+    return session
+
+#################################################################
+def check_session(form):
+    if "user" in form and "session" in form:
+        user=form["user"].value
+        session=form["session"].value
+    return check_cookie(user, session)
 
 def logout(form):
     user=form["user"].value
@@ -747,13 +933,21 @@ def logout(form):
     return "logout success"
 
 #################################################################
-def create_cookie(user, ses):
-    #TODO
-    return "failed"
+def create_cookie(user, session):
+    cookie = Cookie.SimpleCookie()
+    cookie["session"] = session
+    print cookie.output()
 
-def check_cookie(user, ses):
-    #TODO
-    return "failed"
+def check_cookie(user, session):
+    cookieString = os.environ.get("HTTP_COOKIE")
+    if not cookieString:
+        return "failed"
+    cookie = Cookie.SimpleCookie()
+    cookie.load(cookieString)
+    if cookie["session"].value == session:
+        return "passed"
+    else:
+        return "failed"
 
 #################################################################
 
@@ -777,7 +971,7 @@ def verify_email(useremail):
 ##############################################################
 def new_album(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        return
 
     html="""
@@ -789,7 +983,7 @@ def new_album(form):
 ##############################################################
 def show_image(form):
     #Check session
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -844,7 +1038,7 @@ def show_postpic(form):
 ###############################################################################
 
 def upload(form):
-    if session.check_session(form) != "passed":
+    if check_session(form) != "passed":
        login_form()
        return
 
@@ -971,7 +1165,7 @@ def print_html_content_type():
 	print("Content-Type: text/html\n\n")
 
 def print_html_nav(form):
-    if (session.check_session(form) == "passed"):
+    if (check_session(form) == "passed"):
         user = form["user"].value
         ses = form["session"].value
         with open("nav.html") as content_file:
@@ -1051,6 +1245,19 @@ def main():
           display_requests(form)
         elif action == "view_news":
             display_feed(form)
+        elif action == "view_circles":
+          display_friend_circles(form)
+
+        elif action == "cr-fr-circle":
+            create_circle_page(form)
+        elif action == "create-circle":
+            create_circle(form)
+            display_friend_circles(form)
+        elif action == "manage-circle":
+            manage_circle(form)
+        elif action == "update-circle":
+            update_circle(form)
+            display_friend_circles(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
