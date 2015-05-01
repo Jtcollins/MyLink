@@ -352,13 +352,14 @@ def display_requests(form):
     print html.format(sender=user,session=ses)
 
     t = (user,"request")
+    ts = (user,)
     c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
     friendlist= c.fetchall()
 
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    c.execute('SELECT * FROM friendlist WHERE user=?', t)
+    c.execute('SELECT * FROM friendlist WHERE user=?', ts)
     existing = c.fetchall()
 
 
