@@ -361,7 +361,6 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle!=? GROUP BY friend', t)
     existing = c.fetchall()
 
-
     html = """
         <h3 class="form-requests-heading">Friend Requests</h3>
         <div class="row">  
@@ -372,7 +371,7 @@ def display_requests(form):
                         <th>Name</th>
                         <th>Email</th>
                         <th>Accept</th>
-                        <th>Delete</th>
+                        <th>Decline</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -418,7 +417,7 @@ def display_requests(form):
             <tr>
                 <td><a href={friendprofile}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
-                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}</td>
+                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
         """
         curr = (friend[1],)
@@ -451,7 +450,7 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}</td>
+                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
         """
         curr = (friend[1],)
