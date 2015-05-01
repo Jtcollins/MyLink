@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #Get Databasedir
-MYLOGIN="chanthor"
+MYLOGIN="colli180"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 
