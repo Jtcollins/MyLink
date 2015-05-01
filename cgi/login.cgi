@@ -332,7 +332,7 @@ def display_requests(form):
         content = content_file.read()
 
     t = (user,)
-    c.execute('SELECT * FROM friendlist WHERE email=?', t)
+    c.execute('SELECT * FROM friendlist WHERE user=?', t)
     friendlist= c.fetchall()
 
     html = ""
