@@ -225,6 +225,7 @@ def display_post(row):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
+    t = (user,)
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
