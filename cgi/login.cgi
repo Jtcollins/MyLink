@@ -352,7 +352,7 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    if len(friendlist) == 0 && len(pending) == 0:
+    if len(friendlist) == 0 and len(pending) == 0:
         print "  </body>"
         print "</html>"
         return passed
