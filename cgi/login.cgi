@@ -406,7 +406,7 @@ def display_requests(form):
         """
         html.format(user=friend[2],firstname="Joe",lastname="bloggs")
 
-     html += """</tbody>
+    html += """</tbody>
                 </table>
                 </div>
             </div>       
