@@ -94,7 +94,7 @@ def display_albums_page(form):
 <div class="col-lg-4 col-sm-6 text-center">
     <a href="login.cgi?action=display-album&albumname={albumname}&user={user}&session={session}">
     <img class="img-circle img-responsive img-center" src="http://placehold.it/200/{color}/ffffff&text={albumname}" alt="">
-    <h3>{circlename}
+    <h3>{albumname}
         <small>{count} pictures</small>
     </h3>
 </div>
