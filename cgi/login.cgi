@@ -1405,7 +1405,7 @@ def main():
         elif action == "view_albums":
             display_albums_page(form)
         elif action == "display-album":
-            display_album(form):
+            display_album(form)
 
         ## CIRCLE PAGES
         elif action == "cr-fr-circle":
