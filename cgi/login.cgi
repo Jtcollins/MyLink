@@ -182,13 +182,27 @@ def display_user_profile(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
-    posts = stored_posts=c.fetchall()
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
-    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
-        display_post(row)
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
+        name = row[0]
+        print(html.format(checked = "", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    <div class="col-sm-8 blog-main">"""
+
+    print html
+
+    for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
+        display_post(row,user,ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -199,40 +213,47 @@ def display_user_profile(form):
 
     return "passed"
 
-def display_post(row):
+def display_post(row,user,ses):
     if row is None:
         return
-    user = row[0]
+    poster = row[0]
     circle = row[1]
     postDate = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S.%f" )
     message = row[3]
     picture = row[4]
 
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (poster,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
     if(picture == "Null"):
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title">{poster} on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={poster}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}
                 </div>
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], user=user,session=ses, poster=poster,message=message))
         return "passed"
     else:
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title">{poster} on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={poster}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="Post Pic">
                 </div>
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3],poster=poster,picture=picture,user=user, session=ses, message=message))
         return "passed"
 
 def display_user_profile_init(user, ses):
@@ -250,13 +271,29 @@ def display_user_profile_init(user, ses):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
-    posts = stored_posts=c.fetchall()
+    #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    #posts = stored_posts=c.fetchall()
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
-    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
-        display_post(row)
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
+        name = row[0]
+        print(html.format(checked = "", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    </div><!-- /.container -->"""
+
+    print html
+
+    for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
+        display_post(row, user,ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -272,9 +309,60 @@ def display_friend_profile(form):
         login_form()
         return
 
+    user = form["user"].value
+    ses = form["session"].value
+    friend = form["friend"].value
     print_html_content_type()
-    print_html_nav(form)
-    #TODO
+    print_html_nav_init(user, ses)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    with open("friendprofile.html") as content_file:
+        content = content_file.read()
+    friend = form["friend"].value
+
+    t = (friend,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    #posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,friend=friend,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+
+    fs = (user,friend)
+    c.execute('SELECT * FROM friendlist WHERE user=? AND friend=?', fs)
+    friendship = c.fetchone()
+
+    if(friendship == None):
+        html = """<li><a href="login.cgi?action=new-request&user={user}&session={session}&friend={friend}">Send Friend Request</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
+    else:
+        html = """<li><a href="login.cgi?action=view_circles&user={user}&session={session}">Add/Remove to Circles</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
+        html = """<li><a href="login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}">Delete Friend</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
+
+    html = """</ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+        <div class="col-sm-8 blog-main">"""
+
+    print html
+
+    cs = (user,friend)
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', cs):
+        display_post(row, user,ses)
+    
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
     return "passed"
 
 def display_feed(form):
@@ -297,13 +385,41 @@ def display_feed(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
-    posts = stored_posts=c.fetchall()
+
+    user=form["user"].value
+    ses=form["session"].value
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage="feed"))
+
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
+        name = row[0]
+        print(html.format(checked = "", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    </div><!-- /.container -->"""
+
+    print html
+
+    #c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    #posts = stored_posts=c.fetchall()
     
-    for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
-        display_post(row)
+    c.execute('SELECT circle FROM friendlist WHERE friend=?', t)
+    circles = c.fetchall()
+
+
+    #c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate', tc)
+
+    qs = ','.join('?'*len(circles))
+    q = (user,user,)
+    #for col in circles:
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) OR user=? GROUP BY postDate ORDER BY postDate DESC', q):
+            display_post(row, user, ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -382,7 +498,7 @@ def display_requests(form):
     for friend in friendlist:
         html = """
             <tr>
-                <td>{firstname} {lastname}</td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend={friend}>Accept</a></td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Decline</a></td>
@@ -415,7 +531,7 @@ def display_requests(form):
     for friend in pending:
         html = """
             <tr>
-                <td><a href={friendprofile}>{firstname} {lastname}</a></td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
@@ -448,7 +564,7 @@ def display_requests(form):
     for friend in existing:
         html = """
             <tr>
-                <td>{firstname} {lastname}</td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
@@ -800,8 +916,8 @@ def accept_request(form):
 
     t = (user,friend,"accepted",)
     c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
-    t = ("accepted",friend,user,)
-    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=?', t)
+    t = ("accepted",friend,user,"request")
+    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=? AND circle=?', t)
 
     conn.commit()
     conn.close()
@@ -975,8 +1091,21 @@ def create_new_post(form):
 
     picid = upload_post_pic(form)
 
-    t = (user,cir,postDate,mess,picid,)
-    postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+        #if (check_verified(form) == True):
+    postconn = sqlite3.connect(DATABASE)
+    postc = postconn.cursor()
+
+    variable = ""
+    value = ""
+    for key in form.keys():
+        variable = str(key)
+        value = str(form.getvalue(variable))
+        if value == "checkbox":
+            cir=variable
+            t = (user,cir,postDate,mess,picid,)
+            postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+
+
     postconn.commit()
     postconn.close()
     return "post successful"
@@ -1398,6 +1527,11 @@ def main():
             show_profilepic(form)
         elif action == "show_postpic":
             show_postpic(form)
+        elif action == "view-friend":
+            if(form["friend"].value == form["user"].value):
+                display_user_profile(form)
+            else:
+                display_friend_profile(form)
         else:
             login_form()
     else:
