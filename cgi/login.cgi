@@ -345,7 +345,7 @@ def display_requests(form):
           <br>
     """
 
-    html.format(sender=user,session=ses)
+    print html.format(sender=user,session=ses)
 
     t = (user,"request")
     c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
@@ -355,7 +355,7 @@ def display_requests(form):
     pending = c.fetchall()
 
 
-    html += """
+    html = """
         <h3 class="form-requests-heading">Friend Requests</h3>
         <div class="row">  
           <div class="col-md-6">
@@ -371,9 +371,10 @@ def display_requests(form):
                     <tbody>
 
     """
+    print html
 
     for friend in friendlist:
-        html += """
+        html = """
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
@@ -381,9 +382,9 @@ def display_requests(form):
                 <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
+        print html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
 
-    html += """</tbody>
+    html = """</tbody>
                 </table>
                 </div>
             </div>
@@ -401,8 +402,10 @@ def display_requests(form):
                     </thead>
                     <tbody>"""
 
+    print html
+
     for friend in pending:
-        html += """
+        html = """
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
@@ -410,9 +413,9 @@ def display_requests(form):
                 <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
+        print html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
 
-    html += """</tbody>
+    html = """</tbody>
                 </table>
                 </div>
             </div>
@@ -420,7 +423,7 @@ def display_requests(form):
               </body>
 </html>"""
 
-    print html.format(sender=user,session=ses)
+    print html
 
     return "passed"
 
