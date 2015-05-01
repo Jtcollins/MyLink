@@ -711,9 +711,10 @@ def show_profilepic(form):
     hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
     print hdr+content
 
-def show_postpic(picaddr):
+def show_postpic(form):
     # Your code should get the user album and picture and verify that the image belongs to this
     # user and this album before loading it
+    picaddr = form["addr"].value
 
     with open(IMAGEPATH+'/posts/'+picaddr, 'rb') as content_file:
        content = content_file.read()
@@ -976,7 +977,7 @@ def main():
         elif action == "show_profilepic":
             show_profilepic(form)
         elif action == "show_postpic":
-            show_postpic(addr)
+            show_postpic(form)
         else:
             login_form()
     else:
