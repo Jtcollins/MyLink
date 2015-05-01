@@ -385,7 +385,7 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend{friend}>Accept</a></td>
+                <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend={friend}>Accept</a></td>
                 <td><a href={delete}>Decline</a></td>
               </tr> 
         """
