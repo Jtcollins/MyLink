@@ -858,8 +858,8 @@ def accept_request(form):
 
     t = (user,friend,"accepted",)
     c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
-    t = ("accepted",friend,user,)
-    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=?', t)
+    t = ("accepted",friend,user,"request")
+    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=? AND circle=?', t)
 
     conn.commit()
     conn.close()
