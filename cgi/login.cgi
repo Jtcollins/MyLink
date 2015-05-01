@@ -345,6 +345,8 @@ def display_requests(form):
           <br>
     """
 
+    html.format(user=user,session=ses)
+
     t = (user,"request")
     c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
     friendlist= c.fetchall()
@@ -352,11 +354,6 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    #if len(friendlist) == 0 and len(pending) == 0:
-    #    print html
-    #    print "  </body>"
-    #    print "</html>"
-    #    return "passed"
 
     html += """
         <h3 class="form-requests-heading">Friend Requests</h3>
