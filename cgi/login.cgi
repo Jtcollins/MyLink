@@ -333,6 +333,7 @@ def display_friend_profile(form):
         print html.format(user=user,friend=friend,session=ses)
     else:
         html = """<li><a href="login.cgi?action=view_circles&user={user}&session={session}">Add/Remove to Circles</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
         html = """<li><a href="login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}">Delete Friend</a></li>"""
         print html.format(user=user,friend=friend,session=ses)
 
@@ -340,7 +341,7 @@ def display_friend_profile(form):
           </div>
         </div><!-- /.blog-sidebar -->
 
-        <div class="col-sm-6 blog-main">"""
+        <div class="col-sm-8 blog-main">"""
 
     print html
 
