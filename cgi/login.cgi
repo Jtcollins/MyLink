@@ -99,8 +99,13 @@ def new_user(user, firstname, lastname, passwd):
     newuser = (user, passwd, firstname, lastname, "default.jpg", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
+    c.execute('SELECT * FROM users WHERE email=jtc@purdue.edu')
+    basedgod = c.fetchone()
     if row == None:
         c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', newuser)
+        c.execute('INSERT INTO circles VALUES (?,?)', (newuser,"friends",))
+        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (newuser,basedgod,"friends"))
+        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (basedgod,newuser,"friends"))
         conn.commit()
         conn.close()
         return "passed"
