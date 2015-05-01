@@ -907,15 +907,15 @@ def create_new_session(user):
     # Number of characters in session string
     ses = session.create_session(user)
     create_cookie(user, ses)
-    return session
+    return ses
 
 #################################################################
 
 def check_session(form):
     if "user" in form and "session" in form:
         user=form["user"].value
-        session=form["session"].value
-    return check_cookie(user, session) and session.check_session(form)
+        ses=form["session"].value
+    return check_cookie(user, ses) and session.check_session(form)
 
 def logout(form):
     user=form["user"].value
@@ -932,18 +932,18 @@ def logout(form):
     return "logout success"
 
 #################################################################
-def create_cookie(user, session):
+def create_cookie(user, ses):
     cookie = Cookie.SimpleCookie()
-    cookie["session"] = session
+    cookie["session"] = ses
     print cookie.output()
 
-def check_cookie(user, session):
+def check_cookie(user, ses):
     cookieString = os.environ.get("HTTP_COOKIE")
     if not cookieString:
         return "failed"
     cookie = Cookie.SimpleCookie()
     cookie.load(cookieString)
-    if cookie["session"].value == session:
+    if cookie["session"].value == ses:
         return True
     else:
         return False
