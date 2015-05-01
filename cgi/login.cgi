@@ -619,7 +619,7 @@ def manage_circle(form):
     """
     t = (user,)
     for row in c.execute('SELECT * FROM friendlist WHERE user=?', t):
-        name = row[2]
+        name = row[1]
         print(html.format(friendname = name))
 
     conn.commit()
