@@ -313,8 +313,6 @@ def display_feed(form):
     t = (user,)
     for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
         name = row[0]
-        firstn = row[1]
-        lastn = row[2]
         if c.fetchone() is None:
             print(html.format(checked = "", circlename = name))
         else:
