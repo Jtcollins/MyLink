@@ -346,10 +346,7 @@ def display_feed(form):
     t = (user,)
     for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
-        if c.fetchone() is None:
-            print(html.format(checked = "", circlename = name))
-        else:
-            print(html.format(checked = " checked", circlename = name))
+        print(html.format(checked = "", circlename = name))
 
     html = """</div><!-- /.col-sm-4 -->
         </form>
