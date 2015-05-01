@@ -802,7 +802,7 @@ def accept_request(form):
     t = (user,friend,"accepted",)
     c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
     t = ("accepted",friend,user,)
-    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=?', ts)
+    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=?', t)
 
     conn.commit()
     conn.close()
