@@ -122,8 +122,52 @@ def display_albums_page(form):
     return "passed"
 
 def display_album(form):
-    #TODO
-    print("hello1")
+    if check_session(form) != True:
+       login_form()
+       return
+    
+    # Top of html file
+    print_html_content_type()
+    print_html_nav(form)
+    
+    with open("AlbumHead.html") as content_file:
+        content = content_file.read()
+
+    albumname=form["albumname"].value
+    print(content.format(albumname = albumname))
+
+    # Fill in friend list
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c2 = conn.cursor()
+
+    user=form["user"].value
+    session=form["session"].value
+
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{picname}" aria-label="..." value="checkbox"{checked}>{picname}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT DISTINCT path FROM pictures WHERE owner=?', t):
+        path = row[0]
+        t2 = (path, albumname, user,)
+        c2.execute('SELECT * FROM pictures WHERE path=? AND album=? AND owner=?', t2)
+        if c2.fetchone() is None:
+            print(html.format(checked = "", friendname = name))
+        else:
+            print(html.format(checked = " checked", friendname = name))
+
+    conn.commit()
+    conn.close()
+
+    #Bottom of html file
+    with open("AlbumFoot.html") as content_file:
+        content = content_file.read()
+
+    print(content.format(user = user, session = session, circlename = circlename))
+    return "passed"
 
 def new_album_page(form):
     if "user" in form and "session" in form and check_session(form) == True:
