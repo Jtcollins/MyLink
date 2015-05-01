@@ -209,22 +209,14 @@ def display_post(row):
     html= """
     <div class="panel panel-warning">
         <div class="panel-heading">
-            <h3 class="panel-title">{poster} on {postDate}</h3>
+            <h3 class="panel-title">{poster}</h3><p>on {postDate}</p>
         </div>
-        <div class="panel-body">{message}<br><img src={picture} class="img-thumbnail">
+        <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&user={picture}" class="img-thumbnail" alt="User's profile pic">
             </div>
     </div><!-- /.blog-post -->
     """
-    if(picture=="Null"):
-        hdr=""
-    else:
-        with open(IMAGEPATH+'/posts/'+picture, 'rb') as content_file:
-            content = content_file.read()
-        # Send header and image content
-        hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
-        hdr += content
 
-    print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=hdr,message=message))
+    print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,message=message))
     return "passed"
 
 def display_user_profile_init(user, ses):
@@ -719,6 +711,16 @@ def show_profilepic(form):
     hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
     print hdr+content
 
+def show_postpic(picaddr):
+    # Your code should get the user album and picture and verify that the image belongs to this
+    # user and this album before loading it
+
+    with open(IMAGEPATH+'/posts/'+picaddr, 'rb') as content_file:
+       content = content_file.read()
+
+    hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
+    print hdr+content
+
 ###############################################################################
 
 def upload(form):
@@ -973,6 +975,8 @@ def main():
                 display_feed(form)
         elif action == "show_profilepic":
             show_profilepic(form)
+        elif action == "show_postpic":
+            show_postpic(form)
         else:
             login_form()
     else:
