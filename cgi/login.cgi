@@ -330,13 +330,6 @@ def display_feed(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT circle FROM friendlist WHERE friend=?', t)
-    circles = c.fetchall()
-    tc = (circles,)
-    
-    
-    c.execute('SELECT * FROM posts WHERE circle IN ? GROUP BY postDate', tc)
-
 
     user=form["user"].value
     ses=form["session"].value
@@ -348,7 +341,6 @@ def display_feed(form):
   <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
 </div><!-- /input-group -->
     """
-    t = (user,)
     for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
         print(html.format(checked = "", circlename = name))
@@ -359,10 +351,16 @@ def display_feed(form):
 
     print html
 
-    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
-    posts = stored_posts=c.fetchall()
+    #c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    #posts = stored_posts=c.fetchall()
     
-    for row in c.execute('SELECT * FROM posts WHERE circle IN (?) GROUP BY postDate ORDER BY postDate DESC', circles):
+    c.execute('SELECT circle FROM friendlist WHERE friend=?', t)
+    circles = c.fetchall()
+
+
+    #c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate', tc)
+
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate ORDER BY postDate DESC' %','.join('?'*len(circles)), circles):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
