@@ -346,10 +346,7 @@ def display_feed(form):
     t = (user,)
     for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
-        if c.fetchone() is None:
-            print(html.format(checked = "", circlename = name))
-        else:
-            print(html.format(checked = " checked", circlename = name))
+        print(html.format(checked = "", circlename = name))
 
     html = """</div><!-- /.col-sm-4 -->
         </form>
@@ -360,7 +357,7 @@ def display_feed(form):
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
     posts = stored_posts=c.fetchall()
     
-    for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
+    for row in c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
