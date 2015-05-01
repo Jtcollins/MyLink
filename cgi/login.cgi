@@ -285,8 +285,7 @@ def display_user_profile_init(user, ses):
 
     print html
 
-
-    for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
+    for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
@@ -359,8 +358,8 @@ def display_feed(form):
     #c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate', tc)
 
     qs = ','.join('?'*len(circles))
-    for col in circles:
-        for row in c.execute('SELECT * FROM posts WHERE circle IN (?) GROUP BY postDate ORDER BY postDate DESC', col):
+    #for col in circles:
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) OR user=? GROUP BY postDate ORDER BY postDate DESC', t):
             display_post(row)
 
     with open("profilefoot.html") as content_file:
