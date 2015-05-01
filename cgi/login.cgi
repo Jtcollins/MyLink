@@ -420,7 +420,7 @@ def display_requests(form):
               </body>
 </html>"""
 
-    html.format(user=user,session=ses)
+    html.format(sender=user,session=ses)
     print html
 
     return "passed"
