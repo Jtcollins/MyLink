@@ -240,7 +240,7 @@ def display_post(row,user,ses):
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], session=ses, poster=poster,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], user=user,session=ses, poster=poster,message=message))
         return "passed"
     else:
         html= """
