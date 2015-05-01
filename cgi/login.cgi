@@ -303,8 +303,34 @@ def display_friend_profile(form):
         return
 
     print_html_content_type()
-    print_html_nav(form)
-    #TODO
+    print_html_nav_init(user, ses)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    with open("friendprofile.html") as content_file:
+        content = content_file.read()
+    friend = form["friend"].value
+
+    t = (friend,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    #posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+    
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', t):
+        display_post(row)
+
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
     return "passed"
 
 def display_feed(form):
@@ -440,7 +466,7 @@ def display_requests(form):
     for friend in friendlist:
         html = """
             <tr>
-                <td>{firstname} {lastname}</td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend={friend}>Accept</a></td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Decline</a></td>
@@ -473,7 +499,7 @@ def display_requests(form):
     for friend in pending:
         html = """
             <tr>
-                <td><a href={friendprofile}>{firstname} {lastname}</a></td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
@@ -506,7 +532,7 @@ def display_requests(form):
     for friend in existing:
         html = """
             <tr>
-                <td>{firstname} {lastname}</td>
+                <td><a href=login.cgi?action=view-friend&user={user}&session={session}&friend={friend}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Delete</a></td>
               </tr> 
