@@ -95,12 +95,13 @@ def new_user(user, passwd):
 
     t = (user,)
     ver = verify_email(user)
-    newuser = (user, passwd, "NULL", "NULL", "default.jpg", ver)
+    newuser = (user, passwd, "Joe", "Bloggs", "default.jpg", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
     if row == None:
         c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', newuser)
         conn.commit()
+        conn.close()
         return "passed"
 
     conn.close()
@@ -378,18 +379,18 @@ def display_requests(form):
         html += """
             <tr>
                 <td>{firstname} {lastname}</td>
-                <td>{user}</td>
-                <td><a href="#">Add to circle</a></td>
-                <td><a href="#">Delete</a></td>
+                <td>{friend}</td>
+                <td><a href={addcircle}>Add to circle</a></td>
+                <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        html.format(user=friend[2],firstname="Joe",lastname="bloggs")
+        html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
 
     html += """</tbody>
                 </table>
                 </div>
             </div>
-            <h3 class="form-requests-heading">Friend Requests</h3>
+            <h3 class="form-requests-heading">Pending Requests</h3>
         <div class="row">  
           <div class="col-md-6">
                   <table class="table table-striped">
@@ -407,12 +408,12 @@ def display_requests(form):
         html += """
             <tr>
                 <td>{firstname} {lastname}</td>
-                <td>{user}</td>
-                <td><a href="#">Add to circle</a></td>
-                <td><a href="#">Delete</a></td>
+                <td>{friend}</td>
+                <td><a href={addcircle}>Add to circle</a></td>
+                <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        html.format(user=friend[2],firstname="Joe",lastname="bloggs")
+        html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
 
     html += """</tbody>
                 </table>
@@ -422,6 +423,7 @@ def display_requests(form):
               </body>
 </html>"""
 
+    html.format(user=user,session=ses)
     print html
 
     return "passed"
