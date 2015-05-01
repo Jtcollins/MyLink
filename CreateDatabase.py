@@ -54,7 +54,7 @@ c.execute('''CREATE TABLE circles
 c.execute('''CREATE TABLE friendlist  
 	     (user TEXT NOT NULL,
 	      friend TEXT NOT NULL,
-c	      circle TEXT,
+	      circle TEXT,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(friend) REFERENCES users(email),
