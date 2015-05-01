@@ -144,7 +144,7 @@ def display_admin_options(user, ses):
     print(content.format(user=user,session=ses))
 
 def display_admin_options(form, statement="", color="green"):
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -163,7 +163,7 @@ def display_admin_options(form, statement="", color="green"):
 #################################################################
 
 def display_user_profile(form):
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -268,7 +268,7 @@ def display_user_profile_init(user, ses):
     return "passed"
 
 def display_friend_profile(form):
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -278,7 +278,7 @@ def display_friend_profile(form):
     return "passed"
 
 def display_feed(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -315,7 +315,7 @@ def display_feed(form):
     return "passed"
 
 def display_requests(form):
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -431,7 +431,7 @@ def display_requests(form):
 #################################################################
 
 def display_friend_circles(form):
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
     
@@ -487,7 +487,7 @@ def display_friend_circles(form):
 
 #################################################################
 def change_name_page(form):
-    if "user" in form and "session" in form and check_session(form) == "passed":
+    if "user" in form and "session" in form and check_session(form) == True:
         user=form["user"].value
         ses=form["session"].value
         html = """
@@ -524,7 +524,7 @@ def change_name(form):
     firstname = form["firstname"].value
     lastname = form["lastname"].value
     
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -578,7 +578,7 @@ def change_password(form):
     newPW = form["npw"].value
     newPWVer = form["npw-ver"].value
 
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -600,7 +600,7 @@ def change_password(form):
         return "failed"
 
 def upload_user_pic_page(form):
-    if session.check_session(form) != "passed":
+    if session.check_session(form) != True:
        login_form()
        return
 
@@ -662,7 +662,7 @@ def verify_page(form):
       </form>
 </div>
 """
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -688,7 +688,7 @@ def verify_final(form):
     ses=form["session"].value
     verif = form["verif"].value
 
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -749,7 +749,7 @@ def request_response(form):
     return "failed"
 
 def create_circle_page(form):
-    if "user" in form and "session" in form and check_session(form) == "passed":
+    if "user" in form and "session" in form and check_session(form) == True:
         user=form["user"].value
         ses=form["session"].value
         html = """
@@ -778,7 +778,7 @@ def create_circle_page(form):
     return "passed"
 
 def create_circle(form):
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -795,7 +795,7 @@ def create_circle(form):
     return "passed"
 
 def manage_circle(form):
-    if check_session(form) != "passed":
+    if check_session(form) != True:
        login_form()
        return
     # Top of html file
@@ -842,7 +842,7 @@ def manage_circle(form):
     return "passed"
 
 def update_circle(form):
-    if check_session(form) != "passed":
+    if check_session(form) != True:
        login_form()
        return
 
@@ -883,7 +883,7 @@ def create_new_post(form):
     fileInfo = form['file']
     postDate= datetime.now()
 
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -905,18 +905,17 @@ def create_new_post(form):
 def create_new_session(user):
     # Store random string as session number
     # Number of characters in session string
-    n = 20
-    char_set = string.ascii_uppercase + string.digits
-    session = ''.join(random.sample(char_set,n))
-    create_cookie(user, session)
+    ses = session.create_session(user)
+    create_cookie(user, ses)
     return session
 
 #################################################################
+
 def check_session(form):
     if "user" in form and "session" in form:
         user=form["user"].value
         session=form["session"].value
-    return check_cookie(user, session)
+    return check_cookie(user, session) and session.check_session(form)
 
 def logout(form):
     user=form["user"].value
@@ -945,9 +944,9 @@ def check_cookie(user, session):
     cookie = Cookie.SimpleCookie()
     cookie.load(cookieString)
     if cookie["session"].value == session:
-        return "passed"
+        return True
     else:
-        return "failed"
+        return False
 
 #################################################################
 
@@ -971,7 +970,7 @@ def verify_email(useremail):
 ##############################################################
 def new_album(form):
     #Check session
-    if check_session(form) != "passed":
+    if check_session(form) != True:
        return
 
     html="""
@@ -983,7 +982,7 @@ def new_album(form):
 ##############################################################
 def show_image(form):
     #Check session
-    if check_session(form) != "passed":
+    if check_session(form) != True:
        login_form()
        return
 
@@ -1038,7 +1037,7 @@ def show_postpic(form):
 ###############################################################################
 
 def upload(form):
-    if check_session(form) != "passed":
+    if check_session(form) != True:
        login_form()
        return
 
@@ -1066,7 +1065,7 @@ def upload(form):
 
 def upload_pic_data(form):
     #Check session is correct
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -1091,7 +1090,7 @@ def upload_pic_data(form):
 
 def upload_post_pic(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -1122,7 +1121,7 @@ def upload_post_pic(form):
 
 def new_profile_pic(form):
     #Check session is correct
-    if (session.check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
@@ -1165,7 +1164,7 @@ def print_html_content_type():
 	print("Content-Type: text/html\n\n")
 
 def print_html_nav(form):
-    if (check_session(form) == "passed"):
+    if (check_session(form) == True):
         user = form["user"].value
         ses = form["session"].value
         with open("nav.html") as content_file:

@@ -45,9 +45,9 @@ def check_session(form):
         session=form["session"].value
         session_stored=read_session_string(username)
         if session_stored==session:
-           return "passed"
+           return True
 
-    return "failed"
+    return False
 
 
 def read_session_string(user):
