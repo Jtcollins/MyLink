@@ -10,17 +10,17 @@ conn = sqlite3.connect('picture_share.db')
 c = conn.cursor()
 
 # Add one user
-user=('dave@gmail.com', 'dave123', 'NULL', 'NULL', 'NULL', 'NULL')
+user=('dave@gmail.com', 'dave123', 'David', 'Dee', 'default.jpg', 'NULL')
 c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', user)
 
 # Larger example that inserts many records at a time
-users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('mary@gmail.com', 'mary123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('peter@gmail.com', 'peter123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('frank@gmail.com', 'frank123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('susan@gmail.com', 'susan123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('edward@gmail.com', 'edward123', 'NULL', 'NULL', 'NULL', 'NULL'),
-             ('betty@gmail.com', 'betty123', 'NULL', 'NULL', 'NULL', 'NULL'),
+users = [('george@gmail.com', 'abc123', 'George', 'Gee', 'default.jpg', 'NULL'),
+             ('mary@gmail.com', 'mary123', 'Mary', 'Em', 'default.jpg', 'NULL'),
+             ('peter@gmail.com', 'peter123', 'Peter', 'P', 'default.jpg', 'NULL'),
+             ('frank@gmail.com', 'frank123', 'Frank', 'Eff', 'default.jpg', 'NULL'),
+             ('susan@gmail.com', 'susan123', 'susan', 'S', 'default.jpg', 'NULL'),
+             ('edward@gmail.com', 'edward123', 'edward', 'Ed', 'default.jpg', 'NULL'),
+             ('betty@gmail.com', 'betty123', 'betty', 'Bee', 'default.jpg', 'NULL'),
             ]
 c.executemany('INSERT INTO users VALUES (?,?,?,?,?,?)', users)
 
