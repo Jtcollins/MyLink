@@ -209,7 +209,7 @@ def display_post(row):
 
     html= """
     <div class="panel panel-warning">
-        <div class="panel panel-title">{poster} on {postDate}</h3>
+        <div class="panel panel-heading">{poster} on {postDate}</h3>
         </div>
         <div class="panel-body">{message}<br>{picture}
             </div>
