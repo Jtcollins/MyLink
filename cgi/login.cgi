@@ -155,9 +155,9 @@ def display_album(form):
         t2 = (path, albumname, user,)
         c2.execute('SELECT * FROM pictures WHERE path=? AND album=? AND owner=?', t2)
         if c2.fetchone() is None:
-            print(html.format(checked = "", friendname = name))
+            print(html.format(checked = "", picname = name))
         else:
-            print(html.format(checked = " checked", friendname = name))
+            print(html.format(checked = " checked", picname = name))
 
     conn.commit()
     conn.close()
@@ -166,7 +166,7 @@ def display_album(form):
     with open("AlbumFoot.html") as content_file:
         content = content_file.read()
 
-    print(content.format(user = user, session = session, circlename = circlename))
+    print(content.format(user = user, session = session, albumname = albumname))
     return "passed"
 
 def new_album_page(form):
