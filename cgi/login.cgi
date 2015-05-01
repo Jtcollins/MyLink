@@ -209,9 +209,9 @@ def display_post(row):
     html= """
     <div class="panel panel-warning">
         <div class="panel-heading">
-            <h3 class="panel-title">{poster}</h3><p>on {postDate}</p>
+            <h4 class="panel-title">{poster}on {postDate}</h4>
         </div>
-        <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&user={picture}" class="img-thumbnail" alt="User's profile pic">
+        <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="User's profile pic">
             </div>
     </div><!-- /.blog-post -->
     """
@@ -976,7 +976,7 @@ def main():
         elif action == "show_profilepic":
             show_profilepic(form)
         elif action == "show_postpic":
-            show_postpic(form)
+            show_postpic(addr)
         else:
             login_form()
     else:
