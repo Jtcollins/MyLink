@@ -942,6 +942,8 @@ def main():
           display_admin_options(form)
         elif action == "view_profile":
           display_user_profile(form)
+        elif action == "view_requests":
+          display_requests(form)
         elif action == "view_news":
             display_feed(form)
 
