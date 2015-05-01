@@ -233,7 +233,7 @@ def display_post(row):
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={poster}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}
                 </div>
@@ -246,7 +246,7 @@ def display_post(row):
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={poster}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="Post Pic">
                 </div>
