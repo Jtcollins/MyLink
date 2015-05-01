@@ -385,14 +385,14 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href={accept}>Decline</a></td>
+                <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend{friend}>Accept</a></td>
                 <td><a href={delete}>Decline</a></td>
               </tr> 
         """
         curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
-        print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], accept="#",delete="#")
+        print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], user=user, session=ses,delete="#")
 
     html = """</tbody>
                 </table>
@@ -792,7 +792,21 @@ def friend_request(form):
 
 def accept_request(form):
     #TODO
-    return "failed"
+    user=form["user"].value
+    friend=form["friend"].value
+    ses=form["session"].value
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+
+    t = (user,friend,"accepted",)
+    c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
+    t = ("accepted",friend,user,)
+    c.execute('UPDATE friendlist SET circle=? WHERE user=? AND friend=?', ts)
+
+    conn.commit()
+    conn.close()
+    return "success"
 
 def delete_friend(form):
     #TODO
@@ -1359,6 +1373,9 @@ def main():
                 display_friend_profile(form)
             else:
                 display_requests(form)
+        elif action == "accept-request":
+            accept_request(form)
+            display_requests(form)
         elif action == "show_profilepic":
             show_profilepic(form)
         elif action == "show_postpic":
