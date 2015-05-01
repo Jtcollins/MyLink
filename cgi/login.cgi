@@ -336,7 +336,7 @@ def display_requests(form):
             <label for="inputEmail" class="sr-only">First Name</label>
             <input type="text" id="friend" NAME="friend" class="form-control" placeholder="Friend's Email Address" required autofocus>
             <INPUT TYPE=hidden NAME="action" VALUE="new-request">
-            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="user" VALUE="{sender}">
             <INPUT TYPE=hidden NAME="session" VALUE="{session}">
             <INPUT TYPE=hidden NAME="currpage" VALUE="requests">
             <br>
@@ -345,7 +345,7 @@ def display_requests(form):
           <br>
     """
 
-    html.format(user=user,session=ses)
+    html.format(sender=user,session=ses)
 
     t = (user,"request")
     c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
