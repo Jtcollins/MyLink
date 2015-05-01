@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #Get Databasedir
-MYLOGIN="colli180"
+MYLOGIN="chanthor"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 IMAGEPATH="/homes/"+MYLOGIN+"/MyLink/images"
 
@@ -65,11 +65,24 @@ def display_user():
     #TODO
     print("hello")
 
-def display_album():
-    #TODO
-    print("hello1")
+##########################################################
+def display_album(form):
+    if (check_session(form) != True):
+        login_form()
+        return
 
-###################################################################
+    print_html_content_type()
+    print_html_nav(form)
+    
+    user = form["user"].value
+    session = form["session"].value
+
+    with open("UserAlbums.html") as content_file:
+        content = content_file.read()
+        
+    print(content.format(user = user, session = session))
+
+##########################################################
 # Define function to test the password.
 def check_password(user, passwd):
 
@@ -1328,7 +1341,10 @@ def main():
             display_feed(form)
         elif action == "view_circles":
           display_friend_circles(form)
+        elif action == "view_albums":
+            display_album(form)
 
+        ## CIRCLE PAGES
         elif action == "cr-fr-circle":
             create_circle_page(form)
         elif action == "create-circle":
