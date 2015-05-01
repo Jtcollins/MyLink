@@ -346,7 +346,10 @@ def display_feed(form):
     t = (user,)
     for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
-        print(html.format(checked = "", circlename = name))
+        if c.fetchone() is None:
+            print(html.format(checked = "", circlename = name))
+        else:
+            print(html.format(checked = " checked", circlename = name))
 
     html = """</div><!-- /.col-sm-4 -->
         </form>
@@ -1009,15 +1012,24 @@ def remove_friend_from_circle(form):
 #################################################################
 def create_new_post(form):
     user=form["user"].value
-    pic=form["picture"].value
+    cir=form["circle"].value
     mess=form["newpost"].value
+    fileInfo = form['file']
     postDate= datetime.now()
 
-    if (check_session(form) != "passed"):
+    if (check_session(form) != True):
         login_form()
         return
 
-    #if (check_verified(form) == True):
+    if (mess == "" and fileInfo == ""):
+        return
+
+    postconn = sqlite3.connect(DATABASE)
+    postc = postconn.cursor()
+
+    picid = upload_post_pic(form)
+
+        #if (check_verified(form) == True):
     postconn = sqlite3.connect(DATABASE)
     postc = postconn.cursor()
 
@@ -1028,7 +1040,7 @@ def create_new_post(form):
         value = str(form.getvalue(variable))
         if value == "checkbox":
             cir=variable
-            t = (user,cir,postDate,mess,pic,)
+            t = (user,cir,postDate,mess,picid,)
             postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
 
 
