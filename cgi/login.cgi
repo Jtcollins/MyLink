@@ -342,7 +342,6 @@ def display_requests(form):
             <button class="btn btn-md btn-primary btn-block" type="submit">Add Friend</button>
           </form>
           <br>
-    </div>
     """
 
     t = (user,"request")
@@ -390,10 +389,19 @@ def display_requests(form):
                 </table>
                 </div>
             </div>
-            <h3 class="form-requests-heading">Pending Requests</h3>
+            <h3 class="form-requests-heading">Friend Requests</h3>
         <div class="row">  
           <div class="col-md-6">
-        <table class="table table-striped">"""
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Add to circle</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>"""
 
     for friend in pending:
         html += """
@@ -409,7 +417,8 @@ def display_requests(form):
     html += """</tbody>
                 </table>
                 </div>
-            </div>       
+            </div>
+                </div>       
               </body>
 </html>"""
 
