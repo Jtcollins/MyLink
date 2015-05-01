@@ -311,7 +311,7 @@ def display_feed(form):
 </div><!-- /input-group -->
     """
     t = (user,)
-    for row in c.execute('SELECT DISTINCT circle FROM circles WHERE user=?', t):
+    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
         name = row[0]
         firstn = row[1]
         lastn = row[2]
