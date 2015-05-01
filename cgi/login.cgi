@@ -355,7 +355,7 @@ def display_requests(form):
     if len(friendlist) == 0 and len(pending) == 0:
         print "  </body>"
         print "</html>"
-        return passed
+        return "passed"
 
     html += """
         <h3 class="form-requests-heading">Change Add a new friend</h3>
