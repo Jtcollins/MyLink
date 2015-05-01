@@ -704,7 +704,7 @@ def create_new_post(form):
         login_form()
         return
 
-    if (if mess == "" and fileInfo == ""):
+    if (mess == "" and fileInfo == ""):
         return
 
     postconn = sqlite3.connect(DATABASE)
