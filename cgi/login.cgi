@@ -99,7 +99,8 @@ def new_user(user, firstname, lastname, passwd):
     newuser = (user, passwd, firstname, lastname, "default.jpg", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
-    c.execute('SELECT * FROM users WHERE email=jtc@purdue.edu')
+    bg = ("jtc@purdue.edu")
+    c.execute('SELECT * FROM users WHERE email=?',bg)
     basedgod = c.fetchone()
     if row == None:
         c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', newuser)
