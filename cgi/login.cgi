@@ -206,18 +206,32 @@ def display_post(row):
     message = row[3]
     picture = row[4]
 
-    html= """
-    <div class="panel panel-warning">
-        <div class="panel-heading">
-            <h4 class="panel-title">{poster}on {postDate}</h4>
-        </div>
-        <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="User's profile pic">
+    if(picture == "Null"):
+        html= """
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h4 class="panel-title">{poster} on {postDate}</h4>
             </div>
-    </div><!-- /.blog-post -->
-    """
+            <div class="panel-body">{message}
+                </div>
+        </div><!-- /.blog-post -->
+        """
 
-    print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,message=message))
-    return "passed"
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,message=message))
+        return "passed"
+    else:
+        html= """
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h4 class="panel-title">{poster} on {postDate}</h4>
+            </div>
+            <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="Post Pic">
+                </div>
+        </div><!-- /.blog-post -->
+        """
+
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,message=message))
+        return "passed"
 
 def display_user_profile_init(user, ses):
 
