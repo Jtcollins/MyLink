@@ -12,6 +12,15 @@
             <img src="login.cgi?action=show_profilepic&user={user}" class="img-thumbnail" alt="User's profile pic">
           </div>
           <div class="sidebar-module">
+            <h4>More Info</h4>
+            <ol class="list-unstyled">
+              <li><a href="login.cgi?action=view_circles&user={user}&session={session}">Friends</a></li>
+              <li><a href="login.cgi?action=view_albums&user={user}&session={session}">Albums</a></li>
+              <li><a href="#">Send Friend Request/Delete Friend</a></li>
+              <li><a href="#">Add/Remove to Circle</a></li>
+
+
+            </ol>
           </div>
         </div><!-- /.blog-sidebar -->
 
@@ -19,7 +28,7 @@
             
           <div class="blog-post">
             <form class="form" ACTION="login.cgi" METHOD="POST" enctype="multipart/form-data">
-              <textarea class="form-control" placeholder="Write a post" id="newpost" name="newpost" required="" data-validation-required-message="Please enter a message." aria-invalid="false" required autofocus></textarea>
+              <textarea class="form-control" placeholder="Write a post" id="newpost" name="newpost" required="" data-validation-required-message="Please enter a message." aria-invalid="false"></textarea>
                   <INPUT TYPE=hidden NAME="circle" VALUE="abc">
                   <INPUT TYPE=hidden NAME="user" VALUE="{user}">
                   <INPUT TYPE=hidden NAME="session" VALUE="{session}">

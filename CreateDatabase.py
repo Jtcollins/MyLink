@@ -58,18 +58,19 @@ c.execute('''CREATE TABLE friendlist
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(friend) REFERENCES users(email),
-	      PRIMARY KEY(user, friend))''')
+	      PRIMARY KEY(user, friend, circle))''')
 
-# Creates a user friend table
+# Creates a user post table
 c.execute('''CREATE TABLE posts
 	     (user TEXT NOT NULL,
 	      circle TEXT NOT NULL,
 	      postDate DATETIME NOT NULL,
+	      message TEXT,
 	      picture TEXT,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(picture) REFERENCES pictures(path),
-	      PRIMARY KEY(user, postDate))''')
+	      PRIMARY KEY(user, postDate, circle))''')
 
 # Save the changes
 conn.commit()
