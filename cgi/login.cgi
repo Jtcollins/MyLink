@@ -606,6 +606,7 @@ def manage_circle(form):
     # Fill in friend list
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
+    c2 = conn.cursor()
 
     user=form["user"].value
     session=form["session"].value
@@ -616,13 +617,14 @@ def manage_circle(form):
 </div><!-- /input-group -->
     """
     t = (user,)
-    for row in c.execute('SELECT * FROM friendlist WHERE user=?', t):
-        name = row[1]
-        circle = row[2]
-        if circle == circlename:
-            print(html.format(checked = " checked", friendname = name))
-        else:
+    for row in c.execute('SELECT DISTINCT friend FROM friendlist WHERE user=?', t):
+        name = row[0]
+        t2 = (user, name, circlename,)
+        c2.execute('SELECT * FROM friendlist WHERE user=? AND friend=? AND circle=?', t2)
+        if c2.fetchone() is None:
             print(html.format(checked = "", friendname = name))
+        else:
+            print(html.format(checked = " checked", friendname = name))
 
     conn.commit()
     conn.close()
@@ -652,7 +654,7 @@ def update_circle(form):
         if value == "checkbox":
             friend=variable
             t = (user, friend, circlename,)
-            c.execute('SELECT * FROM friendlist where user=?, friend=?, circle=?', t)
+            c.execute('SELECT * FROM friendlist WHERE user=? AND friend=? AND circle=?', t)
             if c.fetchone() is None:
                 c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
 
@@ -936,6 +938,7 @@ def main():
             manage_circle(form)
         elif action == "update-circle":
             update_circle(form)
+            display_friend_circles(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
