@@ -222,24 +222,30 @@ def display_post(row):
     message = row[3]
     picture = row[4]
 
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
     if(picture == "Null"):
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title">{poster} on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}
                 </div>
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], poster=user,message=message))
         return "passed"
     else:
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title">{poster} on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="Post Pic">
                 </div>
