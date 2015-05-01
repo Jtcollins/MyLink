@@ -104,9 +104,9 @@ def new_user(user, firstname, lastname, passwd):
     basedgod = c.fetchone()
     if row == None:
         c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', newuser)
-        c.execute('INSERT INTO circles VALUES (?,?)', (newuser,"friends",))
-        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (newuser,basedgod,"friends"))
-        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (basedgod,newuser,"friends"))
+        c.execute('INSERT INTO circles VALUES (?,?)', (user,"friends",))
+        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (user,basedgod,"friends"))
+        c.execute('INSERT INTO friendlist VALUES (?,?,?)', (basedgod,user,"friends"))
         conn.commit()
         conn.close()
         return "passed"
