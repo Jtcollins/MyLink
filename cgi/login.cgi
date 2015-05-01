@@ -633,7 +633,7 @@ def manage_circle(form):
     with open("circlemanagerfoot.html") as content_file:
         content = content_file.read()
 
-    print(content.format(user = user, session = session))
+    print(content.format(user = user, session = session, circlename = circlename))
     return "passed"
 
 def update_circle(form):
