@@ -197,7 +197,8 @@ def display_user_profile(form):
 
     html = """</div><!-- /.col-sm-4 -->
         </form>
-    </div><!-- /.container -->"""
+    </div><!-- /.container -->
+    <div class="col-sm-8 blog-main">"""
 
     print html
 
