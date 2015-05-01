@@ -202,7 +202,7 @@ def display_user_profile(form):
     print html
 
     for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
-        display_post(row)
+        display_post(row,ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -213,7 +213,7 @@ def display_user_profile(form):
 
     return "passed"
 
-def display_post(row):
+def display_post(row,ses):
     if row is None:
         return
     user = row[0]
@@ -240,7 +240,7 @@ def display_post(row):
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], poster=user,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], session=ses, poster=user,message=message))
         return "passed"
     else:
         html= """
@@ -253,7 +253,7 @@ def display_post(row):
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,session=ses, message=message))
         return "passed"
 
 def display_user_profile_init(user, ses):
@@ -293,7 +293,7 @@ def display_user_profile_init(user, ses):
     print html
 
     for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
-        display_post(row)
+        display_post(row, ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -354,7 +354,7 @@ def display_friend_profile(form):
 
     cs = (user,friend)
     for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', cs):
-        display_post(row)
+        display_post(row, ses)
     
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -419,7 +419,7 @@ def display_feed(form):
     q = (user,user,)
     #for col in circles:
     for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) OR user=? GROUP BY postDate ORDER BY postDate DESC', q):
-            display_post(row)
+            display_post(row, ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
