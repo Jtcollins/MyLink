@@ -870,7 +870,7 @@ def main():
         elif action == "view_profile":
           display_user_profile(form)
         elif action == "view_news":
-            display_user_profile(form)
+            display_feed(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
