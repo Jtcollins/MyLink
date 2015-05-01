@@ -656,9 +656,9 @@ def update_circle(form):
             if c.fetchone() is None:
                 c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
 
-   conn.commit()
-   conn.close()
-   return "passed"
+    conn.commit()
+    conn.close()
+    return "passed"
 
 def friend_to_circle(form):
     #TODO
