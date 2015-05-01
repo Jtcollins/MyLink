@@ -17,6 +17,10 @@ c.execute('INSERT INTO users VALUES (?,?,?,?,?,?)', user)
 users = [('george@gmail.com', 'abc123', 'NULL', 'NULL', 'NULL', 'NULL'),
              ('mary@gmail.com', 'mary123', 'NULL', 'NULL', 'NULL', 'NULL'),
              ('peter@gmail.com', 'peter123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('frank@gmail.com', 'frank123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('susan@gmail.com', 'susan123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('edward@gmail.com', 'edward123', 'NULL', 'NULL', 'NULL', 'NULL'),
+             ('betty@gmail.com', 'betty123', 'NULL', 'NULL', 'NULL', 'NULL'),
             ]
 c.executemany('INSERT INTO users VALUES (?,?,?,?,?,?)', users)
 
@@ -54,6 +58,16 @@ pictures = [
 
 c.executemany('INSERT INTO pictures VALUES (?,?,?)', pictures)
 
+friendlist = [
+               ("george@gmail.com", "mary@gmail.com", "NULL"),
+               ("george@gmail.com", "peter@gmail.com", "NULL"),
+               ("george@gmail.com", "frank@gmail.com", "NULL"),
+               ("george@gmail.com", "susan@gmail.com", "NULL"),
+               ("george@gmail.com", "edward@gmail.com", "NULL"),
+               ("george@gmail.com", "betty@gmail.com", "NULL"),
+             ]
+c.executemany('INSERT INTO friendlist VALUES (?,?,?)', pictures)
+               
 # commit or there are no changes
 conn.commit()
 

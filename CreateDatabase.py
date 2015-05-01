@@ -51,14 +51,14 @@ c.execute('''CREATE TABLE circles
 	      PRIMARY KEY(user, name))''')
 
 # Creates a user friend table
-c.execute('''CREATE TABLE friendlist
+c.execute('''CREATE TABLE friendlist  
 	     (user TEXT NOT NULL,
-	      circle TEXT NOT NULL,
 	      friend TEXT NOT NULL,
+c	      circle TEXT,
 	      FOREIGN KEY(user) REFERENCES users(email),
 	      FOREIGN KEY(circle) REFERENCES circles(name),
 	      FOREIGN KEY(friend) REFERENCES users(email),
-	      PRIMARY KEY(user, friend))''')
+	      PRIMARY KEY(user, friend, circle))''')
 
 # Creates a user post table
 c.execute('''CREATE TABLE posts
