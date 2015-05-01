@@ -783,7 +783,7 @@ def friend_request(form):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    t = (user,"request",friend,)
+    t = (user,friend,"request",)
     c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
 
     conn.commit()
@@ -791,7 +791,11 @@ def friend_request(form):
 
     return "success"
 
-def request_response(form):
+def accept_request(form):
+    #TODO
+    return "failed"
+
+def delete_friend(form):
     #TODO
     return "failed"
 
