@@ -4,7 +4,6 @@ import sqlite3
 conn = sqlite3.connect('picture_share.db')
 c = conn.cursor()
 
-print
 print 'Print all users'
 for row in c.execute('SELECT * FROM users'):
   print row
@@ -20,6 +19,9 @@ print 'Print all posts'
 for row in c.execute('SELECT * FROM posts'):
   print row
 
+print 'count of users'
+c.execute('SELECT COUNT(email) FROM users')
+print c.fetchone()[0]
 
 print 'Print all friendslist'
 for row in c.execute('SELECT * FROM friendlist'):
@@ -27,4 +29,8 @@ for row in c.execute('SELECT * FROM friendlist'):
 
 print 'Print all circles'
 for row in c.execute('SELECT * FROM circles'):
+  print row
+
+print 'all pics'
+for row in c.execute('SELECT * FROM pictures'):
   print row
