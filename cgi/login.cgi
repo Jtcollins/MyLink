@@ -90,7 +90,7 @@ def check_password(user, passwd):
     return "failed"
 
 ##########################################################
-def new_user(user, firstname, lastName, passwd):
+def new_user(user, firstname, lastname, passwd):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
