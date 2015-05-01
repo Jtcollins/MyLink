@@ -297,9 +297,8 @@ def display_feed(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM circles WHERE email=?', t)
+    c.execute('SELECT * FROM circles WHERE user=?', t)
     circles = c.fetchall()
-
 
     user=form["user"].value
     ses=form["session"].value
