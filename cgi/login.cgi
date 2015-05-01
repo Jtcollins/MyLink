@@ -1491,6 +1491,8 @@ def main():
             show_profilepic(form)
         elif action == "show_postpic":
             show_postpic(form)
+        elif action == "view-friend":
+            display_friend_profile(form)
         else:
             login_form()
     else:
