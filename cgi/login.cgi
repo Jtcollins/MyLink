@@ -177,7 +177,6 @@ def display_user_profile(form):
         content = content_file.read()
 
     t = (user,)
-    ver = verify_email(user)
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
@@ -216,7 +215,7 @@ def display_post(row):
     </div><!-- /.blog-post -->
     """
     if(picture=="Null"):
-        picture=""
+        hdr=""
     else:
         with open(IMAGEPATH+'/posts/'+picture, 'rb') as content_file:
             content = content_file.read()
