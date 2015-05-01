@@ -253,7 +253,7 @@ def display_post(row,user,ses):
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=poster,picture=picture,user=user, session=ses, message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3],poster=poster,picture=picture,user=user, session=ses, message=message))
         return "passed"
 
 def display_user_profile_init(user, ses):
