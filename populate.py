@@ -58,6 +58,15 @@ pictures = [
 
 c.executemany('INSERT INTO pictures VALUES (?,?,?)', pictures)
 
+circles = [
+            ('george@gmail.com', 'Buddies'),
+            ('george@gmail.com', 'Family'),
+            ('george@gmail.com', 'Coworkers'),
+            ('george@gmail.com', 'School'),
+            ('george@gmail.com', 'Others'),
+          ]
+c.executemany('INSERT INTO circles VALUES (?,?)', circles)
+          
 friendlist = [
                ("george@gmail.com", "mary@gmail.com", "NULL"),
                ("george@gmail.com", "peter@gmail.com", "NULL"),
