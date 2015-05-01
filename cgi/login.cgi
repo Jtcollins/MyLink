@@ -390,7 +390,7 @@ def display_requests(form):
                 <td><a href={delete}>Decline</a></td>
               </tr> 
         """
-        curr = (friend[0],)
+        curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
         print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], accept="#",delete="#")
@@ -422,7 +422,7 @@ def display_requests(form):
                 <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        curr = (friend[0],)
+        curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
         print html.format(friend=friend[2],firstname=currdet[2],lastname=currdet[3], delete="#")
