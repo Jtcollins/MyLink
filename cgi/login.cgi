@@ -612,9 +612,7 @@ def manage_circle(form):
 
     html = """
 <div class="input-group">
-  <span class="input-group-addon">
-    <input type="checkbox" name="{friendname}" aria-label="..." value="checkbox">{friendname}</input>
-  </span>
+  <input type="checkbox" name="{friendname}" aria-label="..." value="checkbox">{friendname}</input>
 </div><!-- /input-group -->
     """
     t = (user,)
