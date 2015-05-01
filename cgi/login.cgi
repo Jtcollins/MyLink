@@ -612,18 +612,20 @@ def manage_circle(form):
 
     html = """
 <div class="input-group">
-  <label><input type="checkbox" name="{friendname}" aria-label="..." value="checkbox">{friendname}</input></label>
+  <label><input type="checkbox" name="{friendname}" aria-label="..." value="checkbox"{checked}>{friendname}</input></label>
 </div><!-- /input-group -->
     """
     t = (user,)
     for row in c.execute('SELECT * FROM friendlist WHERE user=?', t):
         name = row[1]
-        print(html.format(friendname = name))
+        circle = row[2]
+        if circle == circlename:
+            print(html.format(checked = " checked", friendname = name))
+        else:
+            print(html.format(checked = "", friendname = name))
 
     conn.commit()
     conn.close()
-
-    #TODO: pre-check boxes of friends already in circle
 
     #Bottom of html file
     with open("circlemanagerfoot.html") as content_file:
@@ -637,17 +639,26 @@ def update_circle(form):
        login_form()
        return
 
-    #TODO: update friendlist with checked items
-    
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    circlename=form["circlename"].value
     variable = ""
     value = ""
     for key in form.keys():
         variable = str(key)
         value = str(form.getvalue(variable))
         if value == "checkbox":
-            sys.stderr.write("variable: " + variable + ", value: "+ value + "\n")
+            friend=variable
+            t = (user, friend, circlename,)
+            c.execute('SELECT * FROM friendlist where user=?, friend=?, circle=?', t)
+            if c.fetchone() is None:
+                c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
 
-    return "passed"
+   conn.commit()
+   conn.close()
+   return "passed"
 
 def friend_to_circle(form):
     #TODO
