@@ -202,7 +202,7 @@ def display_user_profile(form):
     print html
 
     for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
-        display_post(row,ses)
+        display_post(row,user,ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -213,10 +213,10 @@ def display_user_profile(form):
 
     return "passed"
 
-def display_post(row,ses):
+def display_post(row,user,ses):
     if row is None:
         return
-    user = row[0]
+    poster = row[0]
     circle = row[1]
     postDate = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S.%f" )
     message = row[3]
@@ -225,7 +225,7 @@ def display_post(row,ses):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    t = (user,)
+    t = (poster,)
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
@@ -233,27 +233,27 @@ def display_post(row,ses):
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={poster}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={poster}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}
                 </div>
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], session=ses, poster=user,message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),firstname=userdetails[2], lastname=userdetails[3], session=ses, poster=poster,message=message))
         return "passed"
     else:
         html= """
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={poster}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
+                <h4 class="panel-title"><a href="login.cgi?action=view-friend&user={user}&session={session}&friend={friend}">{firstname} {lastname} ({poster})</a> on {postDate}</h4>
             </div>
             <div class="panel-body">{message}<br><img src="login.cgi?action=show_postpic&addr={picture}" class="img-thumbnail" alt="Post Pic">
                 </div>
         </div><!-- /.blog-post -->
         """
 
-        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=picture,session=ses, message=message))
+        print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=poster,picture=picture,user=user, session=ses, message=message))
         return "passed"
 
 def display_user_profile_init(user, ses):
@@ -293,7 +293,7 @@ def display_user_profile_init(user, ses):
     print html
 
     for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
-        display_post(row, ses)
+        display_post(row, user,ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -354,7 +354,7 @@ def display_friend_profile(form):
 
     cs = (user,friend)
     for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', cs):
-        display_post(row, ses)
+        display_post(row, user,ses)
     
     with open("profilefoot.html") as content_file:
         content = content_file.read()
@@ -419,7 +419,7 @@ def display_feed(form):
     q = (user,user,)
     #for col in circles:
     for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) OR user=? GROUP BY postDate ORDER BY postDate DESC', q):
-            display_post(row, ses)
+            display_post(row, user, ses)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
