@@ -330,8 +330,11 @@ def display_feed(form):
     c.execute('SELECT * FROM users WHERE email=?', t)
     userdetails= c.fetchone()
 
-    c.execute('SELECT * FROM circles WHERE user=?', t)
+    c.execute('SELECT circle FROM friendslist WHERE friend=?', t)
     circles = c.fetchall()
+
+    c.execute('SELECT * FROM posts WHERE circle IN (?) GROUP BY postDate', circles)
+
 
     user=form["user"].value
     ses=form["session"].value
@@ -357,7 +360,7 @@ def display_feed(form):
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
     posts = stored_posts=c.fetchall()
     
-    for row in c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (?) GROUP BY postDate ORDER BY postDate DESC', circles):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
