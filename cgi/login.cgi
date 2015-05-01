@@ -193,7 +193,7 @@ def display_user_profile(form):
 </div><!-- /input-group -->
     """
     t = (user,)
-    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
+    for row in c.execute('SELECT name FROM circles WHERE user=?', t):
         name = row[0]
         if c.fetchone() is None:
             print(html.format(checked = "", circlename = name))
@@ -205,7 +205,7 @@ def display_user_profile(form):
     </div><!-- /.container -->"""
 
     print html
-    
+
     for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
         display_post(row)
 
