@@ -324,18 +324,23 @@ def display_friend_profile(form):
 
     print(content.format(user=user,friend=friend,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
 
-    c.execute('SELECT * FROM users WHERE email=?', t)
-    
-    html = """<li><a href="#">Send Friend Request/Delete Friend</a></li>"""
+    fs = (user,friend)
+    c.execute('SELECT * FROM friendlist WHERE user=? AND friend=?', fs)
+    friendship = c.fetchone()
 
-    html = """<li><a href="#">Add/Remove to Circles</a></li>"""
-
+    if(friendship == None):
+        html = """<li><a href="login.cgi?action=new-request&user={user}&session={session}&friend={friend}">Send Friend Request</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
+    else:
+        html = """<li><a href="login.cgi?action=view_circles&user={user}&session={session}">Add/Remove to Circles</a></li>"""
+        html = """<li><a href="login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}">Delete Friend</a></li>"""
+        print html.format(user=user,friend=friend,session=ses)
 
     html = """</ol>
           </div>
         </div><!-- /.blog-sidebar -->
 
-        <div class="col-sm-8 blog-main">"""
+        <div class="col-sm-6 blog-main">"""
 
     print html
 
