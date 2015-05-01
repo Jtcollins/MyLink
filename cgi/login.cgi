@@ -352,14 +352,14 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    if len(friendlist) == 0 and len(pending) == 0:
-        print html
-        print "  </body>"
-        print "</html>"
-        return "passed"
+    #if len(friendlist) == 0 and len(pending) == 0:
+    #    print html
+    #    print "  </body>"
+    #    print "</html>"
+    #    return "passed"
 
     html += """
-        <h3 class="form-requests-heading">Change Add a new friend</h3>
+        <h3 class="form-requests-heading">Friend Requests</h3>
         <div class="row">  
           <div class="col-md-6">
                   <table class="table table-striped">
@@ -390,6 +390,26 @@ def display_requests(form):
                 </table>
                 </div>
             </div>
+            <h3 class="form-requests-heading">Pending Requests</h3>
+        <div class="row">  
+          <div class="col-md-6">
+        <table class="table table-striped">"""
+
+    for friend in pending:
+        html += """
+            <tr>
+                <td>{firstname} {lastname}</td>
+                <td>{user}</td>
+                <td><a href="#">Add to circle</a></td>
+                <td><a href="#">Delete</a></td>
+              </tr> 
+        """
+        html.format(user=friend[2],firstname="Joe",lastname="bloggs")
+
+     html += """</tbody>
+                </table>
+                </div>
+            </div>       
               </body>
 </html>"""
 
@@ -641,7 +661,6 @@ def check_verified(form):
 
 #################################################################
 def friend_request(form):
-    #TODO
     user=form["user"].value
     friend=form["friend"].value
     ses=form["session"].value
@@ -678,13 +697,16 @@ def create_new_post(form):
     user=form["user"].value
     cir=form["circle"].value
     mess=form["newpost"].value
+    fileInfo = form['file']
     postDate= datetime.now()
 
     if (session.check_session(form) != "passed"):
         login_form()
         return
 
-    #if (check_verified(form) == True):
+    if (if mess == "" and fileInfo == ""):
+        return
+
     postconn = sqlite3.connect(DATABASE)
     postc = postconn.cursor()
 
