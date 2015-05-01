@@ -165,7 +165,7 @@ def new_album(form):
     alconn = sqlite3.connect(DATABASE)
     alc = alconn.cursor()
     #TODO: display error on duplicate names
-    t = (user, albumname, 'public',)
+    t = (albumname, user, 'public',)
     alc.execute('INSERT INTO albums VALUES (?,?,?)', t)
     alconn.commit()
     alconn.close()
