@@ -1009,25 +1009,29 @@ def remove_friend_from_circle(form):
 #################################################################
 def create_new_post(form):
     user=form["user"].value
-    cir=form["circle"].value
+    pic=form["picture"].value
     mess=form["newpost"].value
-    fileInfo = form['file']
     postDate= datetime.now()
 
-    if (check_session(form) != True):
+    if (check_session(form) != "passed"):
         login_form()
         return
 
-    if (mess == "" and fileInfo == ""):
-        return
-
+    #if (check_verified(form) == True):
     postconn = sqlite3.connect(DATABASE)
     postc = postconn.cursor()
 
-    picid = upload_post_pic(form)
+    variable = ""
+    value = ""
+    for key in form.keys():
+        variable = str(key)
+        value = str(form.getvalue(variable))
+        if value == "checkbox":
+            cir=variable
+            t = (user,cir,postDate,mess,pic,)
+            postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
 
-    t = (user,cir,postDate,mess,picid,)
-    postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
+
     postconn.commit()
     postconn.close()
     return "post successful"
