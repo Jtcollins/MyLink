@@ -66,7 +66,7 @@ friendlist = [
                ("george@gmail.com", "edward@gmail.com", "NULL"),
                ("george@gmail.com", "betty@gmail.com", "NULL"),
              ]
-c.executemany('INSERT INTO friendlist VALUES (?,?,?)', pictures)
+c.executemany('INSERT INTO friendlist VALUES (?,?,?)', friendlist)
                
 # commit or there are no changes
 conn.commit()
