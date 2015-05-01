@@ -291,7 +291,10 @@ def display_feed(form):
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
     posts = stored_posts=c.fetchall()
 
-    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+
+
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage="feed"))
     
     for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
         display_post(row)
@@ -302,6 +305,28 @@ def display_feed(form):
     print(content)
 
     conn.close()
+
+    return "passed"
+
+def display_requests(form):
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    print_html_content_type()
+    print_html_nav(form)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    ses=form["session"].value
+    with open("userprofile.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    c.execute('SELECT * FROM friends WHERE email=?', t)
+    friendlist= c.fetchall()
 
     return "passed"
 
@@ -584,13 +609,13 @@ def create_new_post(form):
     postconn = sqlite3.connect(DATABASE)
     postc = postconn.cursor()
 
-    t = (user,cir,postDate,mess,pic,)
+    picid = upload_post_pic(form)
+
+    t = (user,cir,postDate,mess,picid,)
     postc.execute('INSERT INTO posts VALUES (?,?,?,?,?)', t)
     postconn.commit()
     postconn.close()
     return "post successful"
-
-    return "failed"
 
 #################################################################
 def create_new_session(user):
@@ -747,6 +772,37 @@ def upload_pic_data(form):
         print('<image src="'+image_url+'">')
     else:
         message = 'No file was uploaded'
+
+def upload_post_pic(form):
+    #Check session is correct
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    #Get file info
+    fileInfo = form['file']
+
+    #Get user
+    user=form["user"].value
+    s=form["session"].value
+
+    # Check if the file was uploaded
+    if fileInfo.filename:
+        # Remove directory path to extract name only
+        fileName = os.path.basename(fileInfo.filename)
+
+        n = 20
+        char_set = string.ascii_uppercase + string.digits
+        filen = ''.join(random.sample(char_set,n))
+        filen += '.jpg'
+
+        open(IMAGEPATH+'/posts/'+filen, 'wb').write(fileInfo.file.read())
+
+        return filen    
+    else:
+        message = 'No file was uploaded'
+        return "Null"
+
 
 def new_profile_pic(form):
     #Check session is correct
