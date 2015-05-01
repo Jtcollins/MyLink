@@ -386,13 +386,13 @@ def display_requests(form):
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
                 <td><a href=login.cgi?action=accept-request&user={user}&session={session}&friend={friend}>Accept</a></td>
-                <td><a href={delete}>Decline</a></td>
+                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}>Decline</a></td>
               </tr> 
         """
         curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
-        print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], user=user, session=ses,delete="#")
+        print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], user=user, session=ses)
 
     html = """</tbody>
                 </table>
@@ -418,13 +418,13 @@ def display_requests(form):
             <tr>
                 <td><a href={friendprofile}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
-                <td><a href={delete}>Delete</a></td>
+                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}</td>
               </tr> 
         """
         curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
-        print html.format(friend=friend[1],firstname=currdet[2],lastname=currdet[3], delete="#", friendprofile="#")
+        print html.format(friend=friend[1],firstname=currdet[2],lastname=currdet[3], user=user, session=ses, friendprofile="#")
 
 
     html = """</tbody>
@@ -451,13 +451,13 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href={delete}>Delete</a></td>
+                <td><a href=login.cgi?action=delete-friend&user={user}&session={session}&friend={friend}</td>
               </tr> 
         """
         curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
-        print html.format(friend=friend[1],firstname=currdet[2],lastname=currdet[3], delete="#")
+        print html.format(friend=friend[1],firstname=currdet[2],lastname=currdet[3], user=user, session=ses)
 
     html = """</tbody>
                 </table>
@@ -809,8 +809,21 @@ def accept_request(form):
     return "success"
 
 def delete_friend(form):
-    #TODO
-    return "failed"
+    user=form["user"].value
+    friend=form["friend"].value
+    ses=form["session"].value
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (user,friend,)
+    c.execute('DELETE friendlist WHERE user=? AND friend=?', t)
+    t = (friend,user,)
+    c.execute('DELETE friendlist WHERE user=? AND friend=?', t)
+
+    conn.commit()
+    conn.close()
+    return "success"
 
 def create_circle_page(form):
     if "user" in form and "session" in form and check_session(form) == True:
@@ -1376,6 +1389,8 @@ def main():
         elif action == "accept-request":
             accept_request(form)
             display_requests(form)
+        elif action == "delete-friend":
+            delete_friend(form)
         elif action == "show_profilepic":
             show_profilepic(form)
         elif action == "show_postpic":
