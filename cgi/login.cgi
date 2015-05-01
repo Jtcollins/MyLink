@@ -293,7 +293,7 @@ def display_feed(form):
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
-    for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC', t):
+    for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
