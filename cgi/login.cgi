@@ -90,13 +90,13 @@ def check_password(user, passwd):
     return "failed"
 
 ##########################################################
-def new_user(user, passwd):
+def new_user(user, firstname, lastName, passwd):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
     t = (user,)
     ver = verify_email(user)
-    newuser = (user, passwd, "Joe", "Bloggs", "default.jpg", ver)
+    newuser = (user, passwd, firstname, lastname, "default.jpg", ver)
     c.execute('SELECT * FROM users WHERE email=?', t)
     row = stored_password=c.fetchone()
     if row == None:
@@ -325,12 +325,15 @@ def display_requests(form):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
+    userconn = sqlite3.connect(DATABASE)
+    userc = userconn.cursor()
+
     user=form["user"].value
     ses=form["session"].value
 
     html= """
         <div class="container">
-
+            <h2>Friend Management</h3>
           <form METHOD=post ACTION="login.cgi" class="form-signin">
 
             <h3 class="form-requests-heading">Add a new friend</h3>
@@ -355,6 +358,9 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
+    c.execute('SELECT * FROM friendlist WHERE user=?', t)
+    existing = c.fetchall()
+
 
     html = """
         <h3 class="form-requests-heading">Friend Requests</h3>
@@ -365,7 +371,7 @@ def display_requests(form):
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Add to circle</th>
+                        <th>Accept</th>
                         <th>Delete</th>
                       </tr>
                     </thead>
@@ -379,11 +385,14 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href={addcircle}>Add to circle</a></td>
-                <td><a href={delete}>Delete</a></td>
+                <td><a href={accept}>Decline</a></td>
+                <td><a href={delete}>Decline</a></td>
               </tr> 
         """
-        print html.format(friend=friend[0],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
+        curr = (friend[0],)
+        userc.execute('SELECT * FROM users WHERE email=?', curr)
+        currdet = userc.fetchone()
+        print html.format(friend=friend[0],firstname=currdet[2],lastname=currdet[3], accept="#",delete="#")
 
     html = """</tbody>
                 </table>
@@ -397,7 +406,6 @@ def display_requests(form):
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Add to circle</th>
                         <th>Delete</th>
                       </tr>
                     </thead>
@@ -410,11 +418,46 @@ def display_requests(form):
             <tr>
                 <td>{firstname} {lastname}</td>
                 <td>{friend}</td>
-                <td><a href={addcircle}>Add to circle</a></td>
                 <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        print html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
+        curr = (friend[0],)
+        userc.execute('SELECT * FROM users WHERE email=?', curr)
+        currdet = userc.fetchone()
+        print html.format(friend=friend[2],firstname=currdet[2],lastname=currdet[3], delete="#")
+
+
+    html = """</tbody>
+                </table>
+                </div>
+            </div>
+            <h3 class="form-requests-heading">Current Friends</h3>
+        <div class="row">  
+          <div class="col-md-6">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>"""
+
+    print html
+
+    for friend in existing:
+        html = """
+            <tr>
+                <td>{firstname} {lastname}</td>
+                <td>{friend}</td>
+                <td><a href={delete}>Delete</a></td>
+              </tr> 
+        """
+        curr = (friend[0],)
+        userc.execute('SELECT * FROM users WHERE email=?', curr)
+        currdet = userc.fetchone()
+        print html.format(friend=friend[2],firstname=currdet[2],lastname=currdet[3], delete="#")
 
     html = """</tbody>
                 </table>
@@ -422,9 +465,12 @@ def display_requests(form):
             </div>
                 </div>       
               </body>
-</html>"""
+    </html>"""
 
     print html
+
+    conn.close()
+    userconn.close()
 
     return "passed"
 
@@ -1213,11 +1259,13 @@ def main():
                    login_form()
                    print("<H3><font color=\"red\">Incorrect user/password</font></H3>")
         elif (action == "signup"):
-            if "signup-username" in form and "signup-password" in form:
+            if "signup-username" in form and "signup-password" in form and "signup-firstname" in form and "signup-lastname" in form:
                 #Test password
                 username=form["signup-username"].value
+                firstname=form["signup-firstname"].value
+                lastname=form["signup-lastname"].value
                 password=form["signup-password"].value
-                if new_user(username, password)=="passed":
+                if new_user(username, firstname, lastname, password)=="passed":
                    ses=create_new_session(username)
                    display_user_profile_init(username, ses)
                    #display_admin_options(username, ses)
