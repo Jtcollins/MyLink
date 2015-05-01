@@ -325,14 +325,39 @@ def display_requests(form):
 
     user=form["user"].value
     ses=form["session"].value
-    with open("userprofile.html") as content_file:
-        content = content_file.read()
 
-    t = (user,)
-    c.execute('SELECT * FROM friendlist WHERE user=?', t)
+    html= """
+        <div class="container">
+
+          <form METHOD=post ACTION="login.cgi" class="form-signin">
+
+            <h3 class="form-requests-heading">Add a new friend</h3>
+            <label for="inputEmail" class="sr-only">First Name</label>
+            <input type="text" id="friend" NAME="friend" class="form-control" placeholder="Friend's Email Address" required autofocus>
+            <INPUT TYPE=hidden NAME="action" VALUE="new-request">
+            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <br>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Add Friend</button>
+          </form>
+          <br>
+    </div>
+    """
+
+    t = (user,"request")
+    c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
     friendlist= c.fetchall()
 
-    html = """
+    c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
+    pending = c.fetchall()
+
+    if len(friendlist) == 0 && len(pending) == 0:
+        print "  </body>"
+        print "</html>"
+        return passed
+
+    html += """
+        <h3 class="form-requests-heading">Change Add a new friend</h3>
         <div class="row">  
           <div class="col-md-6">
                   <table class="table table-striped">
@@ -362,7 +387,9 @@ def display_requests(form):
     html += """</tbody>
                 </table>
                 </div>
-            </div>"""
+            </div>
+              </body>
+</html>"""
 
     print html
 
