@@ -301,7 +301,7 @@ def display_friend_profile(form):
     if (check_session(form) != True):
         login_form()
         return
-        
+
     user = form["user"].value
     ses = form["session"].value
     friend = form["friend"].value
@@ -322,11 +322,27 @@ def display_friend_profile(form):
     #c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
     #posts = stored_posts=c.fetchall()
 
-    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
-    
-    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', t):
-        display_post(row)
+    print(content.format(user=user,friend=friend,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
 
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    
+    html = """<li><a href="#">Send Friend Request/Delete Friend</a></li>"""
+
+    html = """<li><a href="#">Add/Remove to Circles</a></li>"""
+
+
+    html = """</ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+        <div class="col-sm-8 blog-main">"""
+
+    print html
+
+    cs = (user,friend)
+    for row in c.execute('SELECT * FROM posts WHERE circle IN (SELECT circle FROM friendlist WHERE friend=?) AND user=? GROUP BY postDate ORDER BY postDate DESC', cs):
+        display_post(row)
+    
     with open("profilefoot.html") as content_file:
         content = content_file.read()
 
