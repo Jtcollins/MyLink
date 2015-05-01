@@ -352,14 +352,13 @@ def display_requests(form):
     print html.format(sender=user,session=ses)
 
     t = (user,"request")
-    ts = (user,)
     c.execute('SELECT * FROM friendlist WHERE friend=? AND circle=?', t)
     friendlist= c.fetchall()
 
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    c.execute('SELECT * FROM friendlist WHERE user=? GROUP BY friend', ts)
+    c.execute('SELECT * FROM friendlist WHERE user=? AND circle!=? GROUP BY friend', t)
     existing = c.fetchall()
 
 
@@ -417,7 +416,7 @@ def display_requests(form):
     for friend in pending:
         html = """
             <tr>
-                <td>{firstname} {lastname}</td>
+                <td><a href={friendprofile}>{firstname} {lastname}</a></td>
                 <td>{friend}</td>
                 <td><a href={delete}>Delete</a></td>
               </tr> 
@@ -425,7 +424,7 @@ def display_requests(form):
         curr = (friend[1],)
         userc.execute('SELECT * FROM users WHERE email=?', curr)
         currdet = userc.fetchone()
-        print html.format(friend=friend[2],firstname=currdet[2],lastname=currdet[3], delete="#")
+        print html.format(friend=friend[1],firstname=currdet[2],lastname=currdet[3], delete="#", friendprofile="#")
 
 
     html = """</tbody>
