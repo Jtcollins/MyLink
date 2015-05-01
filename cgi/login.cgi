@@ -284,13 +284,14 @@ def display_friend_circles(form):
 
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
+    c2 = conn.cursor()
 
     html = """
 <div class="col-lg-4 col-sm-6 text-center">
     <a href="login.cgi?action=manage-circle&circlename={circlename}&user={user}&session={session}">
     <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
     <h3>{circlename}
-        <small>Number of Friends?</small>
+        <small>{count} friends</small>
     </h3>
 </div>
     """
@@ -299,7 +300,11 @@ def display_friend_circles(form):
 
     for row in c.execute('SELECT * FROM circles WHERE user=?', t):
         name = row[1]
-        print(html.format(circlename = name, user = user, session = session))
+        t2 = (user, name,)
+        c2.execute('SELECT COUNT (*) FROM friendlist WHERE user=? AND circle=?', t2)
+        result = c2.fetchone()
+        count = result[0]
+        print(html.format(circlename = name, user = user, session = session, count = count))
 
     with open("circlesfoot.html") as content_file:
         content = content_file.read()
