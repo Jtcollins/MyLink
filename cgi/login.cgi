@@ -223,7 +223,7 @@ def display_post(row):
         hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
         hdr += content
 
-    print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,picture=hdr,message=message))
+    print(html.format(postDate=postDate.strftime("%D at %H:%M"),poster=user,picture=hdr,message=message))
     return "passed"
 
 def display_user_profile_init(user, ses):
@@ -269,7 +269,41 @@ def display_friend_profile(form):
     return "passed"
 
 def display_feed(form):
-    return "failed"
+    if (session.check_session(form) != "passed"):
+        login_form()
+        return
+
+    print_html_content_type()
+    print_html_nav(form)
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    ses=form["session"].value
+    with open("newsfeed.html") as content_file:
+        content = content_file.read()
+
+    t = (user,)
+    c.execute('SELECT * FROM users WHERE email=?', t)
+    userdetails= c.fetchone()
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
+
+    print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
+    
+    for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC', t):
+        display_post(row)
+
+    with open("profilefoot.html") as content_file:
+        content = content_file.read()
+
+    print(content)
+
+    conn.close()
+
+    return "passed"
 
 #################################################################
 def change_name_page(form):
@@ -835,6 +869,8 @@ def main():
           display_admin_options(form)
         elif action == "view_profile":
           display_user_profile(form)
+        elif action == "view_news":
+            display_user_profile(form)
 
           ##SETTINGS OPTIONS PAGES
         elif action == "ch-name":
