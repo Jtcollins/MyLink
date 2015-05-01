@@ -6,7 +6,7 @@ import cgitb; cgitb.enable()  # for troubleshooting
 import sqlite3
 
 #Get Databasedir
-MYLOGIN="colli180"
+MYLOGIN="chanthor"
 DATABASE="/homes/"+MYLOGIN+"/MyLink/picture_share.db"
 
 def create_session(user):
