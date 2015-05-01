@@ -382,7 +382,7 @@ def display_requests(form):
                 <td><a href={delete}>Delete</a></td>
               </tr> 
         """
-        print html.format(friend=friend[2],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
+        print html.format(friend=friend[0],firstname="Joe",lastname="bloggs", addcircle="#",delete="#")
 
     html = """</tbody>
                 </table>
