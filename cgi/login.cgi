@@ -301,7 +301,10 @@ def display_friend_profile(form):
     if (check_session(form) != True):
         login_form()
         return
-
+        
+    user = form["user"].value
+    ses = form["session"].value
+    friend = form["friend"].value
     print_html_content_type()
     print_html_nav_init(user, ses)
 
