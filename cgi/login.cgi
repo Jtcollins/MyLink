@@ -337,6 +337,7 @@ def display_requests(form):
             <INPUT TYPE=hidden NAME="action" VALUE="new-request">
             <INPUT TYPE=hidden NAME="user" VALUE="{user}">
             <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <INPUT TYPE=hidden NAME="currpage" VALUE="requests">
             <br>
             <button class="btn btn-md btn-primary btn-block" type="submit">Add Friend</button>
           </form>
@@ -640,7 +641,20 @@ def check_verified(form):
 #################################################################
 def friend_request(form):
     #TODO
-    return "failed"
+    user=form["user"].value
+    friend=form["friend"].value
+    ses=form["session"].value
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    t = (user,"request",friend,)
+    c.execute('INSERT INTO friendlist VALUES (?,?,?)', t)
+
+    conn.commit()
+    conn.close()
+
+    return "success"
 
 def request_response(form):
     #TODO
@@ -1048,6 +1062,12 @@ def main():
                 display_user_profile(form)
             elif(form["currpage"].value=="feed"):
                 display_feed(form)
+        elif action =="new-request":
+            friend_request(form)
+            if(form["currpage"].value==form["friend"].value):
+                display_friend_profile(form)
+            else:
+                display_requests(form)
         elif action == "show_profilepic":
             show_profilepic(form)
         elif action == "show_postpic":
