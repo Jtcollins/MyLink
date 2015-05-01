@@ -336,8 +336,8 @@ def display_requests(form):
             <label for="inputEmail" class="sr-only">First Name</label>
             <input type="text" id="friend" NAME="friend" class="form-control" placeholder="Friend's Email Address" required autofocus>
             <INPUT TYPE=hidden NAME="action" VALUE="new-request">
-            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
-            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <INPUT TYPE=hidden NAME="user" VALUE={user}>
+            <INPUT TYPE=hidden NAME="session" VALUE={session}>
             <INPUT TYPE=hidden NAME="currpage" VALUE="requests">
             <br>
             <button class="btn btn-md btn-primary btn-block" type="submit">Add Friend</button>
