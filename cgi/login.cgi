@@ -779,7 +779,7 @@ def upload_post_pic(form):
         return
 
     #Get file info
-    fileInfo = form['picture']
+    fileInfo = form['file']
 
     #Get user
     user=form["user"].value
