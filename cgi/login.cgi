@@ -596,7 +596,6 @@ def remove_friend_from_circle(form):
 #################################################################
 def create_new_post(form):
     user=form["user"].value
-    pic=form["picture"].value
     cir=form["circle"].value
     mess=form["newpost"].value
     postDate= datetime.now()
@@ -780,7 +779,7 @@ def upload_post_pic(form):
         return
 
     #Get file info
-    fileInfo = form['file']
+    fileInfo = form['picture']
 
     #Get user
     user=form["user"].value
