@@ -927,6 +927,10 @@ def update_circle(form):
 
     user=form["user"].value
     circlename=form["circlename"].value
+
+    t = (user, circlename,)
+    c.execute('DELETE FROM friendlist WHERE user=? AND circle=?', t)
+
     variable = ""
     value = ""
     for key in form.keys():
