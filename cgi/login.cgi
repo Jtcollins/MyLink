@@ -110,7 +110,7 @@ def display_albums_page(form):
         count = result[0]
         # random circle color
         color = ''.join(random.sample(char_set,n))
-        print(html.format(album = name, user = user, session = session, count = count, color = color))
+        print(html.format(albumname = name, user = user, session = session, count = count, color = color))
 
     with open("UserAlbumsFoot.html") as content_file:
         content = content_file.read()
