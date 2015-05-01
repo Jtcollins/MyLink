@@ -125,6 +125,34 @@ def display_album(form):
     #TODO
     print("hello1")
 
+def new_album_page(form):
+    if "user" in form and "session" in form and check_session(form) == True:
+        user=form["user"].value
+        ses=form["session"].value
+        html = """
+    <div class="container">
+
+          <form METHOD=post ACTION="login.cgi" class="form-signin">
+            <h1>MyLink</h1>
+
+            <h2 class="form-changeinfo-heading">Create a New Album</h2>
+            <label for="albumname" class="sr-only">Album Name</label>
+            <input type="text" id="albumname" NAME="albumname" class="form-control" placeholder="New Album Name" required autofocus>
+            <INPUT TYPE=hidden NAME="action" VALUE="create-album">
+            <INPUT TYPE=hidden NAME="user" VALUE="{user}">
+            <INPUT TYPE=hidden NAME="session" VALUE="{session}">
+            <br>
+            <button class="btn btn-md btn-primary btn-block" type="submit">Create Album</button>
+          </form>
+    </div>
+    """
+
+        print_html_content_type()
+        print_html_nav(form)
+        print(html.format(user=user,session=ses))
+        print_settings_footer()
+        return "passed"
+    return "passed"
 
 def new_album(form):
     if (check_session(form) != True):
@@ -1122,18 +1150,6 @@ def verify_email(useremail):
     return VERIFY
 
 ##############################################################
-def new_album(form):
-    #Check session
-    if check_session(form) != True:
-       return
-
-    html="""
-        <H1> New Album</H1>
-        """
-    print_html_content_type()
-    print(html);
-
-##############################################################
 def show_image(form):
     #Check session
     if check_session(form) != True:
@@ -1381,7 +1397,7 @@ def main():
                    login_form()
                    print("<H3><font color=\"red\">User already exists please sign in instead.</font></H3>")
         elif (action == "new-album"):
-            new_album(form)
+            new_album_page(form)
         elif (action == "upload"):
            upload(form)
         elif (action == "show_image"):
@@ -1406,6 +1422,8 @@ def main():
             display_albums_page(form)
         elif action == "display-album":
             display_album(form)
+        elif action == "create-album":
+            new_album(form)
 
         ## CIRCLE PAGES
         elif action == "cr-fr-circle":
