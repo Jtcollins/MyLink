@@ -1524,7 +1524,10 @@ def main():
         elif action == "show_postpic":
             show_postpic(form)
         elif action == "view-friend":
-            display_friend_profile(form)
+            if(form["friend"].value == form["user"].value):
+                display_user_profile(form)
+            else:
+                display_friend_profile(form)
         else:
             login_form()
     else:
