@@ -919,20 +919,18 @@ def manage_circle(form):
 
     html = """
 <div class="input-group">
-  <label><input type="checkbox" name="{friendname}" aria-label="..." value="checkbox"{checked}>{first} {last} ({friendname})</input></label>
+  <label><input type="checkbox" name="{friendname}" aria-label="..." value="checkbox"{checked}>{friendname}</input></label>
 </div><!-- /input-group -->
     """
     t = (user,)
     for row in c.execute('SELECT DISTINCT friend FROM friendlist WHERE user=?', t):
         name = row[0]
-        firstn = row[1]
-        lastn = row[2]
         t2 = (user, name, circlename,)
         c2.execute('SELECT * FROM friendlist WHERE user=? AND friend=? AND circle=?', t2)
         if c2.fetchone() is None:
-            print(html.format(checked = "", first=firstn, last=lastn, friendname = name))
+            print(html.format(checked = "", friendname = name))
         else:
-            print(html.format(checked = " checked", first=firstn, last=lastn, friendname = name))
+            print(html.format(checked = " checked", friendname = name))
 
     conn.commit()
     conn.close()
