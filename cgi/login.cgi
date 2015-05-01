@@ -1424,6 +1424,7 @@ def main():
             display_album(form)
         elif action == "create-album":
             new_album(form)
+            display_albums_page(form)
 
         ## CIRCLE PAGES
         elif action == "cr-fr-circle":
