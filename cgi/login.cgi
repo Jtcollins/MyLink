@@ -103,7 +103,7 @@ def display_albums_page(form):
     t = (user,)
 
     for row in c.execute('SELECT * FROM albums WHERE owner=?', t):
-        name = row[1]
+        name = row[0]
         t2 = (user, name,)
         c2.execute('SELECT COUNT (*) FROM pictures WHERE owner=? AND album=?', t2)
         result = c2.fetchone()
