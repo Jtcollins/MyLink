@@ -220,10 +220,9 @@ def display_post(row):
     else:
         with open(IMAGEPATH+'/posts/'+picture, 'rb') as content_file:
             content = content_file.read()
-
-    # Send header and image content
-    hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
-    hdr += content
+        # Send header and image content
+        hdr = "Content-Type: image/jpeg\nContent-Length: %d\n\n" % len(content)
+        hdr += content
 
     print(html.format(postDate=postDate.strftime("%H:%M:%S on %D"),poster=user,picture=hdr,message=message))
     return "passed"
