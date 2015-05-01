@@ -360,8 +360,9 @@ def display_feed(form):
 
     #c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate', tc)
 
-    for row in c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate ORDER BY postDate DESC' %'?'.join(',?'*len(circles-1)), circles):
-        display_post(row)
+    if(len(circles)> 0):
+        for row in c.execute('SELECT * FROM posts WHERE circle IN (%s) GROUP BY postDate ORDER BY postDate DESC' %'?'.join(',?'*len(circles-1)), circles):
+            display_post(row)
 
     with open("profilefoot.html") as content_file:
         content = content_file.read()
