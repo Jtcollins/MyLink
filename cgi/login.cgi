@@ -914,8 +914,7 @@ def main():
             if(form["currpage"].value==form["user"].value):
                 display_user_profile(form)
             elif(form["currpage"].value=="feed"):
-                ##TODO
-                display_user_profile(form)
+                display_feed(form)
         elif action == "show_profilepic":
             show_profilepic(form)
         else:
