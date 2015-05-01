@@ -187,6 +187,25 @@ def display_user_profile(form):
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
+        name = row[0]
+        if c.fetchone() is None:
+            print(html.format(checked = "", circlename = name))
+        else:
+            print(html.format(checked = " checked", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    </div><!-- /.container -->"""
+
+    print html
+    
     for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
         display_post(row)
 
@@ -255,6 +274,26 @@ def display_user_profile_init(user, ses):
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage=user))
     
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT DISTINCT name FROM circles WHERE user=?', t):
+        name = row[0]
+        if c.fetchone() is None:
+            print(html.format(checked = "", circlename = name))
+        else:
+            print(html.format(checked = " checked", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    </div><!-- /.container -->"""
+
+    print html
+
+
     for row in c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t):
         display_post(row)
 
