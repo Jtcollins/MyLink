@@ -300,10 +300,35 @@ def display_feed(form):
     c.execute('SELECT * FROM circles WHERE email=?', t)
     circles = c.fetchall()
 
-    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
-    posts = stored_posts=c.fetchall()
+
+    user=form["user"].value
+    ses=form["session"].value
 
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage="feed"))
+
+    html = """
+<div class="input-group">
+  <label><input type="checkbox" name="{circlename}" aria-label="..." value="checkbox"{checked}>{circlename}</input></label>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT DISTINCT circle FROM circles WHERE user=?', t):
+        name = row[0]
+        firstn = row[1]
+        lastn = row[2]
+        if c.fetchone() is None:
+            print(html.format(checked = "", circlename = name))
+        else:
+            print(html.format(checked = " checked", circlename = name))
+
+    html = """</div><!-- /.col-sm-4 -->
+        </form>
+    </div><!-- /.container -->"""
+
+    print html
+
+    c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
+    posts = stored_posts=c.fetchall()
     
     for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
         display_post(row)
