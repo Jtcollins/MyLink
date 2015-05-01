@@ -333,7 +333,7 @@ def display_feed(form):
     c.execute('SELECT circle FROM friendlist WHERE friend=?', t)
     circles = c.fetchall()
 
-    c.execute('SELECT * FROM posts WHERE circle IN ? GROUP BY postDate', (circles,))
+    c.execute('SELECT * FROM posts WHERE circle IN (?) GROUP BY postDate', (circles,))
 
 
     user=form["user"].value
