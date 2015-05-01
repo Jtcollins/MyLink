@@ -353,6 +353,7 @@ def display_requests(form):
     pending = c.fetchall()
 
     if len(friendlist) == 0 and len(pending) == 0:
+        print html
         print "  </body>"
         print "</html>"
         return "passed"
