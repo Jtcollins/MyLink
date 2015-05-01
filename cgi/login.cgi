@@ -201,7 +201,7 @@ def display_user_profile(form):
 
     print html
 
-    for row in c.execute('SELECT * FROM posts GROUP BY postDate ORDER BY postDate DESC'):
+    for row in c.execute('SELECT * FROM posts WHERE user=? GROUP BY postDate ORDER BY postDate DESC', t):
         display_post(row)
 
     with open("profilefoot.html") as content_file:
