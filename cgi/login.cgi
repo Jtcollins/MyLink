@@ -593,22 +593,61 @@ def manage_circle(form):
     if check_session(form) != "passed":
        login_form()
        return
-
+    # Top of html file
     print_html_content_type()
     print_html_nav(form)
     
-    with open("circlemanager.html") as content_file:
+    with open("circlemanagerhead.html") as content_file:
         content = content_file.read()
 
     circlename=form["circlename"].value
-
     print(content.format(circlename = circlename))
+
+    # Fill in friend list
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    user=form["user"].value
+    session=form["session"].value
+
+    html = """
+<div class="input-group">
+  <span class="input-group-addon">
+    <input type="checkbox" name="{friendname}" aria-label="..." value="checkbox">{friendname}</input>
+  </span>
+</div><!-- /input-group -->
+    """
+    t = (user,)
+    for row in c.execute('SELECT * FROM friendlist WHERE user=?', t):
+        name = row[2]
+        print(html.format(friendname = name))
+
+    conn.commit()
+    conn.close()
+
+    #TODO: pre-check boxes of friends already in circle
+
+    #Bottom of html file
+    with open("circlemanagerfoot.html") as content_file:
+        content = content_file.read()
+
+    print(content.format(user = user, session = session))
     return "passed"
 
 def update_circle(form):
     if check_session(form) != "passed":
        login_form()
        return
+
+    #TODO: update friendlist with checked items
+    
+    variable = ""
+    value = ""
+    for key in form.keys():
+        variable = str(key)
+        value = str(form.getvalue(variable))
+        if value == "checkbox":
+            sys.stderr.write("variable: " + variable + ", value: "+ value + "\n")
 
     return "passed"
 
