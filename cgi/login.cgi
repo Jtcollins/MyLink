@@ -298,9 +298,6 @@ def display_feed(form):
     c.execute('SELECT * FROM posts WHERE user=? ORDER BY postDate DESC', t)
     posts = stored_posts=c.fetchall()
 
-
-
-
     print(content.format(user=user,session=ses,firstname=userdetails[2],lastname=userdetails[3],userpic=userdetails[4],verifykey=userdetails[5],currpage="feed"))
     
     for row in c.execute('SELECT * FROM posts ORDER BY postDate DESC'):
@@ -335,7 +332,39 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=?', t)
     friendlist= c.fetchall()
 
-    html = ""
+    html = """
+        <div class="row">  
+          <div class="col-md-6">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Add to circle</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+    """
+
+    for friend in friendlist:
+        html += """
+            <tr>
+                <td>{firstname} {lastname}</td>
+                <td>{user}</td>
+                <td><a href="#">Add to circle</a></td>
+                <td><a href="#">Delete</a></td>
+              </tr> 
+        """
+        html.format(user=friend[2],firstname="Joe",lastname="bloggs")
+
+    html += """</tbody>
+                </table>
+                </div>
+            </div>"""
+
+    print html
 
     return "passed"
 
