@@ -359,7 +359,7 @@ def display_requests(form):
     c.execute('SELECT * FROM friendlist WHERE user=? AND circle=?', t)
     pending = c.fetchall()
 
-    c.execute('SELECT * FROM friendlist WHERE user=?', ts)
+    c.execute('SELECT * FROM friendlist WHERE user=? GROUP BY email', ts)
     existing = c.fetchall()
 
 
