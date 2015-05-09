@@ -1,35 +1,12 @@
+Project for CS390Python @ Purdue.
+=============================
 
-      			CS390 PYTHON
+I don't usually publish class projects, but this one I enjoyed a lot and was pretty happy with the end product.
 
-      Startup sources for your MyLink App using SQLLITE
+I used bootstrap, python, apache and SQLite to build a social network of some assortment. It is a bit of a 
+juxtaposition between facebook and google+ with the ability to build friend circles and privacy adjusted as such.
 
-1. Install apache as indicated in the handout.
-
-2. Install in your home directory in data
-
-  cd
-  tar -xvf MyLink.tar
-
-3. Create data base
-
- cdMyLink 
- ./CreateDatabase.py
- ./populate.py
- ./query.py
-
-2. To install cgi
-
- cd ~/apache/htdocs
- ln -s ~/MyLink/cgi MyLink
- ls PeteTwitt
-
-3. In cgi/login.cgi look for the line MYLOGIN and write your login.
-
-4. To run PeteTwitt app type this in a browser.
-
+The link to the webpage is at:
 http://data.cs.purdue.edu:64210/MyLink/login.cgi
 
-Users:
-
-george@gmail.com abc123
-mary@gmail.com mary123
+new users automatically become my friend to show you a little bit of what the page looks like.
